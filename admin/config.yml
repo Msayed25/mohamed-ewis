@@ -1,0 +1,112 @@
+# Editor settings for /admin.
+# Before going live: set `repo` (and site_url) to the GitHub repository that hosts this site.
+backend:
+  name: github
+  repo: Msayed25/mohamed-ewis
+  branch: main
+  commit_messages:
+    create: "Add {{collection}} {{slug}} via admin"
+    update: "Update {{collection}} {{slug}} via admin"
+    delete: "Delete {{collection}} {{slug}} via admin"
+    uploadMedia: "Upload {{path}} via admin"
+
+site_url: https://msayed25.github.io/mohamed-ewis
+display_url: https://msayed25.github.io/mohamed-ewis
+media_folder: images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: projects
+    label: Projects
+    label_singular: Project
+    folder: _projects
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{title}} · {{category}} · {{kind}}"
+    sortable_fields: [order, title, category]
+    editor:
+      preview: false
+    fields:
+      - { name: title, label: Project name, widget: string }
+      - name: category
+        label: Discipline
+        widget: select
+        options:
+          - { label: Digital, value: digital }
+          - { label: Print, value: print }
+          - { label: Pitch, value: pitch }
+          - { label: Film, value: film }
+          - { label: Photography, value: photography }
+          - { label: Branding, value: branding }
+          - { label: Personal, value: personal }
+      - name: kind
+        label: What happens when someone clicks it
+        widget: select
+        hint: "Case study opens its own page. Film plays the video below. Link opens the web address below in a new tab."
+        options:
+          - { label: "Case study", value: case }
+          - { label: "Film", value: film }
+          - { label: "Link", value: link }
+      - { name: subtitle, label: Type of work, widget: string, hint: "e.g. Social campaign, Documentary film, Logo design" }
+      - { name: cover, label: Cover image, widget: image }
+      - { name: cover_line, label: Cover line, widget: string, required: false, hint: "One short, punchy line in the magazine-cover style. Shown big on the cover." }
+      - { name: featured, label: Show on the home page covers, widget: boolean, default: false, hint: "Needs a cover line." }
+      - { name: order, label: Order, widget: number, value_type: int, default: 100, hint: "Lower numbers come first in the index." }
+      - { name: tags, label: Tags, widget: list, required: false, field: { name: tag, label: Tag, widget: string } }
+      - { name: video, label: Video, widget: string, required: false, hint: "For films: paste a YouTube or Vimeo link, or the address of an uploaded video file." }
+      - { name: link, label: Web address, widget: string, required: false, hint: "For links: the full address, e.g. https://www.thesconcept.com" }
+      - { name: link_label, label: Link name, widget: string, required: false, hint: "Shown on the button, e.g. thesconcept.com" }
+      - { name: gallery, label: Gallery images, widget: list, required: false, field: { name: image, label: Image, widget: image } }
+      - { name: body, label: Story, widget: markdown, required: false, hint: "The text on the project page. Bold a word at the start of a paragraph to make a small heading." }
+
+  - name: site
+    label: Site settings
+    editor:
+      preview: false
+    files:
+      - name: site
+        label: About, CV and contact
+        file: _data/site.json
+        format: json
+        fields:
+          - { name: name, label: Full name, widget: string }
+          - { name: short_name, label: Masthead name, widget: string, hint: "The big red word at the top, e.g. EWIS" }
+          - { name: title, label: Job title, widget: string }
+          - { name: location, label: Location, widget: string }
+          - { name: timezone_offset, label: Hours ahead of UTC (for the clock), widget: number, value_type: float }
+          - { name: timezone_label, label: Time zone name, widget: string }
+          - { name: status, label: Availability badge, widget: string, required: false, hint: "Shown with a green pulse. Leave empty to hide." }
+          - { name: portrait, label: Portrait photo, widget: image }
+          - { name: headline, label: Intro headline, widget: string }
+          - { name: bio, label: Intro text, widget: text }
+          - { name: clients, label: Clients (scrolling strip), widget: list, field: { name: client, label: Client, widget: string } }
+          - { name: personal_note, label: Personal board note, widget: string }
+          - { name: personal_images, label: Personal board photos (up to 6), widget: list, field: { name: image, label: Photo, widget: image } }
+          - { name: personal_link, label: Personal work link, widget: string, required: false }
+          - { name: cv_pdf, label: CV file (PDF), widget: file, required: false, hint: "The Download CV button appears only when a file is uploaded." }
+          - name: cv
+            label: CV chapters
+            label_singular: Chapter
+            widget: list
+            summary: "{{fields.period}} · {{fields.chapter}}"
+            fields:
+              - { name: chapter, label: Title or role, widget: string }
+              - { name: period, label: Dates, widget: string, hint: "e.g. 2019 to 2022, or Now" }
+              - { name: track, label: Track, widget: select, options: [Ideas, Design, Film, Direction] }
+              - { name: color, label: Colour, widget: select, options: [digital, print, pitch, film, photography, branding, personal] }
+              - { name: text, label: Description, widget: text }
+              - { name: tags, label: Tags, widget: list, required: false, field: { name: tag, label: Tag, widget: string } }
+              - { name: link_label, label: Link text, widget: string, required: false }
+              - { name: link, label: Link address, widget: string, required: false }
+          - name: contacts
+            label: Contact details
+            label_singular: Contact
+            widget: list
+            summary: "{{fields.label}}: {{fields.value}}"
+            fields:
+              - { name: label, label: Label, widget: string, hint: "e.g. Email, Phone, LinkedIn" }
+              - { name: value, label: Shown as, widget: string }
+              - { name: url, label: Link, widget: string, required: false, hint: "mailto:..., tel:..., or https://..." }

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{% assign s = site.data.site %}{% assign p = page %}
+<title>{{ p.title }} · {{ s.name }}</title>
+<meta name="description" content="{{ p.subtitle }} by {{ s.name }}. {{ p.content | strip_html | truncatewords: 24 | strip_newlines }}">
+<meta property="og:title" content="{{ p.title }} · {{ s.name }}">
+<meta property="og:image" content="{{ p.cover | absolute_url }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Permanent+Marker&text=EWISewis&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ '/assets/site.css' | relative_url }}">
+<script>try{var t=localStorage.getItem('ewis-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+{% assign projects = site.projects | sort: "order" %}
+{% for x in projects %}{% if x.url == page.url %}{% assign idx = forloop.index0 %}{% endif %}{% endfor %}
+{% assign nidx = idx | plus: 1 %}{% if nidx >= projects.size %}{% assign nidx = 0 %}{% endif %}
+{% assign pidx = idx | minus: 1 %}{% if pidx < 0 %}{% assign pidx = projects.size | minus: 1 %}{% endif %}
+{% assign next = projects[nidx] %}{% assign prev = projects[pidx] %}
+{% assign num = idx | plus: 1 %}
+{% assign cats = "digital:Digital,print:Print,pitch:Pitch,film:Film,photography:Photography,branding:Branding,personal:Personal" | split: "," %}
+{% for c in cats %}{% assign kv = c | split: ":" %}{% if kv[0] == p.category %}{% assign catlabel = kv[1] %}{% endif %}{% endfor %}
+<body class="is-project">
+<div class="casefile cat-{{ p.category }}" data-slug="{{ p.slug }}">
+  <div class="progress" aria-hidden="true"><i></i></div>
+  <header class="casebar g mono">
+    <a class="cb-close" href="{{ '/#work' | relative_url }}" data-close>✕ <span>All work</span></a>
+    <span class="cb-id">Case No.{% if num < 10 %}0{% endif %}{{ num }} / {{ projects.size }} · {{ catlabel }}</span>
+    <nav class="cb-nav"><a href="{{ prev.url | relative_url }}" data-proj aria-label="Previous project: {{ prev.title }}">← Prev</a><a href="{{ next.url | relative_url }}" data-proj aria-label="Next project: {{ next.title }}">Next →</a><button class="tog" type="button" data-tog aria-label="Switch between light and dark">◐</button></nav>
+  </header>
+
+  <article class="proj">
+    <section class="phero">
+      <img src="{{ p.cover | relative_url }}" alt="{{ p.title }}">
+      <div class="phero-copy g">
+        <div class="mono pkick">{{ catlabel }} · {{ p.subtitle }}</div>
+        <h1 class="ptitle">{{ p.title }}</h1>
+        {% if p.cover_line != "" %}<p class="pline">{{ p.cover_line }}</p>{% endif %}
+      </div>
+      <div class="pnum" aria-hidden="true">{% if num < 10 %}0{% endif %}{{ num }}</div>
+    </section>
+
+    <section class="spec g">
+      <dl class="sheet mono">
+        <div><dt>Project</dt><dd>{{ p.title }}</dd></div>
+        <div><dt>Discipline</dt><dd><i class="dot"></i>{{ catlabel }}</dd></div>
+        <div><dt>Work</dt><dd>{{ p.subtitle }}</dd></div>
+        <div><dt>Format</dt><dd>{% include kind.html kind=p.kind %}</dd></div>
+        {% if p.tags.size > 0 %}<div><dt>Role</dt><dd class="ptags">{% for t in p.tags %}<span>{{ t }}</span>{% endfor %}</dd></div>{% endif %}
+        {% if p.kind == 'link' and p.link != '' %}<div><dt>Live</dt><dd><a href="{{ p.link | relative_url }}" target="_blank" rel="noopener">{{ p.link_label | default: p.link }} ↗</a></dd></div>{% endif %}
+      </dl>
+      <div class="ptext">
+        {{ content }}
+        <div class="pcta">{% if p.kind == 'film' and p.video != '' %}<a class="btn solid" href="#watch-{{ p.slug }}" data-jump>▶ Watch the film</a>{% elsif p.kind == 'link' and p.link != '' %}{% include action.html p=p solid=true %}{% endif %}</div>
+      </div>
+    </section>
+
+    {% if p.kind == 'film' and p.video != '' %}
+    <section class="g"><div class="player" id="watch-{{ p.slug }}" data-video="{% if p.video != "" %}{{ p.video | relative_url }}{% endif %}" data-title="{{ p.title }}"><button class="playbig" type="button" style="background-image:url('{{ p.cover | relative_url }}')"><span>▶</span><em class="mono">Play with sound</em></button></div></section>
+    {% endif %}
+
+    {% if p.gallery.size > 0 %}
+    <section class="gallery g" aria-label="Images">
+      {% for g in p.gallery %}<figure><img src="{{ g | relative_url }}" alt="{{ p.title }}, image {{ forloop.index }}" loading="lazy" decoding="async"><figcaption class="mono">{{ p.title }} · {{ forloop.index }}/{{ p.gallery.size }}</figcaption></figure>{% endfor %}
+    </section>
+    {% endif %}
+
+    <a class="next g" href="{{ next.url | relative_url }}" data-proj>
+      <span class="mono">Next case</span>
+      <span class="nt">{{ next.title }} <span>→</span></span>
+      <img src="{{ next.cover | relative_url }}" alt="" loading="lazy" decoding="async">
+    </a>
+  </article>
+
+  <footer class="pfoot g mono"><span>© {{ site.time | date: "%Y" }} {{ s.name }}</span><a href="{{ '/#talk' | relative_url }}" data-close>Let's talk →</a></footer>
+</div>
+<script src="{{ '/assets/site.js' | relative_url }}" defer></script>
+</body>
+</html>

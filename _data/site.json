@@ -1,0 +1,82 @@
+{
+  "name": "Mohamed Ewis",
+  "short_name": "EWIS",
+  "title": "Creative Art Director",
+  "location": "Dubai, UAE",
+  "timezone_offset": 4,
+  "timezone_label": "GST",
+  "status": "Available for projects",
+  "portrait": "/images/site/portrait.jpg",
+  "headline": "Pepsi, Google, Nike and Mini already called. Your move.",
+  "bio": "Art director and visual artist. He finds one big idea, then makes it loud through photography, film, collage, AR and design.",
+  "clients": ["Mini", "Subaru", "Pepsi", "Etisalat", "Google", "Alcatel", "Gold's Gym", "Nike", "Damac", "Infosys", "Gorillaz"],
+  "personal_note": "Made with hands, cameras & stubbornness.",
+  "personal_images": [
+    "/images/site/board-beach.jpg",
+    "/images/site/board-red.jpg",
+    "/images/site/board-golds.jpg",
+    "/images/projects/nike/cover.jpg",
+    "/images/projects/swyp/cover.jpg"
+  ],
+  "personal_link": "https://www.instagram.com/muhamedewis/",
+  "cv_pdf": "",
+  "cv": [
+    {
+      "chapter": "Mass Communication",
+      "period": "Degree",
+      "track": "Ideas",
+      "color": "pitch",
+      "text": "Studied how messages move people. It is still the first question on every brief: what is the one thing they should remember?",
+      "tags": ["Media", "Advertising", "Storytelling"],
+      "link_label": "",
+      "link": ""
+    },
+    {
+      "chapter": "Into the studio",
+      "period": "2019",
+      "track": "Design",
+      "color": "print",
+      "text": "Moved from theory to making: graphic design and visual communication, learned alongside top-tier art and creative directors.",
+      "tags": ["Graphic design", "Visual communication"],
+      "link_label": "",
+      "link": ""
+    },
+    {
+      "chapter": "Campaigns for big brands",
+      "period": "2019 to now",
+      "track": "Design",
+      "color": "digital",
+      "text": "Concepts, art direction and design for Mini, Subaru, Pepsi, Etisalat, Google, Alcatel and Gold's Gym, from social and e-commerce to on-ground interiors and pitches.",
+      "tags": ["Concept", "Art direction", "Social", "Print", "AR"],
+      "link_label": "Open the index",
+      "link": "/#work"
+    },
+    {
+      "chapter": "Behind the camera",
+      "period": "Film & photo",
+      "track": "Film",
+      "color": "film",
+      "text": "Product, documentary and cultural films (Etisalat, Sacha Jafri, Emirati Women's Day, UAE National Day) plus streetwear and automotive shoots.",
+      "tags": ["Film treatment", "Photography", "Edit"],
+      "link_label": "Watch the films",
+      "link": "/#films"
+    },
+    {
+      "chapter": "Creative Art Director",
+      "period": "Now",
+      "track": "Direction",
+      "color": "branding",
+      "text": "Leads ideas from first line to final frame. Mixed media, expressive and bold. Personal work stays hand-made: #NoAI.",
+      "tags": ["Creative direction", "Mixed media", "#NoAI"],
+      "link_label": "Let's talk",
+      "link": "/#talk"
+    }
+  ],
+  "contacts": [
+    { "label": "Phone", "value": "+971 58 5606 773", "url": "tel:+971585606773" },
+    { "label": "Email", "value": "mohamedewis88@outlook.com", "url": "mailto:mohamedewis88@outlook.com" },
+    { "label": "LinkedIn", "value": "linkedin.com/in/mohamedewis10", "url": "https://www.linkedin.com/in/mohamedewis10" },
+    { "label": "Instagram", "value": "instagram.com/muhamedewis", "url": "https://www.instagram.com/muhamedewis" },
+    { "label": "Behance", "value": "behance.net/mohamedewis10", "url": "https://www.behance.net/mohamedewis10" }
+  ]
+}

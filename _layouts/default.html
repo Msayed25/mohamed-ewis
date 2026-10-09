@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% if page.title and page.layout == 'project' %}{{ page.title }} · {% endif %}{{ site.data.site.name }} · {{ site.data.site.title }}</title>
+<meta name="description" content="{% if page.layout == 'project' %}{{ page.subtitle }} by {{ site.data.site.name }}. {{ page.content | strip_html | truncatewords: 24 | strip_newlines }}{% else %}{{ site.data.site.bio }}{% endif %}">
+<meta property="og:title" content="{% if page.layout == 'project' %}{{ page.title }} · {% endif %}{{ site.data.site.name }}">
+<meta property="og:image" content="{{ site.data.site.portrait | absolute_url }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Permanent+Marker&text=EWISewis&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ '/assets/site.css' | relative_url }}">
+<script>try{var t=localStorage.getItem('ewis-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+{% assign s = site.data.site %}
+<header class="bar g mono">
+  <a class="brand" href="{{ '/' | relative_url }}">{{ s.short_name }}</a>
+  {% if s.status != "" %}<span class="avail"><i></i>{{ s.status }}</span>{% endif %}
+  <span class="clock-wrap">{{ s.location | split: "," | first }} <b class="clock" data-offset="{{ s.timezone_offset }}">--:--</b> {{ s.timezone_label }}</span>
+  <nav><a href="{{ '/#featured' | relative_url }}">Covers</a><a href="{{ '/#work' | relative_url }}">Index</a><a href="{{ '/#films' | relative_url }}">Films</a><a href="{{ '/#cv' | relative_url }}">CV</a><a href="{{ '/#talk' | relative_url }}">Contact</a><button class="tog" id="tog" type="button" aria-label="Switch between light and dark">◐ <span id="togl">Dark</span></button></nav>
+</header>
+
+{{ content }}
+
+<section class="talk g" id="talk">
+  <div class="mono soft">Got a brief?</div>
+  {% assign wa = "" %}{% assign mail = "" %}{% for c in s.contacts %}{% if c.label == 'Phone' %}{% assign wa = c.value | remove: "+" | remove: " " | remove: "-" %}{% endif %}{% if c.label == 'Email' %}{% assign mail = c.value %}{% endif %}{% endfor %}
+  <a class="big" href="{% if wa != '' %}https://wa.me/{{ wa }}{% else %}mailto:{{ mail }}{% endif %}" target="_blank" rel="noopener"><span class="t">Let's talk</span><span class="arr" aria-hidden="true"><i>→</i></span></a>
+  <p class="talk-note mono soft">{% if wa != '' %}Opens a WhatsApp chat with {{ s.short_name | default: s.name }}. Prefer email? <a href="mailto:{{ mail }}">{{ mail }}</a>{% else %}Opens your email app.{% endif %}</p>
+  <div class="contacts mono">
+    {% for c in s.contacts %}<div><span>{{ c.label }}</span>{% if c.url != "" %}<a href="{{ c.url | relative_url }}"{% if c.url contains 'http' %} target="_blank" rel="noopener"{% endif %}>{{ c.value }}</a>{% else %}<span>{{ c.value }}</span>{% endif %}<button class="copy-b" type="button" data-v="{{ c.value }}">Copy</button></div>
+    {% endfor %}
+  </div>
+</section>
+<footer class="g mono soft"><span>© {{ site.time | date: "%Y" }} {{ s.name }}</span><span>{{ s.location }}</span><span>{{ s.location | split: "," | first }} <span class="clock" data-offset="{{ s.timezone_offset }}">--:--</span></span></footer>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Film player">
+  <div class="box">
+    <div class="top"><div><div class="mono" id="lbKick"></div><b id="lbTitle"></b></div><button class="x" id="lbX" type="button">Close ✕</button></div>
+    <div class="scr" id="lbScr"></div>
+    <a class="mono lbmore" id="lbMore" href="#">Open the project page →</a>
+  </div>
+</div>
+<div class="view" id="view" hidden role="dialog" aria-modal="true" aria-label="Project"></div>
+<div class="blob" id="blob" aria-hidden="true"><img id="blobImg" alt=""><span class="pl" id="blobPl"></span></div>
+<script src="{{ '/assets/site.js' | relative_url }}" defer></script>
+</body>
+</html>

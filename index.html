@@ -1,0 +1,121 @@
+---
+layout: default
+---
+{% assign s = site.data.site %}
+{% assign projects = site.projects | sort: "order" %}
+{% assign featured = projects | where: "featured", true %}
+{% assign films = projects | where: "kind", "film" %}
+{% assign cats = "digital:Digital,print:Print,pitch:Pitch,film:Film,photography:Photography,branding:Branding,personal:Personal" | split: "," %}
+
+<section class="cover intro" aria-label="About {{ s.name }}">
+  <div class="shot"><img class="in" src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" fetchpriority="high"></div>
+  <div class="mast" aria-label="{{ s.short_name }}">{% assign letters = s.short_name | split: "" %}{% for l in letters %}<b style="--r:{% cycle '-6deg','4deg','-3deg','7deg' %};--y:{% cycle '-4px','3px','-2px','4px' %}">{{ l }}</b>{% endfor %}</div>
+  <div class="sticker" aria-hidden="true">#NO<br>AI</div>
+  <div class="copy">
+    <div class="issue mono">{{ s.name }}<br>{{ s.title }}<br>{{ s.location }}</div>
+    <div class="kick mono">Who is {{ s.short_name | capitalize }}</div>
+    <h1 class="line words">{{ s.headline }}</h1>
+    <p class="bio">{{ s.bio }}</p>
+    <div class="ctas"><a class="btn solid" href="#featured">See the work ↓</a><a class="btn" href="#talk">Let's talk</a></div>
+    <a class="seal" href="#talk">Hire<br>this<br>man</a>
+  </div>
+</section>
+
+<div class="marq" aria-label="Clients"><div>{% for i in (1..2) %}{% for c in s.clients %}<span>{{ c }}</span><span aria-hidden="true"><i>✱</i></span>{% endfor %}{% endfor %}</div></div>
+
+{% if featured.size > 0 %}
+<section class="sec g" id="featured">
+  <div class="head"><h2>Covers</h2><p>Selected work. One image and one idea per project, like a magazine cover.</p></div>
+  <div class="cover feat" id="covers" aria-roledescription="carousel" aria-label="Featured projects">
+    {% for p in featured %}
+    <article class="slide{% if forloop.first %} on{% endif %}" data-kind="{{ p.kind }}" aria-label="{{ forloop.index }} of {{ featured.size }}">
+      <div class="shot"><img src="{{ p.cover | relative_url }}" alt="{{ p.title }}" {% unless forloop.first %}loading="lazy" decoding="async"{% endunless %}><div class="no">No.{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</div></div>
+      <div class="copy">
+        <div class="issue mono">Issue {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }} / {% if featured.size < 10 %}0{% endif %}{{ featured.size }}</div>
+        <div class="kick mono">{{ p.subtitle }}</div>
+        <p class="line words">{{ p.cover_line }}</p>
+        <div class="client">{{ p.title }} {% include kind.html kind=p.kind %}</div>
+        <div>{% include action.html p=p solid=true %}</div>
+      </div>
+    </article>
+    {% endfor %}
+    <div class="dots" role="tablist" aria-label="Choose a cover">{% for p in featured %}<button type="button" role="tab" aria-label="{{ p.title }}"{% if forloop.first %} aria-current="true"{% endif %}>{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</button>{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+
+<section class="sec g" id="work">
+  <div class="head"><h2>Index</h2><p>Every project, by discipline. Films play right here, links open the live site, everything else opens its case study.</p></div>
+  <div class="filters" id="filters">
+    <button type="button" aria-pressed="true" data-cat="all" style="--c:var(--ink)"><i></i>All <span>{{ projects.size }}</span></button>
+    {% for c in cats %}{% assign kv = c | split: ":" %}{% assign n = projects | where: "category", kv[0] %}{% if n.size > 0 %}<button type="button" aria-pressed="false" data-cat="{{ kv[0] }}" style="--c:var(--c-{{ kv[0] }})"><i></i>{{ kv[1] }} <span>{{ n.size }}</span></button>{% endif %}{% endfor %}
+  </div>
+  <div class="legend mono soft"><span>▶ Plays a film</span><span>↗ Opens a link</span><span>◼ Opens a case study</span></div>
+  <div class="rows" id="rows">
+    {% for p in projects %}{% assign catlabel = "" %}{% for c in cats %}{% assign kv = c | split: ":" %}{% if kv[0] == p.category %}{% assign catlabel = kv[1] %}{% endif %}{% endfor %}
+    <a class="row" style="--c:var(--c-{{ p.category }})" data-cat="{{ p.category }}" data-kind="{{ p.kind }}" data-img="{{ p.cover | relative_url }}" data-title="{{ p.title }}" data-sub="{{ p.subtitle }}" data-video="{% if p.video != "" %}{{ p.video | relative_url }}{% endif %}" data-page="{{ p.url | relative_url }}"
+       href="{% if p.kind == 'link' and p.link != '' %}{{ p.link }}{% else %}{{ p.url | relative_url }}{% endif %}"{% if p.kind == 'link' and p.link != '' %} target="_blank" rel="noopener"{% endif %}>
+      <span class="id mono">{{ catlabel | slice: 0 }}—{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span><span class="nm">{{ p.title }}</span><span class="sub">{{ p.subtitle }}</span><span class="sub mono">{{ catlabel }}</span><span class="act">{% include kind.html kind=p.kind %}</span>
+    </a>{% endfor %}
+  </div>
+</section>
+
+{% if films.size > 0 %}
+<section class="sec g" id="films">
+  <div class="head"><h2>Films</h2><p>Product, documentary, cultural and experimental. Click to watch.</p></div>
+  <div class="films">
+    {% for p in films %}
+    <a class="film rv" href="{{ p.url | relative_url }}" data-kind="film" data-video="{% if p.video != "" %}{{ p.video | relative_url }}{% endif %}" data-title="{{ p.title }}" data-sub="{{ p.subtitle }}" data-page="{{ p.url | relative_url }}">
+      <div class="fr"><img src="{{ p.cover | relative_url }}" alt="{{ p.title }}" loading="lazy" decoding="async"><span class="rec mono"><i></i>{% if p.video != "" %}Film{% else %}Stills{% endif %}</span><span class="play" aria-hidden="true">▶</span></div>
+      <b>{{ p.title }}</b><small class="mono">{{ p.subtitle }}</small>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if s.personal_images.size > 0 %}
+<section class="sec g" id="personal">
+  <div class="head"><h2>Personal</h2><p>Photographed and made by hand. No AI.{% if s.personal_link != "" %} <a href="{{ s.personal_link | relative_url }}" target="_blank" rel="noopener">More on Instagram ↗</a>{% endif %}</p></div>
+  <div class="board" id="board">
+    <div class="note">{{ s.personal_note }}</div>
+    <div class="sticker" aria-hidden="true">#NO<br>AI</div>
+    {% for img in s.personal_images limit: 6 %}<div class="pin p{{ forloop.index }}"><div class="tape"></div><img src="{{ img | relative_url }}" alt="" loading="lazy" decoding="async"></div>{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="sec g" id="cv">
+  <div class="head"><h2>CV</h2><p>A career, cut like a film. Each chapter is a clip on the timeline. Click one to jump to it.</p></div>
+  <div class="cv">
+    <aside>
+      <div class="pic"><img src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" loading="lazy" decoding="async"></div>
+      <div class="stack">
+        <div class="mono">{{ s.name }}<br>{{ s.title }}<br>{{ s.location }}</div>
+        {% if s.cv_pdf != "" %}<a class="dl mono" href="{{ s.cv_pdf | relative_url }}" download>⎙ Download CV (PDF) <span>↓</span></a>{% endif %}
+      </div>
+    </aside>
+    <div class="cvmain">
+      <div class="tl">
+        <div class="tbar mono"><span>~/{{ s.short_name | downcase }} / career.prproj</span><span>{{ s.cv.size }} clips</span></div>
+        <div class="cmd mono" data-cmd="{{ s.short_name | downcase }}@{{ s.location | split: ',' | first | downcase }}:~$ render career --to &quot;{{ s.title }}&quot;"><span class="typed"></span><span class="caret"></span></div>
+        <div class="scroll"><div class="tracks" id="tracks">
+          <div class="ruler mono"><span>Start</span><span></span><span>Now</span></div>
+          <div class="head-line"></div>
+          {% assign w = 100.0 | divided_by: s.cv.size %}
+          <div class="trk"><span class="tlab mono">CV</span>
+          {% for e in s.cv %}<button type="button" class="clip" data-k="cv{{ forloop.index }}" style="left:{{ forloop.index0 | times: w }}%;width:calc({{ w }}% - 4px);--c:var(--c-{{ e.color }}){% if e.color == 'film' %};--clipfg:var(--paper){% endif %};top:{% cycle '4px','34px','64px' %}">{{ e.chapter }}</button>{% endfor %}
+          </div>
+        </div></div>
+      </div>
+      {% for e in s.cv %}
+      <article class="entry rv" id="cv{{ forloop.index }}" style="--c:var(--c-{{ e.color }})">
+        <div class="lab mono"><span class="tc">{{ e.period }}</span><span>{{ e.track }} track</span></div>
+        <div><h3>{{ e.chapter }}</h3></div>
+        <p>{{ e.text }}</p>
+        <div class="tags">{% for t in e.tags %}<span>{{ t }}</span>{% endfor %}{% if e.link != "" %}<a href="{{ e.link | relative_url }}">{{ e.link_label }} →</a>{% endif %}</div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

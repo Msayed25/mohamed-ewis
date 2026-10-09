@@ -1,0 +1,16 @@
+# GitHub Pages builds this site with Jekyll.
+# Edit content at /admin/ : site-wide text lives in _data/site.json, each project is a file in _projects/.
+title: Mohamed Ewis
+url: https://msayed25.github.io
+baseurl: /mohamed-ewis   # the repository name; use "" for a <username>.github.io repository
+description: Creative Art Director in Dubai. Concepts, art direction, film and photography.
+collections:
+  projects:
+    output: true
+    permalink: /work/:name/
+defaults:
+  - scope: { type: projects }
+    values: { layout: project }
+exclude:
+  - README.md
+  - preview/
