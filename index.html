@@ -8,7 +8,7 @@ layout: default
 {% assign cats = "digital:Digital,print:Print,pitch:Pitch,film:Film,photography:Photography,branding:Branding,personal:Personal" | split: "," %}
 
 <section class="cover intro" aria-label="About {{ s.name }}">
-  <div class="shot"><img class="in" src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" fetchpriority="high">{% if s.portrait_cutout and s.portrait_cutout != "" %}<img class="in cut" src="{{ s.portrait_cutout | relative_url }}" alt="" aria-hidden="true" fetchpriority="high">{% endif %}</div>
+  <div class="shot"><img class="in" src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" fetchpriority="high"></div>
   <div class="mast" aria-label="{{ s.short_name }}">{% assign letters = s.short_name | split: "" %}{% for l in letters %}<b style="--r:{% cycle '-6deg','4deg','-3deg','7deg' %};--y:{% cycle '-4px','3px','-2px','4px' %}">{{ l }}</b>{% endfor %}</div>
   <div class="sticker" aria-hidden="true">#NO<br>AI</div>
   <div class="copy">
