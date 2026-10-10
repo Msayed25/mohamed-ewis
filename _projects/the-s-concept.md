@@ -12,8 +12,8 @@ tags:
   - "Art direction"
   - "Edit"
 video: ""
-link: "https://www.thesconcept.com"
-link_label: "thesconcept.com"
+link: "https://www.instagram.com/sconceptbyfalcons/"
+link_label: "@sconceptbyfalcons"
 gallery:
   - /images/projects/the-s-concept/slide-1.jpg
   - /images/projects/the-s-concept/slide-2.jpg
