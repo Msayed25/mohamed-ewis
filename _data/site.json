@@ -7,6 +7,7 @@
   "timezone_label": "GST",
   "status": "Available for projects",
   "portrait": "/images/site/portrait.jpg",
+  "portrait_cutout": "/images/site/portrait-cutout.webp",
   "headline": "Pepsi, Google, Nike and Mini already called. Your move.",
   "bio": "Art director and visual artist. He finds one big idea, then makes it loud through photography, film, collage, AR and design.",
   "clients": ["Mini", "Subaru", "Pepsi", "Etisalat", "Google", "Alcatel", "Gold's Gym", "Nike", "Damac", "Infosys", "Gorillaz"],

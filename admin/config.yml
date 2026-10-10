@@ -80,6 +80,7 @@ collections:
           - { name: timezone_label, label: Time zone name, widget: string }
           - { name: status, label: Availability badge, widget: string, required: false, hint: "Shown with a green pulse. Leave empty to hide." }
           - { name: portrait, label: Portrait photo, widget: image }
+          - { name: portrait_cutout, label: Portrait cut-out (same photo with the background removed; sits in front of the EWIS letters. Leave empty to turn off), widget: image, required: false }
           - { name: headline, label: Intro headline, widget: string }
           - { name: bio, label: Intro text, widget: text }
           - { name: clients, label: Clients (scrolling strip), widget: list, field: { name: client, label: Client, widget: string } }

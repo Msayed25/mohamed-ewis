@@ -35,6 +35,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .cover .shot{position:relative;overflow:hidden;background:var(--wash);min-height:360px}
 .cover .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none}
 .cover .shot img.in{animation:slam .8s cubic-bezier(.2,.9,.2,1) both}
+/* Esquire-style cover: the cut-out sits on top of the masthead so his head covers the EWIS letters */
+.cover.intro .shot img{object-position:50% var(--py,100%)}
+.cover .shot img.cut{z-index:5;pointer-events:none}
 @keyframes slam{0%{transform:scale(1.35) rotate(-3deg);filter:grayscale(1) contrast(1.5)}55%{filter:none}100%{transform:none}}
 .cover .mast{position:absolute;left:clamp(16px,3.5vw,44px);top:14px;z-index:4;display:flex;gap:2px;pointer-events:auto}
 .cover .mast b{display:inline-block;font:400 clamp(80px,15vw,210px)/.8 var(--display);color:var(--red);mix-blend-mode:multiply;transition:transform .35s cubic-bezier(.2,.9,.2,1),background .2s,color .2s;padding:0 .02em}
@@ -306,3 +309,4 @@ h1.line{font-weight:400}
 .view .progress{top:0}
 .view-loading{position:fixed;inset:auto 16px 16px auto;z-index:61;background:var(--ink);color:var(--paper);padding:8px 12px}
 html.view-open,html.view-open body{overflow:hidden}
+@media (max-width:760px){.cover.intro .mast{top:calc(58vh * .14)}}
