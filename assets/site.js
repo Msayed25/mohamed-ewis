@@ -69,6 +69,23 @@
       blob.style.transform = 'translate(' + x + 'px,' + by + 'px)';
       raf = blob.classList.contains('on') ? requestAnimationFrame(loop) : 0;
     };
+    /* load every preview photo ahead of time so switching rows is instant */
+    var cache = {};
+    var load = function (src) {
+      if (!cache[src]) { var im = new Image(); im.decoding = 'async'; im.src = src; cache[src] = im.decode ? im.decode().then(function () { return im; }, function () { return im; }) : Promise.resolve(im); }
+      return cache[src];
+    };
+    var preloadAll = function () { $$('.row', rows).forEach(function (r) { if (r.dataset.img) load(r.dataset.img); }); };
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (en) { if (en.some(function (e) { return e.isIntersecting; })) { preloadAll(); io.disconnect(); } }, { rootMargin: '600px 0px' });
+      io.observe(rows);
+    } else preloadAll();
+    var showPreview = function (r) {
+      var src = r.dataset.img; img.dataset.src = src; pl.textContent = KIND[r.dataset.kind] || '';
+      /* never leave the previous project's photo up while the new one loads */
+      if (img.src !== new URL(src, location.href).href) blob.classList.add('wait');
+      load(src).then(function () { if (img.dataset.src === src) { img.src = src; blob.classList.remove('wait'); } });
+    };
     var mx = -1, my = -1;
     var track = function (x, y) {
       var el = document.elementFromPoint(x, y), r = el && el.closest('.row');
@@ -77,7 +94,7 @@
       var act = $('.act', r); stop = act ? act.getBoundingClientRect().left - 24 : window.innerWidth;
       tx = x + blob.offsetWidth + 60 > stop ? x - blob.offsetWidth - 40 : x + 30;
       ty = y - blob.offsetHeight / 2;
-      if (img.dataset.src !== r.dataset.img) { img.src = r.dataset.img; img.dataset.src = r.dataset.img; pl.textContent = KIND[r.dataset.kind] || ''; }
+      if (img.dataset.src !== r.dataset.img) showPreview(r);
       blob.classList.add('on'); if (!raf) raf = requestAnimationFrame(loop);
     };
     rows.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; track(mx, my); });

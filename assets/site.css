@@ -112,6 +112,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .blob.on{clip-path:circle(72% at 50% 50%)}
 .blob img{width:100%;height:100%;object-fit:cover;max-width:none;animation:kb 6s ease-in-out infinite alternate;animation-play-state:paused}
 .blob.on img{animation-play-state:running}
+.blob{background:var(--wash)}
+.blob.wait img{opacity:0}
 .blob .pl{position:absolute;inset:auto 10px 10px auto;background:var(--red);color:#fff;font:500 10px/1 var(--mono);letter-spacing:.08em;padding:6px 8px;text-transform:uppercase}
 @keyframes kb{to{transform:scale(1.12) translate(-3%,-2%)}}
 @media (max-width:760px){.row{grid-template-columns:52px minmax(0,1fr) auto}.row .sub{display:none}.blob{display:none}}
