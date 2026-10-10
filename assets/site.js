@@ -58,6 +58,27 @@
     $$('.row', rows).forEach(function (r) { r.classList.toggle('out', cat !== 'all' && r.dataset.cat !== cat); });
   });
 
+  /* intro cover: slide the portrait so his head always sits across the lower half of the EWIS letters,
+     whatever the screen shape (a fixed crop cut his head off on wide screens) */
+  var introShot = $('.cover.intro .shot'), introMast = $('.cover.intro .mast');
+  if (introShot && introMast) {
+    var HEAD_TOP = 0.19; /* top of his head, as a share of the portrait's height */
+    var frame = function () {
+      var im = $('img.in', introShot); if (!im || !im.naturalWidth) return;
+      var box = introShot.getBoundingClientRect(), m = introMast.getBoundingClientRect();
+      var scale = Math.max(box.width / im.naturalWidth, box.height / im.naturalHeight);
+      var spare = im.naturalHeight * scale - box.height;
+      if (spare <= 0) return;
+      var target = (m.top - box.top) + m.height * 0.55;
+      var crop = Math.max(0, Math.min(spare, HEAD_TOP * im.naturalHeight * scale - target));
+      introShot.style.setProperty('--py', (crop / spare * 100).toFixed(2) + '%');
+    };
+    var firstImg = $('img.in', introShot);
+    if (firstImg.complete) frame(); else firstImg.addEventListener('load', frame);
+    window.addEventListener('resize', frame, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(frame);
+  }
+
   /* image that follows the cursor over the index (blob reveal) */
   var blob = $('#blob');
   if (blob && rows && window.matchMedia('(hover: hover)').matches) {
