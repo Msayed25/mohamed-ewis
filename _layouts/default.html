@@ -31,7 +31,7 @@
 <section class="talk g" id="talk">
   <div class="mono soft">Got a brief?</div>
   {% assign wa = "" %}{% assign mail = "" %}{% for c in s.contacts %}{% if c.label == 'Phone' %}{% assign wa = c.value | remove: "+" | remove: " " | remove: "-" %}{% endif %}{% if c.label == 'Email' %}{% assign mail = c.value %}{% endif %}{% endfor %}
-  <a class="big" href="{% if wa != '' %}https://wa.me/{{ wa }}{% else %}mailto:{{ mail }}{% endif %}" target="_blank" rel="noopener"><span class="t">Let's talk</span><span class="dot" aria-hidden="true"><i></i></span></a>
+  <a class="big" href="{% if wa != '' %}https://wa.me/{{ wa }}{% else %}mailto:{{ mail }}{% endif %}" target="_blank" rel="noopener"><span class="t">Let's talk</span><span class="arr" aria-hidden="true"><i>→</i></span></a>
   <p class="talk-note mono soft">{% if wa != '' %}Opens a WhatsApp chat with {{ s.short_name | default: s.name }}. Prefer email? <a href="mailto:{{ mail }}">{{ mail }}</a>{% else %}Opens your email app.{% endif %}</p>
   <div class="contacts mono">
     {% for c in s.contacts %}<div><span>{{ c.label }}</span>{% if c.url != "" %}<a href="{{ c.url | relative_url }}"{% if c.url contains 'http' %} target="_blank" rel="noopener"{% endif %}>{{ c.value }}</a>{% else %}<span>{{ c.value }}</span>{% endif %}<button class="copy-b" type="button" data-v="{{ c.value }}">Copy</button></div>
