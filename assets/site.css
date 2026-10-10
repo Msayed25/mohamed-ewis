@@ -185,13 +185,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .talk a.big{display:inline-flex;max-width:100%;align-items:center;gap:.2em;font:400 clamp(64px,15vw,230px)/.85 var(--display);text-transform:uppercase;text-decoration:none;letter-spacing:-.01em}
 .talk a.big .t{background:linear-gradient(var(--red),var(--red)) 0 100%/0 .06em no-repeat;transition:background-size .5s cubic-bezier(.2,.9,.2,1)}
 .talk a.big:hover .t,.talk a.big:focus-visible .t{background-size:100% .06em}
-.talk a.big .wa{position:relative;flex:none;width:.95em;height:.95em;margin-block:-.1em;display:grid;place-items:center;color:var(--red)}
-.talk a.big .wa .ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 14s linear infinite;pointer-events:none}
-.talk a.big .wa text{font:500 15px var(--mono);letter-spacing:.06em;fill:currentColor}
-.talk a.big .wa .ico{width:38%;height:38%;fill:#fff;background:#25d366;border-radius:50%;padding:7%;box-sizing:content-box;transition:transform .35s cubic-bezier(.2,.9,.2,1);pointer-events:none}
-.talk a.big:hover .wa .ring,.talk a.big:focus-visible .wa .ring{animation-duration:5s}
-.talk a.big:hover .wa .ico,.talk a.big:focus-visible .wa .ico{transform:scale(1.12) rotate(-8deg)}
-@media (prefers-reduced-motion:reduce){.talk a.big .wa .ring{animation:none}}
+.talk a.big .dot{position:relative;flex:none;width:.62em;height:.62em;margin-left:.12em;display:grid;place-items:center}
+.talk a.big .dot::before{content:"";position:absolute;inset:0;border-radius:50%;border:.035em solid var(--red);animation:tping 2.4s cubic-bezier(.2,.7,.3,1) infinite;pointer-events:none}
+.talk a.big .dot i{width:62%;height:62%;border-radius:50%;background:var(--red);transition:transform .45s cubic-bezier(.2,.9,.2,1);pointer-events:none}
+.talk a.big:hover .dot i,.talk a.big:focus-visible .dot i{transform:scale(1.35)}
+.talk a.big:hover .dot::before,.talk a.big:focus-visible .dot::before{animation-duration:1.2s}
+@keyframes tping{0%{transform:scale(.55);opacity:1}100%{transform:scale(1.15);opacity:0}}
+@media (prefers-reduced-motion:reduce){.talk a.big .dot::before{animation:none;opacity:.4}}
 .talk-note{margin:14px 0 0;font-size:12px;letter-spacing:.04em}
 .talk-note a{color:inherit}
 .contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:0 28px;border-top:1px solid var(--ink);margin-top:30px}
