@@ -186,8 +186,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .talk a.big .t{background:linear-gradient(var(--red),var(--red)) 0 100%/0 .06em no-repeat;transition:background-size .5s cubic-bezier(.2,.9,.2,1)}
 .talk a.big:hover .t,.talk a.big:focus-visible .t{background-size:100% .06em}
 .talk a.big .arr{display:grid;place-items:center;flex:none;width:1.1em;height:1.1em;margin-block:-.125em;color:var(--red);line-height:1}
-.talk a.big .arr i{display:inline-block;font-style:normal;pointer-events:none;transform:rotate(135deg);transition:transform .4s cubic-bezier(.2,.9,.2,1)}
-.talk a.big:hover .arr i,.talk a.big:focus-visible .arr i{transform:translate(-.08em,.08em) rotate(135deg)}
+.talk a.big .arr i{display:inline-block;font-style:normal;pointer-events:none;transform:rotate(180deg);transition:transform .4s cubic-bezier(.2,.9,.2,1)}
+.talk a.big:hover .arr i,.talk a.big:focus-visible .arr i{transform:rotate(135deg)}
 .talk-note{margin:14px 0 0;font-size:12px;letter-spacing:.04em}
 .talk-note a{color:inherit}
 .contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:0 28px;border-top:1px solid var(--ink);margin-top:30px}
