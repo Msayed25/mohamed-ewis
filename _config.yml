@@ -6,13 +6,11 @@ baseurl: /mohamed-ewis   # the repository name; use "" for a <username>.github.i
 description: Creative Art Director in Dubai. Concepts, art direction, film and photography.
 collections:
   projects:
-    output: false   # PAUSED: set back to true (or revert the pause commit) to bring the site back
+    output: true
     permalink: /work/:name/
 defaults:
   - scope: { type: projects }
     values: { layout: project }
-exclude:   # PAUSED: index.html and assets are left out while the site is offline
-  - index.html
-  - assets/
+exclude:
   - README.md
   - preview/
