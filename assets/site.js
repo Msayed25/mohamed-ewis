@@ -58,20 +58,35 @@
     $$('.row', rows).forEach(function (r) { r.classList.toggle('out', cat !== 'all' && r.dataset.cat !== cat); });
   });
 
-  /* intro cover: slide the portrait so his head always sits across the lower half of the EWIS letters,
-     whatever the screen shape (a fixed crop cut his head off on wide screens) */
+  /* intro cover: place the portrait so his whole head sits behind the "IS" of EWIS, whatever the screen shape.
+     Vertically his head top lands across the lower half of the letters (a fixed crop cut his head off on wide
+     screens); horizontally the photo is zoomed a little and slid so his head meets the end of the masthead
+     (on wide screens it used to sit beside the letters). If the zoom limit is reached, the letters move instead. */
   var introShot = $('.cover.intro .shot'), introMast = $('.cover.intro .mast');
   if (introShot && introMast) {
-    var HEAD_TOP = 0.19; /* top of his head, as a share of the portrait's height */
+    var HEAD_TOP = 0.19, HEAD_X = 0.56; /* top and centre of his head, as shares of the portrait's height and width */
+    var MAX_ZOOM = 1.45;                /* never enlarge the photo more than this beyond a plain cover fit */
     var frame = function () {
-      var im = $('img.in', introShot); if (!im || !im.naturalWidth) return;
+      var imgs = $$('img.in', introShot), im = imgs[0]; if (!im || !im.naturalWidth) return;
+      introMast.style.marginLeft = '';
       var box = introShot.getBoundingClientRect(), m = introMast.getBoundingClientRect();
-      var scale = Math.max(box.width / im.naturalWidth, box.height / im.naturalHeight);
-      var spare = im.naturalHeight * scale - box.height;
-      if (spare <= 0) return;
-      var target = (m.top - box.top) + m.height * 0.55;
-      var crop = Math.max(0, Math.min(spare, HEAD_TOP * im.naturalHeight * scale - target));
-      introShot.style.setProperty('--py', (crop / spare * 100).toFixed(2) + '%');
+      var W = im.naturalWidth, H = im.naturalHeight;
+      var base = Math.max(box.width / W, box.height / H);
+      var mastR = m.right - box.left;
+      var tx = mastR - m.width * 0.12;                 /* under the S */
+      var ty = (m.top - box.top) + m.height * 0.55;
+      /* smallest zoom that lets the head reach (tx, ty) while the photo still fills the frame's right and bottom edges */
+      var need = Math.max((box.width - tx) / ((1 - HEAD_X) * W), (box.height - ty) / ((1 - HEAD_TOP) * H));
+      var s = Math.min(base * MAX_ZOOM, Math.max(base, need));
+      var w = W * s, h = H * s;
+      var x = Math.max(0, Math.min(w - box.width, HEAD_X * w - tx));
+      var y = Math.max(0, Math.min(h - box.height, HEAD_TOP * h - ty));
+      imgs.forEach(function (i) {
+        i.style.width = w + 'px'; i.style.height = h + 'px'; i.style.left = -x + 'px'; i.style.top = -y + 'px';
+      });
+      /* still short of the S at the zoom limit: slide the letters over to his head instead */
+      var shift = (HEAD_X * w - x) - tx;
+      if (shift > 1) introMast.style.marginLeft = Math.min(shift, box.width - mastR - 8) + 'px';
     };
     var firstImg = $('img.in', introShot);
     if (firstImg.complete) frame(); else firstImg.addEventListener('load', frame);
