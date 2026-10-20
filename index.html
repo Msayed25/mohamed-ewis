@@ -10,14 +10,12 @@ layout: default
 <section class="cover intro" aria-label="About {{ s.name }}">
   <div class="shot"><img class="in" src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" fetchpriority="high">{% if s.portrait_cutout and s.portrait_cutout != "" %}<img class="in cut" src="{{ s.portrait_cutout | relative_url }}" alt="" aria-hidden="true" fetchpriority="high">{% endif %}</div>
   <div class="mast" aria-label="{{ s.short_name }}">{% assign letters = s.short_name | split: "" %}{% for l in letters %}<b style="--r:{% cycle '-6deg','4deg','-3deg','7deg' %};--y:{% cycle '-4px','3px','-2px','4px' %}">{{ l }}</b>{% endfor %}</div>
-  <div class="sticker" aria-hidden="true">#NO<br>AI</div>
   <div class="copy">
     <div class="issue mono">{{ s.name }}<br>{{ s.title }}<br>{{ s.location }}</div>
     <div class="kick mono">Who is {{ s.short_name | capitalize }}</div>
     <h1 class="line words">{{ s.headline }}</h1>
     <p class="bio">{{ s.bio }}</p>
     <div class="ctas"><a class="btn solid" href="#featured">See the work ↓</a><a class="btn" href="#talk">Let's talk</a></div>
-    <a class="seal" href="#talk">Hire<br>this<br>man</a>
   </div>
 </section>
 

@@ -59,13 +59,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .cover .dots{position:absolute;left:clamp(16px,3.5vw,44px);bottom:22px;display:flex;gap:6px;flex-wrap:wrap}
 .cover .dots button{font:500 11px/1 var(--mono);border:1px solid var(--ink);padding:7px 8px;min-width:34px}
 .cover .dots button[aria-current="true"]{background:var(--ink);color:var(--paper)}
-.seal{position:absolute;right:clamp(16px,3.5vw,44px);bottom:20px;width:clamp(84px,9vw,112px);aspect-ratio:1;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;text-align:center;font:400 14px/1 var(--display);text-transform:uppercase;text-decoration:none;animation:spin 16s linear infinite;z-index:3}
-.seal:hover{animation-play-state:paused;transform:scale(1.08)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .sticker{position:absolute;z-index:5;width:92px;aspect-ratio:1;border-radius:50%;background:var(--pink);color:#fff;display:grid;place-items:center;text-align:center;font:400 13px/1 "Rubik Mono One",sans-serif;transform:rotate(14deg);box-shadow:0 5px 0 rgba(0,0,0,.18)}
-.cover .sticker{left:calc(57.5% - 120px);bottom:28px}
 .tape{position:absolute;width:72px;height:20px;background:rgba(255,230,0,.8);transform:rotate(-4deg)}
-@media (max-width:760px){.cover{grid-template-columns:1fr}.cover .shot{min-height:58vh}.cover .copy{padding-top:56px}.cover .sticker{left:auto;right:16px;bottom:auto;top:calc(58vh - 110px)}}
+@media (max-width:760px){.cover{grid-template-columns:1fr}.cover .shot{min-height:58vh}.cover .copy{padding-top:56px}}
 
 .cover .bio{margin:0;max-width:44ch;color:var(--soft);font-size:17px}
 .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
