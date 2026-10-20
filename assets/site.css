@@ -310,3 +310,9 @@ h1.line{font-weight:400}
 .view-loading{position:fixed;inset:auto 16px 16px auto;z-index:61;background:var(--ink);color:var(--paper);padding:8px 12px}
 html.view-open,html.view-open body{overflow:hidden}
 @media (max-width:760px){.cover.intro .mast{top:calc(58vh * .14)}}
+/* intro cover on wide screens: keep the photo frame no wider than about its height (as on a laptop), so the
+   portrait shows his upper body with his head behind the masthead; the extra width goes to the text side */
+@media (min-width:761px){
+  .cover.intro{grid-template-columns:minmax(0,min(53.5%,calc(min(88vh,780px) * 1.1))) minmax(0,1fr)}
+  .cover.intro .sticker{left:calc(min(57.5%,calc(min(88vh,780px) * 1.1) + 4%) - 120px)}
+}
