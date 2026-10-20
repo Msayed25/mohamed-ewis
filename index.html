@@ -77,7 +77,6 @@ layout: default
   <div class="head"><h2>Personal</h2><p>Photographed and made by hand. No AI.{% if s.personal_link != "" %} <a href="{{ s.personal_link | relative_url }}" target="_blank" rel="noopener">More on Instagram ↗</a>{% endif %}</p></div>
   <div class="board" id="board">
     <div class="note">{{ s.personal_note }}</div>
-    <div class="sticker" aria-hidden="true">#NO<br>AI</div>
     {% for img in s.personal_images limit: 6 %}<div class="pin p{{ forloop.index }}"><div class="tape"></div><img src="{{ img | relative_url }}" alt="" loading="lazy" decoding="async"></div>{% endfor %}
   </div>
 </section>
