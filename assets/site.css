@@ -308,3 +308,9 @@ html.view-open,html.view-open body{overflow:hidden}
 /* intro cover on wide frames (set by site.js): the portrait keeps its laptop size and its sides fade into the wall grey */
 .cover.intro .shot.wide{background:#c2c2c2}
 .cover.intro .shot.wide img.in:not(.cut){-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+/* contact heading "LET'S work TOGETHER" (client feedback, Oct 2026): thin condensed capitals with "work" in the italic serif */
+.talk a.big{align-items:flex-end;font:300 clamp(40px,12.5vw,200px)/.92 "Oswald",var(--display);letter-spacing:-.005em}
+.talk a.big .nw{white-space:nowrap}
+.talk a.big .t{display:inline-block}
+.talk a.big .t em{font:italic 400 .62em/1 "Instrument Serif",serif;text-transform:none;letter-spacing:0;margin-right:.08em}
+.talk a.big .arr{margin-block:0 .02em}
