@@ -60,8 +60,10 @@
 
   /* intro cover: place the portrait so his whole head sits behind the "IS" of EWIS, whatever the screen shape.
      Vertically his head top lands across the lower half of the letters (a fixed crop cut his head off on wide
-     screens); horizontally the photo is zoomed a little and slid so his head meets the end of the masthead
-     (on wide screens it used to sit beside the letters). If the zoom limit is reached, the letters move instead. */
+     screens). On narrow and laptop frames the photo fills the frame, zoomed a little if needed and slid so his
+     head meets the end of the masthead. On wide frames, filling the width would blow his face up, so the photo
+     keeps its laptop size, sits under the letters, and the rest of the frame is the grey of the wall behind him
+     (class "wide" fades the photo's side edges into it). If his head still can't reach the S, the letters move. */
   var introShot = $('.cover.intro .shot'), introMast = $('.cover.intro .mast');
   if (introShot && introMast) {
     var HEAD_TOP = 0.19, HEAD_X = 0.56; /* top and centre of his head, as shares of the portrait's height and width */
@@ -71,15 +73,25 @@
       introMast.style.marginLeft = '';
       var box = introShot.getBoundingClientRect(), m = introMast.getBoundingClientRect();
       var W = im.naturalWidth, H = im.naturalHeight;
-      var base = Math.max(box.width / W, box.height / H);
       var mastR = m.right - box.left;
       var tx = mastR - m.width * 0.12;                 /* under the S */
       var ty = (m.top - box.top) + m.height * 0.55;
-      /* smallest zoom that lets the head reach (tx, ty) while the photo still fills the frame's right and bottom edges */
-      var need = Math.max((box.width - tx) / ((1 - HEAD_X) * W), (box.height - ty) / ((1 - HEAD_TOP) * H));
-      var s = Math.min(base * MAX_ZOOM, Math.max(base, need));
+      /* height-led size: the photo reaches the frame's bottom and his head top can still land at ty */
+      var fitH = Math.max(box.height / H, (box.height - ty) / ((1 - HEAD_TOP) * H));
+      var base = Math.max(box.width / W, box.height / H); /* plain cover fit */
+      var wide = base > fitH * 1.3;                       /* filling the width would enlarge him by 30%+ */
+      var s, x;
+      if (wide) {
+        s = fitH;
+        x = Math.min(0, Math.max(W * s - box.width, HEAD_X * W * s - tx)); /* negative: photo starts inside the frame */
+      } else {
+        /* smallest zoom that lets the head reach (tx, ty) while the photo still fills the frame's right and bottom edges */
+        var need = Math.max((box.width - tx) / ((1 - HEAD_X) * W), (box.height - ty) / ((1 - HEAD_TOP) * H));
+        s = Math.min(base * MAX_ZOOM, Math.max(base, need));
+        x = Math.max(0, Math.min(W * s - box.width, HEAD_X * W * s - tx));
+      }
+      introShot.classList.toggle('wide', wide);
       var w = W * s, h = H * s;
-      var x = Math.max(0, Math.min(w - box.width, HEAD_X * w - tx));
       var y = Math.max(0, Math.min(h - box.height, HEAD_TOP * h - ty));
       imgs.forEach(function (i) {
         i.style.width = w + 'px'; i.style.height = h + 'px'; i.style.left = -x + 'px'; i.style.top = -y + 'px';

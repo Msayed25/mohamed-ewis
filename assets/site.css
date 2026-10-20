@@ -310,3 +310,6 @@ h1.line{font-weight:400}
 .view-loading{position:fixed;inset:auto 16px 16px auto;z-index:61;background:var(--ink);color:var(--paper);padding:8px 12px}
 html.view-open,html.view-open body{overflow:hidden}
 @media (max-width:760px){.cover.intro .mast{top:calc(58vh * .14)}}
+/* intro cover on wide frames (set by site.js): the portrait keeps its laptop size and its sides fade into the wall grey */
+.cover.intro .shot.wide{background:#c2c2c2}
+.cover.intro .shot.wide img.in:not(.cut){-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
