@@ -65,7 +65,7 @@
   var introShot = $('.cover.intro .shot'), introMast = $('.cover.intro .mast');
   if (introShot && introMast) {
     var HEAD_TOP = 0.19, HEAD_X = 0.56; /* top and centre of his head, as shares of the portrait's height and width */
-    var MAX_ZOOM = 1.15;                /* never enlarge the photo more than this beyond a plain cover fit */
+    var MAX_ZOOM = 1.45;                /* never enlarge the photo more than this beyond a plain cover fit */
     var frame = function () {
       var imgs = $$('img.in', introShot), im = imgs[0]; if (!im || !im.naturalWidth) return;
       introMast.style.marginLeft = '';
