@@ -91,7 +91,7 @@ collections:
           - { name: bio, label: Intro text (not shown at the moment), widget: text }
           - { name: clients, label: Clients (not shown at the moment), widget: list, field: { name: client, label: Client, widget: string } }
           - { name: personal_note, label: Personal board note, widget: string }
-          - { name: personal_images, label: Personal board photos (up to 6), widget: list, field: { name: image, label: Photo, widget: image } }
+          - { name: personal_images, label: Personal photos (the focus carousel), widget: list, field: { name: image, label: Photo, widget: image } }
           - { name: personal_link, label: Personal work link, widget: string, required: false }
           - { name: cv_pdf, label: CV file (PDF), widget: file, required: false, hint: "The Download CV button appears only when a file is uploaded." }
           - name: cv

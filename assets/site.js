@@ -376,6 +376,40 @@
     if (m) { var link = $('a[href*="/work/' + m[1] + '/"], a[href*="work/' + m[1] + '/"]'); if (link) openProject(link.href); }
   }
 
+  /* personal: focus carousel. Distance from the centre sets size, blur and fade; click a side photo, use the arrows, the keyboard or swipe */
+  var fc = $('#fc');
+  if (fc) {
+    var its = $$('.fc-it', fc), trk = $('.fc-track', fc), num = $('.fc-n', fc), cur = 0, N = its.length;
+    var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
+    var place = function () {
+      var w = its[0] ? its[0].offsetWidth : 300, gap = w * 0.08;
+      its.forEach(function (el, i) {
+        var d = i - cur; if (d > N / 2) d -= N; if (d < -N / 2) d += N;
+        var a = Math.abs(d), x = 0;
+        for (var k = 1; k <= a; k++) x += (w * Math.max(0.42, 1 - (k - 1) * 0.2) + w * Math.max(0.42, 1 - k * 0.2)) / 2 + gap;
+        var s = Math.max(0.42, 1 - a * 0.2);
+        el.style.setProperty('--x', (d < 0 ? -x : x) + 'px'); el.style.setProperty('--s', s);
+        el.style.setProperty('--b', Math.min(a, 4) * 2.4 + 'px'); el.style.setProperty('--sat', a ? 0.75 : 1);
+        el.style.setProperty('--o', a > 3 ? 0 : 1 - a * 0.12); el.style.setProperty('--z', 20 - a);
+        el.classList.toggle('on', a === 0); el.setAttribute('aria-current', a === 0 ? 'true' : 'false'); el.tabIndex = a === 0 ? 0 : -1;
+      });
+      if (num) num.textContent = pad2(cur + 1) + ' / ' + pad2(N);
+    };
+    var go = function (i) { cur = (i % N + N) % N; place(); };
+    its.forEach(function (el, i) { el.addEventListener('click', function () { if (!moved) go(i); }); });
+    $('.fc-prev', fc).addEventListener('click', function () { go(cur - 1); });
+    $('.fc-next', fc).addEventListener('click', function () { go(cur + 1); });
+    fc.addEventListener('keydown', function (e) { if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); } if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); } });
+    var sx = null, moved = false;
+    trk.addEventListener('pointerdown', function (e) { sx = e.clientX; moved = false; trk.classList.add('drag'); });
+    window.addEventListener('pointerup', function (e) {
+      if (sx === null) return; var dx = e.clientX - sx; sx = null; trk.classList.remove('drag');
+      if (Math.abs(dx) > 40) { moved = true; go(cur + (dx < 0 ? 1 : -1)); setTimeout(function () { moved = false; }, 50); }
+    });
+    window.addEventListener('resize', place, { passive: true });
+    place();
+  }
+
   /* pin-board drifts with the cursor */
   var board = $('#board');
   if (board && !reduce) {
