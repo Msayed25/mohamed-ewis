@@ -461,3 +461,7 @@ h2.rise-h.in{clip-path:inset(0 0 -10% 0);transform:none}
 .fc-note{color:var(--soft);text-transform:none;letter-spacing:0;font:italic 400 16px/1.2 var(--serif)}
 @media (max-width:760px){.fc{--w:62vw}.fc-note{display:none}}
 @media (prefers-reduced-motion:reduce){.fc-it{transition:none}}
+.fc-cap{text-align:center;margin-top:18px;min-height:46px;transition:opacity .35s}
+.fc-cap.swap{opacity:0}
+.fc-t{display:block;font:600 clamp(18px,1.6vw,22px)/1.2 var(--body);letter-spacing:-.02em}
+.fc-i{display:block;margin-top:6px;color:var(--soft)}
