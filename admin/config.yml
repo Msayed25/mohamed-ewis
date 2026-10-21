@@ -100,9 +100,9 @@ collections:
             fields:
               - { name: chapter, label: Title or role, widget: string }
               - { name: period, label: Dates, widget: string, hint: "e.g. 2019 to 2022, or Now" }
-              - { name: track, label: Track, widget: select, options: [Ideas, Design, Film, Direction] }
+              - { name: track, label: Track, widget: select, options: [Ideas, Design, Film, Direction, Branding, Creative, Production, Post-production] }
               - { name: color, label: Colour, widget: select, options: [digital, print, pitch, film, photography, branding, personal] }
-              - { name: text, label: Description, widget: text }
+              - { name: text, label: Description, widget: text, required: false }
               - { name: tags, label: Tags, widget: list, required: false, field: { name: tag, label: Tag, widget: string } }
               - { name: link_label, label: Link text, widget: string, required: false }
               - { name: link, label: Link address, widget: string, required: false }
