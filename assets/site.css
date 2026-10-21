@@ -399,3 +399,12 @@ html.lenis,.lenis.lenis-smooth{scroll-behavior:auto!important}
 .svc-row:hover img{transform:scale(1.06) rotate(-2deg)}
 @media (max-width:760px){.svc-list{background-image:none}.svc-row{grid-template-columns:auto minmax(0,1fr)}.svc-row img{display:none}.svc-row .t{padding-left:0}}
 @media (prefers-reduced-motion:reduce){.svc-row{opacity:1;transition:none}}
+
+/* ---------- black-and-white headers and footers on project pages (deck slide 12); the category colour stays inside the page body ---------- */
+.progress{background:color-mix(in srgb,var(--ink) 14%,transparent)}
+.progress i{background:var(--ink)}
+.casebar{background:var(--ink);color:var(--paper)}
+.cb-close:hover{background:var(--paper);color:var(--ink)}
+.next{background:var(--wash);color:var(--ink);border-top:1px solid var(--ink)}
+.next > .mono{color:var(--soft)}
+.pfoot{border-top:1px solid var(--hair)}
