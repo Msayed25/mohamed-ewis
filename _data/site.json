@@ -55,16 +55,56 @@
   ],
   "personal_note": "Made with hands, cameras & stubbornness.",
   "personal_images": [
-    "/images/site/board-beach.jpg",
-    "/images/site/board-golds.jpg",
-    "/images/site/personal-3.jpg",
-    "/images/projects/nike/cover.jpg",
-    "/images/site/personal-5.jpg",
-    "/images/site/personal-2.jpg",
-    "/images/projects/swyp/cover.jpg",
-    "/images/site/board-red.jpg",
-    "/images/site/personal-6.jpg",
-    "/images/site/personal-7.jpg"
+    {
+      "image": "/images/site/board-beach.jpg",
+      "title": "Untitled 01",
+      "info": "Personal photography"
+    },
+    {
+      "image": "/images/site/board-golds.jpg",
+      "title": "Gold's Gym",
+      "info": "On ground"
+    },
+    {
+      "image": "/images/site/personal-3.jpg",
+      "title": "Untitled 02",
+      "info": "Personal photography"
+    },
+    {
+      "image": "/images/projects/nike/cover.jpg",
+      "title": "Nike",
+      "info": "E-commerce"
+    },
+    {
+      "image": "/images/site/personal-5.jpg",
+      "title": "Untitled 03",
+      "info": "Personal photography"
+    },
+    {
+      "image": "/images/site/personal-2.jpg",
+      "title": "Untitled 04",
+      "info": "Personal photography"
+    },
+    {
+      "image": "/images/projects/swyp/cover.jpg",
+      "title": "Swyp",
+      "info": "On ground"
+    },
+    {
+      "image": "/images/site/board-red.jpg",
+      "title": "Untitled 05",
+      "info": "Personal photography"
+    },
+    {
+      "image": "/images/site/personal-6.jpg",
+      "title": "Untitled 06",
+      "info": "Personal photography"
+    },
+    {
+      "image": "/images/site/personal-7.jpg",
+      "title": "Untitled 07",
+      "info": "Personal photography"
+    }
   ],
   "personal_link": "https://www.instagram.com/muhamedewis/",
   "cv_pdf": "",

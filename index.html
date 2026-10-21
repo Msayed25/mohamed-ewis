@@ -76,7 +76,8 @@ layout: default
 <section class="sec g stk" id="personal">
   <div class="head"><h2>Personal</h2></div>
   <div class="fc" id="fc" aria-roledescription="carousel" aria-label="Personal work">
-    <div class="fc-track">{% for img in s.personal_images %}<button type="button" class="fc-it" aria-label="Photo {{ forloop.index }} of {{ s.personal_images.size }}"><img src="{{ img | relative_url }}" alt="" loading="lazy" decoding="async" draggable="false"></button>{% endfor %}</div>
+    <div class="fc-track">{% for ph in s.personal_images %}{% if ph.image %}{% assign src = ph.image %}{% else %}{% assign src = ph %}{% endif %}<button type="button" class="fc-it" data-title="{{ ph.title | escape }}" data-info="{{ ph.info | escape }}" aria-label="{% if ph.title %}{{ ph.title | escape }}{% else %}Photo {{ forloop.index }}{% endif %}"><img src="{{ src | relative_url }}" alt="" loading="lazy" decoding="async" draggable="false"></button>{% endfor %}</div>
+    <div class="fc-cap" aria-live="polite"><b class="fc-t"></b><span class="fc-i mono"></span></div>
   </div>
 </section>
 {% endif %}

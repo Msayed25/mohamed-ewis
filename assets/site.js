@@ -367,6 +367,14 @@
         el.classList.toggle('on', a === 0); el.setAttribute('aria-current', a === 0 ? 'true' : 'false'); el.tabIndex = a === 0 ? 0 : -1;
       });
       if (num) num.textContent = pad2(cur + 1) + ' / ' + pad2(N);
+      var cap = $('.fc-cap', fc), on = its[cur];
+      if (cap && on) {
+        var ct = $('.fc-t', cap), ci = $('.fc-i', cap), nt = on.dataset.title || '', ni = on.dataset.info || '';
+        if (ct.textContent !== nt || ci.textContent !== ni) {
+          cap.classList.add('swap');
+          setTimeout(function () { ct.textContent = nt; ci.textContent = ni; cap.classList.remove('swap'); }, ct.textContent ? 180 : 0);
+        }
+      }
     };
     var go = function (i) { cur = (i % N + N) % N; place(); };
     its.forEach(function (el, i) { el.addEventListener('click', function () { if (!moved) go(i); }); });
