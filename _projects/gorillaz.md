@@ -2,6 +2,7 @@
 title: "Gorillaz"
 category: digital
 kind: case
+summary: "Gorillaz grew up with hip-hop, a genre shaped by the streets, so the idea goes back to the streets and mixes them with their music."
 subtitle: "Augmented reality"
 order: 10
 cover: /images/projects/gorillaz/cover.jpg

@@ -51,6 +51,7 @@ collections:
           - { label: "Film", value: film }
           - { label: "Link", value: link }
       - { name: subtitle, label: Type of work, widget: string, hint: "e.g. Social campaign, Documentary film, Logo design" }
+      - { name: summary, label: Short summary (shown when you hover the project in the Index; leave empty to use the start of the description), widget: string, required: false }
       - { name: cover, label: Cover image, widget: image }
       - { name: cover_line, label: Cover line, widget: string, required: false, hint: "One short, punchy line in the magazine-cover style. Shown big on the cover." }
       - { name: featured, label: Show on the home page covers (not shown at the moment), widget: boolean, default: false, hint: "Needs a cover line." }

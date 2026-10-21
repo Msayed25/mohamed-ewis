@@ -405,3 +405,18 @@ html.view-open,html.view-open body{overflow:hidden}
 .next{background:var(--wash);color:var(--ink);border-top:1px solid var(--ink)}
 .next > .mono{color:var(--soft)}
 .pfoot{border-top:1px solid var(--hair)}
+
+/* ---------- index hover (client feedback, Oct 2026): simple. The floating cursor photo is gone; on hover a row opens to show a small black-and-white picture, a line about the project and a few tags ---------- */
+.row{grid-template-rows:auto auto;align-items:center}
+.row::before{top:34px}
+.row:hover .nm,.row:focus-visible .nm{color:var(--ink)}
+.row:hover .act .type,.row:focus-visible .act .type{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.peek{grid-column:1/-1;display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.9,.2,1)}
+.pk-in{overflow:hidden;display:grid;grid-template-columns:70px 140px minmax(0,46ch);gap:14px;align-items:start;opacity:0;transition:opacity .3s}
+.pk-in img{grid-column:2;width:140px;aspect-ratio:4/3;object-fit:cover;filter:grayscale(1);margin-top:14px}
+.pk-t{grid-column:3;margin-top:14px;color:var(--soft);font-size:14px;line-height:1.55}
+.pk-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pk-tags span{border:1px solid var(--hair);border-radius:99px;padding:4px 9px;color:var(--ink)}
+@media (hover:hover){.row:hover .peek,.row:focus-visible .peek{grid-template-rows:1fr}.row:hover .pk-in,.row:focus-visible .pk-in{opacity:1;transition-delay:.08s}}
+@media (max-width:760px){.peek{display:none}}
+@media (prefers-reduced-motion:reduce){.peek,.pk-in{transition:none}}

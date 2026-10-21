@@ -114,14 +114,14 @@
   /* menu: a full-screen film slate that claps shut */
   var slate = $('#slate'), mopen = $('#mopen');
   if (slate && mopen) {
-    var setSlate = function (v) {
+    var setSlate = function (v, viaLink) {
       slate.classList.toggle('open', v); slate.setAttribute('aria-hidden', String(!v));
       mopen.setAttribute('aria-expanded', String(v)); root.style.overflow = v ? 'hidden' : '';
       if (v) { var first = $('ol a', slate); if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 450); }
-      else mopen.focus({ preventScroll: true });
+      else if (!viaLink) mopen.focus({ preventScroll: true }); else if (document.activeElement && slate.contains(document.activeElement)) document.activeElement.blur();
     };
     mopen.addEventListener('click', function () { setSlate(true); });
-    $$('[data-slate-close]', slate).forEach(function (el) { el.addEventListener('click', function () { setSlate(false); }); });
+    $$('[data-slate-close]', slate).forEach(function (el) { el.addEventListener('click', function () { setSlate(false, el.tagName === 'A'); }); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && slate.classList.contains('open')) setSlate(false); });
   }
 
