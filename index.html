@@ -7,19 +7,19 @@ layout: default
 {% assign films = projects | where: "kind", "film" %}
 {% assign cats = "digital:Digital,print:Print,pitch:Pitch,film:Film,photography:Photography,branding:Branding,personal:Personal" | split: "," %}
 
-<section class="cover intro" aria-label="About {{ s.name }}">
-  <div class="shot"><img class="in" src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" fetchpriority="high">{% if s.portrait_cutout and s.portrait_cutout != "" %}<img class="in cut" src="{{ s.portrait_cutout | relative_url }}" alt="" aria-hidden="true" fetchpriority="high">{% endif %}</div>
-  <div class="mast" aria-label="{{ s.short_name }}">{% assign letters = s.short_name | split: "" %}{% for l in letters %}<b style="--r:{% cycle '-6deg','4deg','-3deg','7deg' %};--y:{% cycle '-4px','3px','-2px','4px' %}">{{ l }}</b>{% endfor %}</div>
-  <div class="copy">
-    <div class="issue mono">{{ s.name }}<br>{{ s.title }}<br>{{ s.location }}</div>
-    <div class="kick mono">Who is {{ s.short_name | capitalize }}</div>
-    <h1 class="line words">{{ s.headline }}</h1>
-    <p class="bio">{{ s.bio }}</p>
-    <div class="ctas"><a class="btn solid" href="#featured">See the work ↓</a><a class="btn" href="#talk">Let's work together</a></div>
+{% assign nm = s.name | split: " " %}
+<section class="landing g" aria-label="{{ s.name }}, {{ s.title }}">
+  <div class="tc" aria-hidden="true"><b>00:00:00:00</b><span class="mono">Rolling</span></div>
+  <h1><span><b>{{ nm | first }}</b></span><span><b>{{ nm | last }}</b></span></h1>
+  <figure class="vf">
+    <div class="pic"><i></i><i></i><i></i><i></i><div class="hud mono" aria-hidden="true"><span class="rec">Rec</span><span>ISO 400 · f/2.8</span></div><span class="cross" aria-hidden="true"></span><img src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" fetchpriority="high"></div>
+    <figcaption class="mono"><span>Take 01</span><span>{{ s.location | split: "," | first }}</span></figcaption>
+  </figure>
+  <div class="low">
+    {% if s.disciplines.size > 0 %}<ul>{% for d in s.disciplines %}<li>{{ d }}</li>{% endfor %}</ul>{% endif %}
+    <div class="mono meta">{{ s.title }} · {{ s.location }}{% if s.status != "" %}<br><span class="on"><i></i>{{ s.status }}</span>{% endif %}</div>
   </div>
 </section>
-
-<div class="marq" aria-label="Clients"><div>{% for i in (1..2) %}{% for c in s.clients %}<span>{{ c }}</span><span aria-hidden="true"><i>✱</i></span>{% endfor %}{% endfor %}</div></div>
 
 {% if featured.size > 0 %}
 <section class="sec g" id="featured">

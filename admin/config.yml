@@ -80,10 +80,11 @@ collections:
           - { name: timezone_label, label: Time zone name, widget: string }
           - { name: status, label: Availability badge, widget: string, required: false, hint: "Shown with a green pulse. Leave empty to hide." }
           - { name: portrait, label: Portrait photo, widget: image }
-          - { name: portrait_cutout, label: Portrait cut-out (same photo with the background removed; sits in front of the EWIS letters. Leave empty to turn off), widget: image, required: false }
-          - { name: headline, label: Intro headline, widget: string }
-          - { name: bio, label: Intro text, widget: text }
-          - { name: clients, label: Clients (scrolling strip), widget: list, field: { name: client, label: Client, widget: string } }
+          - { name: disciplines, label: Disciplines (the list on the landing page), widget: list, field: { name: discipline, label: Discipline, widget: string } }
+          - { name: portrait_cutout, label: Portrait cut-out (not shown at the moment), widget: image, required: false }
+          - { name: headline, label: Intro headline (not shown at the moment), widget: string }
+          - { name: bio, label: Intro text (not shown at the moment), widget: text }
+          - { name: clients, label: Clients (not shown at the moment), widget: list, field: { name: client, label: Client, widget: string } }
           - { name: personal_note, label: Personal board note, widget: string }
           - { name: personal_images, label: Personal board photos (up to 6), widget: list, field: { name: image, label: Photo, widget: image } }
           - { name: personal_link, label: Personal work link, widget: string, required: false }

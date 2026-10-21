@@ -58,52 +58,47 @@
     $$('.row', rows).forEach(function (r) { r.classList.toggle('out', cat !== 'all' && r.dataset.cat !== cat); });
   });
 
-  /* intro cover: place the portrait so his whole head sits behind the "IS" of EWIS, whatever the screen shape.
-     Vertically his head top lands across the lower half of the letters (a fixed crop cut his head off on wide
-     screens). On narrow and laptop frames the photo fills the frame, zoomed a little if needed and slid so his
-     head meets the end of the masthead. On wide frames, filling the width would blow his face up, so the photo
-     keeps its laptop size, sits under the letters, and the rest of the frame is the grey of the wall behind him
-     (class "wide" fades the photo's side edges into it). If his head still can't reach the S, the letters move. */
-  var introShot = $('.cover.intro .shot'), introMast = $('.cover.intro .mast');
-  if (introShot && introMast) {
-    var HEAD_TOP = 0.19, HEAD_X = 0.56; /* top and centre of his head, as shares of the portrait's height and width */
-    var MAX_ZOOM = 1.45;                /* never enlarge the photo more than this beyond a plain cover fit */
-    var frame = function () {
-      var imgs = $$('img.in', introShot), im = imgs[0]; if (!im || !im.naturalWidth) return;
-      introMast.style.marginLeft = '';
-      var box = introShot.getBoundingClientRect(), m = introMast.getBoundingClientRect();
-      var W = im.naturalWidth, H = im.naturalHeight;
-      var mastR = m.right - box.left;
-      var tx = mastR - m.width * 0.12;                 /* under the S */
-      var ty = (m.top - box.top) + m.height * 0.55;
-      /* height-led size: the photo reaches the frame's bottom and his head top can still land at ty */
-      var fitH = Math.max(box.height / H, (box.height - ty) / ((1 - HEAD_TOP) * H));
-      var base = Math.max(box.width / W, box.height / H); /* plain cover fit */
-      var wide = base > fitH * 1.3;                       /* filling the width would enlarge him by 30%+ */
-      var s, x;
-      if (wide) {
-        s = fitH;
-        x = Math.min(0, Math.max(W * s - box.width, HEAD_X * W * s - tx)); /* negative: photo starts inside the frame */
-      } else {
-        /* smallest zoom that lets the head reach (tx, ty) while the photo still fills the frame's right and bottom edges */
-        var need = Math.max((box.width - tx) / ((1 - HEAD_X) * W), (box.height - ty) / ((1 - HEAD_TOP) * H));
-        s = Math.min(base * MAX_ZOOM, Math.max(base, need));
-        x = Math.max(0, Math.min(W * s - box.width, HEAD_X * W * s - tx));
-      }
-      introShot.classList.toggle('wide', wide);
-      var w = W * s, h = H * s;
-      var y = Math.max(0, Math.min(h - box.height, HEAD_TOP * h - ty));
-      imgs.forEach(function (i) {
-        i.style.width = w + 'px'; i.style.height = h + 'px'; i.style.left = -x + 'px'; i.style.top = -y + 'px';
+  /* landing "viewfinder": a film timecode rolls for a moment, then the name slides up and the portrait pulls focus */
+  var land = $('.landing');
+  if (land) {
+    var tc = $('.tc b', land), f = 0;
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    if (reduce || !tc) land.classList.add('go');
+    else {
+      var roll = setInterval(function () {
+        f += 2; tc.textContent = '00:00:' + pad(Math.floor(f / 24)) + ':' + pad(f % 24);
+        if (f >= 48) { clearInterval(roll); land.classList.add('go'); }
+      }, 28);
+    }
+  }
+
+  /* top bar: slides away while scrolling down, comes back as soon as you scroll up */
+  var nv = $('.nv');
+  if (nv) {
+    var lastY = window.scrollY, ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY, d = y - lastY;
+        if (y < 80 || d < -4) nv.classList.remove('away');
+        else if (d > 4 && !nv.contains(document.activeElement)) nv.classList.add('away');
+        lastY = y; ticking = false;
       });
-      /* still short of the S at the zoom limit: slide the letters over to his head instead */
-      var shift = (HEAD_X * w - x) - tx;
-      if (shift > 1) introMast.style.marginLeft = Math.min(shift, box.width - mastR - 8) + 'px';
+    }, { passive: true });
+  }
+
+  /* menu: a full-screen film slate that claps shut */
+  var slate = $('#slate'), mopen = $('#mopen');
+  if (slate && mopen) {
+    var setSlate = function (v) {
+      slate.classList.toggle('open', v); slate.setAttribute('aria-hidden', String(!v));
+      mopen.setAttribute('aria-expanded', String(v)); root.style.overflow = v ? 'hidden' : '';
+      if (v) { var first = $('ol a', slate); if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 450); }
+      else mopen.focus({ preventScroll: true });
     };
-    var firstImg = $('img.in', introShot);
-    if (firstImg.complete) frame(); else firstImg.addEventListener('load', frame);
-    window.addEventListener('resize', frame, { passive: true });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(frame);
+    mopen.addEventListener('click', function () { setSlate(true); });
+    $$('[data-slate-close]', slate).forEach(function (el) { el.addEventListener('click', function () { setSlate(false); }); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && slate.classList.contains('open')) setSlate(false); });
   }
 
   /* image that follows the cursor over the index (blob reveal) */
