@@ -73,7 +73,6 @@ layout: default
   <div class="head"><h2>Personal</h2></div>
   <div class="fc" id="fc" aria-roledescription="carousel" aria-label="Personal work">
     <div class="fc-track">{% for img in s.personal_images %}<button type="button" class="fc-it" aria-label="Photo {{ forloop.index }} of {{ s.personal_images.size }}"><img src="{{ img | relative_url }}" alt="" loading="lazy" decoding="async" draggable="false"></button>{% endfor %}</div>
-    <div class="fc-bar mono"><button type="button" class="fc-prev" aria-label="Previous photo">←</button><span class="fc-n" aria-live="polite">01 / {% if s.personal_images.size < 10 %}0{% endif %}{{ s.personal_images.size }}</span><button type="button" class="fc-next" aria-label="Next photo">→</button></div>
   </div>
 </section>
 {% endif %}

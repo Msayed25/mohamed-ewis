@@ -397,8 +397,9 @@
     };
     var go = function (i) { cur = (i % N + N) % N; place(); };
     its.forEach(function (el, i) { el.addEventListener('click', function () { if (!moved) go(i); }); });
-    $('.fc-prev', fc).addEventListener('click', function () { go(cur - 1); });
-    $('.fc-next', fc).addEventListener('click', function () { go(cur + 1); });
+    var fp = $('.fc-prev', fc), fn = $('.fc-next', fc);
+    if (fp) fp.addEventListener('click', function () { go(cur - 1); });
+    if (fn) fn.addEventListener('click', function () { go(cur + 1); });
     fc.addEventListener('keydown', function (e) { if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); } if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); } });
     var sx = null, moved = false;
     trk.addEventListener('pointerdown', function (e) { sx = e.clientX; moved = false; trk.classList.add('drag'); });
