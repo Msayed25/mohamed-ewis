@@ -381,3 +381,21 @@ html.lenis,html.lenis body{height:auto}
 html.lenis,.lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
 .lenis.lenis-stopped{overflow:hidden}
+
+/* ---------- services (deck slide 8, after adigun.framer.website): big centred title, numbered rows with a small photo; rows fade up from pale as they reach the middle of the screen ---------- */
+.svc{min-height:100vh;min-height:100svh;padding-block:clamp(56px,8vw,110px) clamp(56px,7vw,100px)}
+.svc-head{text-align:center;margin-bottom:clamp(40px,6vw,80px)}
+.svc-head h2{font:800 clamp(56px,11vw,170px)/.86 var(--body);letter-spacing:-.06em;margin:0;text-transform:uppercase}
+.svc-head p{max-width:34ch;margin:18px auto 0;color:var(--soft);line-height:1.6}
+.svc-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair);background-image:linear-gradient(90deg,transparent calc(33.33% - .5px),var(--hair) calc(33.33% - .5px),var(--hair) calc(33.33% + .5px),transparent calc(33.33% + .5px))}
+.svc-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) auto;gap:clamp(16px,3vw,40px);align-items:start;padding-block:clamp(22px,3vw,36px);border-bottom:1px solid var(--hair);opacity:.22;transition:opacity .7s cubic-bezier(.2,.9,.2,1)}
+.svc-row.in{opacity:1}
+.svc-row .n{font:800 clamp(34px,4.4vw,64px)/1 var(--body);letter-spacing:-.05em}
+.svc-row .t{padding-left:clamp(0px,2vw,24px)}
+.svc-row h3{font:800 clamp(30px,3.8vw,56px)/1 var(--body);letter-spacing:-.05em;margin:0 0 clamp(18px,2.5vw,34px);transition:transform .4s cubic-bezier(.2,.9,.2,1)}
+.svc-row p{margin:0;max-width:40ch;color:var(--soft);font-size:15px;line-height:1.55}
+.svc-row img{width:clamp(96px,10vw,150px);aspect-ratio:1;object-fit:cover;border-radius:10px;transition:transform .5s cubic-bezier(.2,.9,.2,1)}
+.svc-row:hover h3{transform:translateX(10px)}
+.svc-row:hover img{transform:scale(1.06) rotate(-2deg)}
+@media (max-width:760px){.svc-list{background-image:none}.svc-row{grid-template-columns:auto minmax(0,1fr)}.svc-row img{display:none}.svc-row .t{padding-left:0}}
+@media (prefers-reduced-motion:reduce){.svc-row{opacity:1;transition:none}}

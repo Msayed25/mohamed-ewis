@@ -117,6 +117,15 @@
     }
   }
 
+  /* services: each row comes up from pale as it reaches the middle of the screen */
+  var svcRows = $$('.svc-row');
+  if (svcRows.length && window.IntersectionObserver && !reduce) {
+    var sio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); sio.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -35% 0px' });
+    svcRows.forEach(function (r) { sio.observe(r); });
+  } else svcRows.forEach(function (r) { r.classList.add('in'); });
+
   /* expertise statement: words darken one by one as it scrolls through the screen */
   var xp = $('.xp-t');
   if (xp) {
