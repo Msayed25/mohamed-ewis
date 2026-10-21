@@ -376,3 +376,8 @@ html.view-open,html.view-open body{overflow:hidden}
 .stk > .rise{opacity:0;transform:translateY(70px);transition:opacity .8s cubic-bezier(.2,.9,.2,1),transform .9s cubic-bezier(.2,.9,.2,1)}
 .stk > .rise.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.stk{position:relative}.stk > .rise{opacity:1;transform:none;transition:none}}
+/* smooth scrolling (Lenis) */
+html.lenis,html.lenis body{height:auto}
+html.lenis,.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}

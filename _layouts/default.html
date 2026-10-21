@@ -26,7 +26,7 @@
 
 {% comment %} The menu: a full-screen film slate. Sections are "scenes"; the card is the slate's info box. {% endcomment %}
 {% assign mail = "" %}{% for c in s.contacts %}{% if c.label == 'Email' %}{% assign mail = c.value %}{% endif %}{% endfor %}
-<div class="slate mono" id="slate" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+<div class="slate mono" id="slate" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
   <div class="sl-top g"><span>{{ s.name }} · Portfolio</span><button class="sl-x" type="button" data-slate-close>Close <b aria-hidden="true">×</b></button></div>
   <div class="sl-clap g" aria-hidden="true"><span class="arm"></span><span class="base"></span></div>
   <div class="sl-body g">
@@ -72,8 +72,9 @@
     <a class="mono lbmore" id="lbMore" href="#">Open the project page →</a>
   </div>
 </div>
-<div class="view" id="view" hidden role="dialog" aria-modal="true" aria-label="Project"></div>
+<div class="view" id="view" data-lenis-prevent hidden role="dialog" aria-modal="true" aria-label="Project"></div>
 <div class="blob" id="blob" aria-hidden="true"><img id="blobImg" alt=""><span class="pl" id="blobPl"></span></div>
+<script src="{{ '/assets/vendor/lenis.min.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/site.js' | relative_url }}" defer></script>
 </body>
 </html>

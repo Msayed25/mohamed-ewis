@@ -5,6 +5,15 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var root = document.documentElement;
 
+  /* smooth scrolling (Lenis, like adigun.framer.website): the wheel glides, so stacked sections slide over each other smoothly */
+  var lenis = null;
+  if (!reduce && window.Lenis) {
+    lenis = new window.Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 1 });
+    var lenisFrame = function (t) { lenis.raf(t); requestAnimationFrame(lenisFrame); };
+    requestAnimationFrame(lenisFrame);
+  }
+  var holdScroll = function (v) { if (lenis) { if (v) lenis.stop(); else lenis.start(); } };
+
   /* theme toggle (light first) */
   var tog = $('#tog');
   function isDark() { return root.dataset.theme ? root.dataset.theme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
@@ -93,7 +102,7 @@
       var u = new URL(a.href, location.href); if (u.pathname !== location.pathname || !u.hash) return;
       var t = document.getElementById(decodeURIComponent(u.hash.slice(1))); if (!t || stk.indexOf(t) < 0) return;
       e.preventDefault();
-      setTimeout(function () { window.scrollTo({ top: startOf(t), behavior: 'smooth' }); }, 0);
+      setTimeout(function () { if (lenis) lenis.scrollTo(startOf(t), { duration: 1.4 }); else window.scrollTo({ top: startOf(t), behavior: 'smooth' }); }, 0);
       history.pushState(null, '', u.hash);
     });
     /* content rises into place as its section arrives */
@@ -145,7 +154,7 @@
   if (slate && mopen) {
     var setSlate = function (v) {
       slate.classList.toggle('open', v); slate.setAttribute('aria-hidden', String(!v));
-      mopen.setAttribute('aria-expanded', String(v)); root.style.overflow = v ? 'hidden' : '';
+      mopen.setAttribute('aria-expanded', String(v)); root.style.overflow = v ? 'hidden' : ''; holdScroll(v);
       if (v) { var first = $('ol a', slate); if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 450); }
       else mopen.focus({ preventScroll: true });
     };
@@ -292,7 +301,7 @@
         absolutize(file, url);
         if (!opened) returnFocus = document.activeElement;
         view.innerHTML = ''; view.appendChild(document.importNode(file, true));
-        view.hidden = false; view.scrollTop = 0; root.classList.add('view-open');
+        view.hidden = false; view.scrollTop = 0; root.classList.add('view-open'); holdScroll(true);
         if (!reduce && !fromNav) { view.classList.remove('enter'); void view.offsetWidth; view.classList.add('enter'); }
         var t = $('.ptitle', view); document.title = (t ? t.textContent + ' · ' : '') + 'Mohamed Ewis';
         var bar = $('.progress', view); view.onscroll = function () { progress(view, bar); };
@@ -305,7 +314,7 @@
     var closeProject = function (target) {
       if (view.hidden) return;
       var done = function () {
-        view.hidden = true; view.classList.remove('leave'); view.innerHTML = ''; root.classList.remove('view-open');
+        view.hidden = true; view.classList.remove('leave'); view.innerHTML = ''; root.classList.remove('view-open'); holdScroll(false);
         document.title = 'Mohamed Ewis · Creative Art Director';
         if (target) { var el = document.getElementById(target); if (el) el.scrollIntoView(); }
         else if (returnFocus) returnFocus.focus({ preventScroll: true });
