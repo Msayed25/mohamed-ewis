@@ -53,6 +53,7 @@ layout: default
     <a class="row" style="--c:var(--c-{{ p.category }})" data-cat="{{ p.category }}" data-kind="{{ p.kind }}" data-img="{{ p.cover | relative_url }}" data-title="{{ p.title }}" data-sub="{{ p.subtitle }}" data-video="{% if p.video != "" %}{{ p.video | relative_url }}{% endif %}" data-page="{{ p.url | relative_url }}"
        href="{% if p.kind == 'link' and p.link != '' %}{{ p.link }}{% else %}{{ p.url | relative_url }}{% endif %}"{% if p.kind == 'link' and p.link != '' %} target="_blank" rel="noopener"{% endif %}>
       <span class="id mono">{{ catlabel | slice: 0 }}—{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span><span class="nm">{{ p.title }}</span><span class="sub">{{ p.subtitle }}</span><span class="sub mono">{{ catlabel }}</span><span class="act">{% include kind.html kind=p.kind %}</span>
+    <span class="peek" aria-hidden="true"><span class="pk-in"><img src="{{ p.cover | relative_url }}" alt="" loading="lazy" decoding="async"><span class="pk-t">{% if p.summary and p.summary != "" %}{{ p.summary }}{% else %}{{ p.content | strip_html | strip_newlines | truncatewords: 26 }}{% endif %}{% if p.tags.size > 0 %}<span class="pk-tags mono">{% for tg in p.tags limit: 3 %}<span>{{ tg }}</span>{% endfor %}</span>{% endif %}</span></span></span>
     </a>{% endfor %}
   </div>
 </section>
