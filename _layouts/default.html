@@ -19,12 +19,37 @@
 </head>
 <body>
 {% assign s = site.data.site %}
-<header class="bar g mono">
+<header class="nv g mono">
   <a class="brand" href="{{ '/' | relative_url }}">{{ s.short_name }}</a>
-  {% if s.status != "" %}<span class="avail"><i></i>{{ s.status }}</span>{% endif %}
-  <span class="clock-wrap">{{ s.location | split: "," | first }} <b class="clock" data-offset="{{ s.timezone_offset }}">--:--</b> {{ s.timezone_label }}</span>
-  <nav><a href="{{ '/#featured' | relative_url }}">Covers</a><a href="{{ '/#work' | relative_url }}">Index</a><a href="{{ '/#films' | relative_url }}">Films</a><a href="{{ '/#cv' | relative_url }}">CV</a><a href="{{ '/#talk' | relative_url }}">Contact</a><button class="tog" id="tog" type="button" aria-label="Switch between light and dark">◐ <span id="togl">Dark</span></button></nav>
+  <div class="nv-r"><a class="pill" href="{{ '/#talk' | relative_url }}">Let's work together</a><button class="menu" type="button" id="mopen" aria-expanded="false" aria-controls="slate">Menu <i aria-hidden="true"></i></button></div>
 </header>
+
+{% comment %} The menu: a full-screen film slate. Sections are "scenes"; the card is the slate's info box. {% endcomment %}
+{% assign mail = "" %}{% for c in s.contacts %}{% if c.label == 'Email' %}{% assign mail = c.value %}{% endif %}{% endfor %}
+<div class="slate mono" id="slate" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <div class="sl-top g"><span>{{ s.name }} · Portfolio</span><button class="sl-x" type="button" data-slate-close>Close <b aria-hidden="true">×</b></button></div>
+  <div class="sl-clap g" aria-hidden="true"><span class="arm"></span><span class="base"></span></div>
+  <div class="sl-body g">
+    <ol>
+      <li><a href="{{ '/#featured' | relative_url }}" data-slate-close><span>Scene 01</span>Covers</a></li>
+      <li><a href="{{ '/#work' | relative_url }}" data-slate-close><span>Scene 02</span>Index</a></li>
+      <li><a href="{{ '/#films' | relative_url }}" data-slate-close><span>Scene 03</span>Films</a></li>
+      <li><a href="{{ '/#cv' | relative_url }}" data-slate-close><span>Scene 04</span>CV</a></li>
+      <li><a href="{{ '/#talk' | relative_url }}" data-slate-close><span>Scene 05</span>Contact</a></li>
+    </ol>
+    <dl class="sl-card">
+      <div><dt>Director</dt><dd>{{ s.name }}</dd></div>
+      <div><dt>Role</dt><dd>{{ s.title }}</dd></div>
+      <div><dt>Location</dt><dd>{{ s.location }} · <b class="clock" data-offset="{{ s.timezone_offset }}">--:--</b> {{ s.timezone_label }}</dd></div>
+      {% if s.status != "" %}<div><dt>Status</dt><dd>● {{ s.status }}</dd></div>{% endif %}
+      {% if mail != "" %}<div><dt>Email</dt><dd><a href="mailto:{{ mail }}">{{ mail }}</a></dd></div>{% endif %}
+    </dl>
+  </div>
+  <div class="sl-foot g">
+    <span>{% for c in s.contacts %}{% if c.label == 'Instagram' or c.label == 'LinkedIn' or c.label == 'Behance' %}<a href="{{ c.url }}" target="_blank" rel="noopener">{{ c.label }}</a>{% endif %}{% endfor %}</span>
+    <button class="tog" id="tog" type="button" aria-label="Switch between light and dark">◐ <span id="togl">Dark</span> mode</button>
+  </div>
+</div>
 
 {{ content }}
 
