@@ -53,7 +53,7 @@
 
 {{ content }}
 
-<section class="talk g" id="talk">
+<section class="talk g stk" id="talk">
   <div class="mono soft">Got a brief?</div>
   {% assign wa = "" %}{% assign mail = "" %}{% for c in s.contacts %}{% if c.label == 'Phone' %}{% assign wa = c.value | remove: "+" | remove: " " | remove: "-" %}{% endif %}{% if c.label == 'Email' %}{% assign mail = c.value %}{% endif %}{% endfor %}
   <a class="big" href="{% if wa != '' %}https://wa.me/{{ wa }}{% else %}mailto:{{ mail }}{% endif %}" target="_blank" rel="noopener"><span class="t">Let's<br><span class="nw"><em>work</em> together</span></span><span class="arr" aria-hidden="true"><i>→</i></span></a>

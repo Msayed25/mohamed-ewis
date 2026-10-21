@@ -72,6 +72,59 @@
     }
   }
 
+  /* stacked sections: each sticks once its bottom reaches the bottom of the screen, so the next one slides over it */
+  var stk = $$('.stk'), startOf = null;
+  if (stk.length && !reduce) {
+    var fit = function () { stk.forEach(function (el) { el.style.top = Math.min(0, window.innerHeight - el.offsetHeight) + 'px'; }); };
+    fit(); window.addEventListener('resize', fit, { passive: true }); window.addEventListener('load', fit);
+    if (window.ResizeObserver) { var ro = new ResizeObserver(fit); stk.forEach(function (el) { ro.observe(el); }); }
+    /* a stuck section reports its stuck position, so in-page links jump to where each section really starts:
+       the stacked sections follow one another, each starting where the previous one ends */
+    startOf = function (target) {
+      var y = 0;
+      for (var el = document.body.firstElementChild; el && el !== stk[0]; el = el.nextElementSibling) {
+        var ps = getComputedStyle(el).position; if (ps !== 'fixed' && ps !== 'absolute') y += el.offsetHeight;
+      }
+      for (var i = 0; i < stk.length && stk[i] !== target; i++) y += stk[i].offsetHeight;
+      return y;
+    };
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href*="#"]'); if (!a || a.target === '_blank') return;
+      var u = new URL(a.href, location.href); if (u.pathname !== location.pathname || !u.hash) return;
+      var t = document.getElementById(decodeURIComponent(u.hash.slice(1))); if (!t || stk.indexOf(t) < 0) return;
+      e.preventDefault();
+      setTimeout(function () { window.scrollTo({ top: startOf(t), behavior: 'smooth' }); }, 0);
+      history.pushState(null, '', u.hash);
+    });
+    /* content rises into place as its section arrives */
+    if (window.IntersectionObserver) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      stk.forEach(function (el) {
+        if (el.classList.contains('landing')) return;
+        Array.prototype.forEach.call(el.children, function (c) { c.classList.add('rise'); io.observe(c); });
+      });
+    }
+  }
+
+  /* expertise statement: words darken one by one as it scrolls through the screen */
+  var xp = $('.xp-t');
+  if (xp) {
+    var words = xp.textContent.trim().split(/\s+/); xp.textContent = '';
+    words.forEach(function (w, i) { var sp = document.createElement('span'); sp.className = 'w'; sp.textContent = w; xp.appendChild(sp); if (i < words.length - 1) xp.appendChild(document.createTextNode(' ')); });
+    var ws = $$('.w', xp);
+    var light = function () {
+      var vh = window.innerHeight, sec = xp.closest('.stk');
+      /* measured from where the section really starts, so it keeps filling in while the section is stuck */
+      var top = startOf && sec ? startOf(sec) - window.scrollY : xp.getBoundingClientRect().top;
+      var p = reduce ? 1 : Math.max(0, Math.min(1, (vh * 0.9 - top) / (vh * 0.9)));
+      var n = Math.round(p * ws.length);
+      ws.forEach(function (w, i) { w.classList.toggle('on', i < n); });
+    };
+    light(); window.addEventListener('scroll', light, { passive: true }); window.addEventListener('resize', light, { passive: true });
+  }
+
   /* top bar: slides away while scrolling down, comes back as soon as you scroll up */
   var nv = $('.nv');
   if (nv) {

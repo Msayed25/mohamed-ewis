@@ -8,7 +8,7 @@ layout: default
 {% assign cats = "digital:Digital,print:Print,pitch:Pitch,film:Film,photography:Photography,branding:Branding,personal:Personal" | split: "," %}
 
 {% assign nm = s.name | split: " " %}
-<section class="landing g" aria-label="{{ s.name }}, {{ s.title }}">
+<section class="landing g stk" aria-label="{{ s.name }}, {{ s.title }}">
   <div class="tc" aria-hidden="true"><b>00:00:00:00</b><span class="mono">Rolling</span></div>
   <h1><span><b>{{ nm | first }}</b></span><span><b>{{ nm | last }}</b></span></h1>
   <figure class="vf">
@@ -21,8 +21,15 @@ layout: default
   </div>
 </section>
 
+{% if s.expertise and s.expertise != "" %}
+<section class="xp g stk" id="expertise" aria-label="Expertise">
+  <p class="xp-k mono">(01) Expertise</p>
+  <p class="xp-t">{{ s.expertise }}</p>
+</section>
+{% endif %}
+
 {% if featured.size > 0 %}
-<section class="sec g" id="featured">
+<section class="sec g stk" id="featured">
   <div class="head"><h2>Covers</h2><p>Selected work. One image and one idea per project, like a magazine cover.</p></div>
   <div class="cover feat" id="covers" aria-roledescription="carousel" aria-label="Featured projects">
     {% for p in featured %}
@@ -42,7 +49,7 @@ layout: default
 </section>
 {% endif %}
 
-<section class="sec g" id="work">
+<section class="sec g stk" id="work">
   <div class="head"><h2>Index</h2><p>Every project, by discipline. Films play right here, links open the live site, everything else opens its case study.</p></div>
   <div class="filters" id="filters">
     <button type="button" aria-pressed="true" data-cat="all" style="--c:var(--ink)"><i></i>All <span>{{ projects.size }}</span></button>
@@ -59,7 +66,7 @@ layout: default
 </section>
 
 {% if films.size > 0 %}
-<section class="sec g" id="films">
+<section class="sec g stk" id="films">
   <div class="head"><h2>Films</h2><p>Product, documentary, cultural and experimental. Click to watch.</p></div>
   <div class="films">
     {% for p in films %}
@@ -73,7 +80,7 @@ layout: default
 {% endif %}
 
 {% if s.personal_images.size > 0 %}
-<section class="sec g" id="personal">
+<section class="sec g stk" id="personal">
   <div class="head"><h2>Personal</h2><p>Photographed and made by hand. No AI.{% if s.personal_link != "" %} <a href="{{ s.personal_link | relative_url }}" target="_blank" rel="noopener">More on Instagram ↗</a>{% endif %}</p></div>
   <div class="board" id="board">
     <div class="note">{{ s.personal_note }}</div>
@@ -82,7 +89,7 @@ layout: default
 </section>
 {% endif %}
 
-<section class="sec g" id="cv">
+<section class="sec g stk" id="cv">
   <div class="head"><h2>CV</h2><p>A career, cut like a film. Each chapter is a clip on the timeline. Click one to jump to it.</p></div>
   <div class="cv">
     <aside>

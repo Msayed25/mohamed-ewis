@@ -358,3 +358,21 @@ html.view-open,html.view-open body{overflow:hidden}
 .landing.go .tc{opacity:0;visibility:hidden}
 @media (max-width:760px){.landing .vf{position:relative;right:auto;top:auto;width:min(60%,240px);margin:28px 0 28px auto}.landing .low .meta{text-align:left}}
 @media (prefers-reduced-motion:reduce){.landing .tc{display:none}.landing h1 span b,.landing .vf img,.landing .low{transition:none}}
+
+/* ---------- expertise statement after the landing (deck slide 7): one heavy paragraph, first line indented; words darken as you scroll (site.js) ---------- */
+.xp{min-height:min(86vh,760px);display:grid;align-content:center;padding-block:clamp(56px,8vw,110px)}
+.xp-k{color:var(--soft);margin:0 0 22px}
+.xp-t{font:800 clamp(32px,5vw,78px)/1.02 var(--body);letter-spacing:-.045em;margin:0;max-width:24ch;text-indent:24%}
+.xp-t .w{color:color-mix(in srgb,var(--ink) 22%,var(--paper));transition:color .25s}
+.xp-t .w.on{color:var(--ink)}
+@media (max-width:760px){.xp-t{text-indent:0}}
+
+/* ---------- sections stack like cards (after adigun.framer.website): each one sticks, the next slides up over it.
+   site.js sets each section's top so a tall section is fully read before it sticks ---------- */
+.stk{position:sticky;top:0;background:var(--paper)}
+.stk ~ .stk{border-radius:22px 22px 0 0;box-shadow:0 -1px 0 var(--ink),0 -24px 50px -28px rgba(0,0,0,.35)}
+.sec.stk{padding-bottom:clamp(56px,7vw,100px)}
+/* content of each section rises into place as it arrives */
+.stk > .rise{opacity:0;transform:translateY(70px);transition:opacity .8s cubic-bezier(.2,.9,.2,1),transform .9s cubic-bezier(.2,.9,.2,1)}
+.stk > .rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.stk{position:relative}.stk > .rise{opacity:1;transform:none;transition:none}}
