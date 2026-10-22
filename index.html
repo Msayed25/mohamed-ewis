@@ -108,7 +108,7 @@ layout: default
       <article class="entry rv" id="cv{{ forloop.index }}" style="--c:var(--c-{{ e.color }})">
         <div class="lab mono"><span class="tc">{{ e.period }}</span><span>{{ e.track }} track</span></div>
         <div><h3>{{ e.chapter }}</h3></div>
-        <p>{{ e.text }}</p>
+        {% if e.text != "" %}<p>{{ e.text }}</p>{% endif %}
         <div class="tags">{% for t in e.tags %}<span>{{ t }}</span>{% endfor %}{% if e.link != "" %}<a href="{{ e.link | relative_url }}">{{ e.link_label }} →</a>{% endif %}</div>
       </article>
       {% endfor %}

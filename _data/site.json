@@ -8,10 +8,27 @@
   "status": "Available for projects",
   "portrait": "/images/site/portrait.jpg",
   "portrait_cutout": "/images/site/portrait-cutout.webp",
-  "disciplines": ["Art Direction", "Photography", "Film", "Collage"],
+  "disciplines": [
+    "Art Direction",
+    "Photography",
+    "Film",
+    "Collage"
+  ],
   "headline": "Pepsi, Google, Nike and Mini already called. Your move.",
   "bio": "Art director and visual artist. He finds one big idea, then makes it loud through photography, film, collage, AR and design.",
-  "clients": ["Mini", "Subaru", "Pepsi", "Etisalat", "Google", "Alcatel", "Gold's Gym", "Nike", "Damac", "Infosys", "Gorillaz"],
+  "clients": [
+    "Mini",
+    "Subaru",
+    "Pepsi",
+    "Etisalat",
+    "Google",
+    "Alcatel",
+    "Gold's Gym",
+    "Nike",
+    "Damac",
+    "Infosys",
+    "Gorillaz"
+  ],
   "personal_note": "Made with hands, cameras & stubbornness.",
   "personal_images": [
     "/images/site/board-beach.jpg",
@@ -29,17 +46,117 @@
       "track": "Ideas",
       "color": "pitch",
       "text": "Studied how messages move people. It is still the first question on every brief: what is the one thing they should remember?",
-      "tags": ["Media", "Advertising", "Storytelling"],
+      "tags": [
+        "Media",
+        "Advertising",
+        "Storytelling"
+      ],
       "link_label": "",
       "link": ""
     },
+    {
+      "chapter": "Branding",
+      "period": "01",
+      "track": "Branding",
+      "color": "branding",
+      "text": "",
+      "tags": [
+        "Art direction",
+        "Brand strategy",
+        "Tone & voice",
+        "Insights",
+        "Content strategy"
+      ],
+      "link_label": "",
+      "link": ""
+    },
+    {
+      "chapter": "Creative",
+      "period": "02",
+      "track": "Creative",
+      "color": "digital",
+      "text": "",
+      "tags": [
+        "Storytelling",
+        "Copywriting",
+        "Social media guidelines",
+        "Photo + video direction",
+        "3D visualisation"
+      ],
+      "link_label": "",
+      "link": ""
+    },
+    {
+      "chapter": "Production",
+      "period": "03",
+      "track": "Production",
+      "color": "print",
+      "text": "",
+      "tags": [
+        "Scouting",
+        "Production management",
+        "Content creation",
+        "Live action filming",
+        "Experience"
+      ],
+      "link_label": "",
+      "link": ""
+    },
+    {
+      "chapter": "Post-production",
+      "period": "04",
+      "track": "Post-production",
+      "color": "film",
+      "text": "",
+      "tags": [
+        "Editing",
+        "2D/3D animation",
+        "Colour grading",
+        "Visual effects",
+        "Finishing"
+      ],
+      "link_label": "",
+      "link": ""
+    }
+  ],
+  "contacts": [
+    {
+      "label": "Phone",
+      "value": "+971 58 5606 773",
+      "url": "tel:+971585606773"
+    },
+    {
+      "label": "Email",
+      "value": "mohamedewis88@outlook.com",
+      "url": "mailto:mohamedewis88@outlook.com"
+    },
+    {
+      "label": "LinkedIn",
+      "value": "linkedin.com/in/mohamedewis10",
+      "url": "https://www.linkedin.com/in/mohamedewis10"
+    },
+    {
+      "label": "Instagram",
+      "value": "instagram.com/muhamedewis",
+      "url": "https://www.instagram.com/muhamedewis"
+    },
+    {
+      "label": "Behance",
+      "value": "behance.net/mohamedewis10",
+      "url": "https://www.behance.net/mohamedewis10"
+    }
+  ],
+  "cv_previous": [
     {
       "chapter": "Into the studio",
       "period": "2019",
       "track": "Design",
       "color": "print",
       "text": "Moved from theory to making: graphic design and visual communication, learned alongside top-tier art and creative directors.",
-      "tags": ["Graphic design", "Visual communication"],
+      "tags": [
+        "Graphic design",
+        "Visual communication"
+      ],
       "link_label": "",
       "link": ""
     },
@@ -49,7 +166,13 @@
       "track": "Design",
       "color": "digital",
       "text": "Concepts, art direction and design for Mini, Subaru, Pepsi, Etisalat, Google, Alcatel and Gold's Gym, from social and e-commerce to on-ground interiors and pitches.",
-      "tags": ["Concept", "Art direction", "Social", "Print", "AR"],
+      "tags": [
+        "Concept",
+        "Art direction",
+        "Social",
+        "Print",
+        "AR"
+      ],
       "link_label": "Open the index",
       "link": "/#work"
     },
@@ -59,7 +182,11 @@
       "track": "Film",
       "color": "film",
       "text": "Product, documentary and cultural films (Etisalat, Sacha Jafri, Emirati Women's Day, UAE National Day) plus streetwear and automotive shoots.",
-      "tags": ["Film treatment", "Photography", "Edit"],
+      "tags": [
+        "Film treatment",
+        "Photography",
+        "Edit"
+      ],
       "link_label": "Watch the films",
       "link": "/#films"
     },
@@ -69,16 +196,13 @@
       "track": "Direction",
       "color": "branding",
       "text": "Leads ideas from first line to final frame. Mixed media, expressive and bold. Personal work stays hand-made: #NoAI.",
-      "tags": ["Creative direction", "Mixed media", "#NoAI"],
+      "tags": [
+        "Creative direction",
+        "Mixed media",
+        "#NoAI"
+      ],
       "link_label": "Let's work together",
       "link": "/#talk"
     }
-  ],
-  "contacts": [
-    { "label": "Phone", "value": "+971 58 5606 773", "url": "tel:+971585606773" },
-    { "label": "Email", "value": "mohamedewis88@outlook.com", "url": "mailto:mohamedewis88@outlook.com" },
-    { "label": "LinkedIn", "value": "linkedin.com/in/mohamedewis10", "url": "https://www.linkedin.com/in/mohamedewis10" },
-    { "label": "Instagram", "value": "instagram.com/muhamedewis", "url": "https://www.instagram.com/muhamedewis" },
-    { "label": "Behance", "value": "behance.net/mohamedewis10", "url": "https://www.behance.net/mohamedewis10" }
   ]
 }
