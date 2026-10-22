@@ -7,41 +7,42 @@ layout: default
 {% assign films = projects | where: "kind", "film" %}
 {% assign cats = "digital:Digital,print:Print,pitch:Pitch,film:Film,photography:Photography,branding:Branding,personal:Personal" | split: "," %}
 
-{% assign nm = s.name | split: " " %}
-<section class="landing g stk" aria-label="{{ s.name }}, {{ s.title }}">
-  <div class="tc" aria-hidden="true"><b>00:00:00:00</b><span class="mono">Rolling</span></div>
-  <h1><span><b>{{ nm | first }}</b></span><span><b>{{ nm | last }}</b></span></h1>
-  <figure class="vf">
-    <div class="pic"><i></i><i></i><i></i><i></i><div class="hud mono" aria-hidden="true"><span class="rec">Rec</span><span>ISO 400 · f/2.8</span></div><span class="cross" aria-hidden="true"></span><img src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" fetchpriority="high"></div>
-    <figcaption class="mono"><span>Take 01</span><span>{{ s.location | split: "," | first }}</span></figcaption>
-  </figure>
-  <div class="low">
-    {% if s.disciplines.size > 0 %}<ul>{% for d in s.disciplines %}<li>{{ d }}</li>{% endfor %}</ul>{% endif %}
-    <div class="mono meta">{{ s.title }} · {{ s.location }}{% if s.status != "" %}<br><span class="on"><i></i>{{ s.status }}</span>{% endif %}</div>
+<section class="cover intro" aria-label="About {{ s.name }}">
+  <div class="shot"><img class="in" src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" fetchpriority="high">{% if s.portrait_cutout and s.portrait_cutout != "" %}<img class="in cut" src="{{ s.portrait_cutout | relative_url }}" alt="" aria-hidden="true" fetchpriority="high">{% endif %}</div>
+  <div class="mast" aria-label="{{ s.short_name }}">{% assign letters = s.short_name | split: "" %}{% for l in letters %}<b style="--r:{% cycle '-6deg','4deg','-3deg','7deg' %};--y:{% cycle '-4px','3px','-2px','4px' %}">{{ l }}</b>{% endfor %}</div>
+  <div class="copy">
+    <div class="issue mono">{{ s.name }}<br>{{ s.title }}<br>{{ s.location }}</div>
+    <div class="kick mono">Who is {{ s.short_name | capitalize }}</div>
+    <h1 class="line words">{{ s.headline }}</h1>
+    <p class="bio">{{ s.bio }}</p>
+    <div class="ctas"><a class="btn solid" href="#featured">See the work ↓</a><a class="btn" href="#talk">Let's work together</a></div>
   </div>
 </section>
 
-{% if s.expertise and s.expertise != "" %}
-<section class="xp g stk" id="expertise" aria-label="Expertise">
-  <p class="xp-k mono">(01) Expertise</p>
-  <p class="xp-t">{{ s.expertise }}</p>
+<div class="marq" aria-label="Clients"><div>{% for i in (1..2) %}{% for c in s.clients %}<span>{{ c }}</span><span aria-hidden="true"><i>✱</i></span>{% endfor %}{% endfor %}</div></div>
+
+{% if featured.size > 0 %}
+<section class="sec g" id="featured">
+  <div class="head"><h2>Covers</h2><p>Selected work. One image and one idea per project, like a magazine cover.</p></div>
+  <div class="cover feat" id="covers" aria-roledescription="carousel" aria-label="Featured projects">
+    {% for p in featured %}
+    <article class="slide{% if forloop.first %} on{% endif %}" data-kind="{{ p.kind }}" aria-label="{{ forloop.index }} of {{ featured.size }}">
+      <div class="shot"><img src="{{ p.cover | relative_url }}" alt="{{ p.title }}" {% unless forloop.first %}loading="lazy" decoding="async"{% endunless %}><div class="no">No.{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</div></div>
+      <div class="copy">
+        <div class="issue mono">Issue {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }} / {% if featured.size < 10 %}0{% endif %}{{ featured.size }}</div>
+        <div class="kick mono">{{ p.subtitle }}</div>
+        <p class="line words">{{ p.cover_line }}</p>
+        <div class="client">{{ p.title }} {% include kind.html kind=p.kind %}</div>
+        <div>{% include action.html p=p solid=true %}</div>
+      </div>
+    </article>
+    {% endfor %}
+    <div class="dots" role="tablist" aria-label="Choose a cover">{% for p in featured %}<button type="button" role="tab" aria-label="{{ p.title }}"{% if forloop.first %} aria-current="true"{% endif %}>{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</button>{% endfor %}</div>
+  </div>
 </section>
 {% endif %}
 
-{% if s.services.size > 0 %}
-<section class="svc g stk" id="services">
-  <div class="svc-head"><h2>Services</h2>{% if s.services_intro != "" %}<p class="mono">{{ s.services_intro }}</p>{% endif %}</div>
-  <ol class="svc-list">
-    {% for v in s.services %}<li class="svc-row">
-      <b class="n">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</b>
-      <div class="t"><h3>{{ v.title }}</h3>{% if v.text != "" %}<p>{{ v.text }}</p>{% endif %}</div>
-      {% if v.image and v.image != "" %}<img src="{{ v.image | relative_url }}" alt="" loading="lazy">{% endif %}
-    </li>{% endfor %}
-  </ol>
-</section>
-{% endif %}
-
-<section class="sec g stk" id="work">
+<section class="sec g" id="work">
   <div class="head"><h2>Index</h2><p>Every project, by discipline. Films play right here, links open the live site, everything else opens its case study.</p></div>
   <div class="filters" id="filters">
     <button type="button" aria-pressed="true" data-cat="all" style="--c:var(--ink)"><i></i>All <span>{{ projects.size }}</span></button>
@@ -53,13 +54,12 @@ layout: default
     <a class="row" style="--c:var(--c-{{ p.category }})" data-cat="{{ p.category }}" data-kind="{{ p.kind }}" data-img="{{ p.cover | relative_url }}" data-title="{{ p.title }}" data-sub="{{ p.subtitle }}" data-video="{% if p.video != "" %}{{ p.video | relative_url }}{% endif %}" data-page="{{ p.url | relative_url }}"
        href="{% if p.kind == 'link' and p.link != '' %}{{ p.link }}{% else %}{{ p.url | relative_url }}{% endif %}"{% if p.kind == 'link' and p.link != '' %} target="_blank" rel="noopener"{% endif %}>
       <span class="id mono">{{ catlabel | slice: 0 }}—{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span><span class="nm">{{ p.title }}</span><span class="sub">{{ p.subtitle }}</span><span class="sub mono">{{ catlabel }}</span><span class="act">{% include kind.html kind=p.kind %}</span>
-    <span class="peek" aria-hidden="true"><span class="pk-in"><img src="{{ p.cover | relative_url }}" alt="" loading="lazy" decoding="async"><span class="pk-t">{% if p.summary and p.summary != "" %}{{ p.summary }}{% else %}{{ p.content | strip_html | strip_newlines | truncatewords: 26 }}{% endif %}{% if p.tags.size > 0 %}<span class="pk-tags mono">{% for tg in p.tags limit: 3 %}<span>{{ tg }}</span>{% endfor %}</span>{% endif %}</span></span></span>
     </a>{% endfor %}
   </div>
 </section>
 
 {% if films.size > 0 %}
-<section class="sec g stk" id="films">
+<section class="sec g" id="films">
   <div class="head"><h2>Films</h2><p>Product, documentary, cultural and experimental. Click to watch.</p></div>
   <div class="films">
     {% for p in films %}
@@ -73,16 +73,16 @@ layout: default
 {% endif %}
 
 {% if s.personal_images.size > 0 %}
-<section class="sec g stk" id="personal">
-  <div class="head"><h2>Personal</h2></div>
-  <div class="fc" id="fc" aria-roledescription="carousel" aria-label="Personal work">
-    <div class="fc-track">{% for ph in s.personal_images %}{% if ph.image %}{% assign src = ph.image %}{% else %}{% assign src = ph %}{% endif %}<button type="button" class="fc-it" data-title="{{ ph.title | escape }}" data-info="{{ ph.info | escape }}" aria-label="{% if ph.title %}{{ ph.title | escape }}{% else %}Photo {{ forloop.index }}{% endif %}"><img src="{{ src | relative_url }}" alt="" loading="lazy" decoding="async" draggable="false"></button>{% endfor %}</div>
-    <div class="fc-cap" aria-live="polite"><b class="fc-t"></b><span class="fc-i mono"></span></div>
+<section class="sec g" id="personal">
+  <div class="head"><h2>Personal</h2><p>Photographed and made by hand. No AI.{% if s.personal_link != "" %} <a href="{{ s.personal_link | relative_url }}" target="_blank" rel="noopener">More on Instagram ↗</a>{% endif %}</p></div>
+  <div class="board" id="board">
+    <div class="note">{{ s.personal_note }}</div>
+    {% for img in s.personal_images limit: 6 %}<div class="pin p{{ forloop.index }}"><div class="tape"></div><img src="{{ img | relative_url }}" alt="" loading="lazy" decoding="async"></div>{% endfor %}
   </div>
 </section>
 {% endif %}
 
-<section class="sec g stk" id="cv">
+<section class="sec g" id="cv">
   <div class="head"><h2>CV</h2><p>A career, cut like a film. Each chapter is a clip on the timeline. Click one to jump to it.</p></div>
   <div class="cv">
     <aside>
@@ -109,7 +109,7 @@ layout: default
       <article class="entry rv" id="cv{{ forloop.index }}" style="--c:var(--c-{{ e.color }})">
         <div class="lab mono"><span class="tc">{{ e.period }}</span><span>{{ e.track }} track</span></div>
         <div><h3>{{ e.chapter }}</h3></div>
-        {% if e.text != "" %}<p>{{ e.text }}</p>{% endif %}
+        <p>{{ e.text }}</p>
         <div class="tags">{% for t in e.tags %}<span>{{ t }}</span>{% endfor %}{% if e.link != "" %}<a href="{{ e.link | relative_url }}">{{ e.link_label }} →</a>{% endif %}</div>
       </article>
       {% endfor %}

@@ -2,7 +2,6 @@
 title: "Sacha Jafri"
 category: film
 kind: film
-summary: "The film opens on a close-up of the artist at work, his brush dancing across a big white canvas."
 subtitle: "Documentary film"
 order: 100
 cover: /images/projects/sacha-jafri/cover.jpg

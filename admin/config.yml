@@ -51,10 +51,9 @@ collections:
           - { label: "Film", value: film }
           - { label: "Link", value: link }
       - { name: subtitle, label: Type of work, widget: string, hint: "e.g. Social campaign, Documentary film, Logo design" }
-      - { name: summary, label: Short summary (shown when you hover the project in the Index; leave empty to use the start of the description), widget: string, required: false }
       - { name: cover, label: Cover image, widget: image }
       - { name: cover_line, label: Cover line, widget: string, required: false, hint: "One short, punchy line in the magazine-cover style. Shown big on the cover." }
-      - { name: featured, label: Show on the home page covers (not shown at the moment), widget: boolean, default: false, hint: "Needs a cover line." }
+      - { name: featured, label: Show on the home page covers, widget: boolean, default: false, hint: "Needs a cover line." }
       - { name: order, label: Order, widget: number, value_type: int, default: 100, hint: "Lower numbers come first in the index." }
       - { name: tags, label: Tags, widget: list, required: false, field: { name: tag, label: Tag, widget: string } }
       - { name: video, label: Video, widget: string, required: false, hint: "For films: paste a YouTube or Vimeo link, or the address of an uploaded video file." }
@@ -81,16 +80,12 @@ collections:
           - { name: timezone_label, label: Time zone name, widget: string }
           - { name: status, label: Availability badge, widget: string, required: false, hint: "Shown with a green pulse. Leave empty to hide." }
           - { name: portrait, label: Portrait photo, widget: image }
-          - { name: expertise, label: Expertise (the big statement after the landing page), widget: text, required: false }
-          - { name: services_intro, label: Services intro line, widget: string, required: false }
-          - { name: services, label: Services, widget: list, fields: [ { name: title, label: Service, widget: string }, { name: text, label: Short description, widget: text, required: false }, { name: image, label: Photo, widget: image, required: false } ] }
-          - { name: disciplines, label: Disciplines (the list on the landing page), widget: list, field: { name: discipline, label: Discipline, widget: string } }
-          - { name: portrait_cutout, label: Portrait cut-out (not shown at the moment), widget: image, required: false }
-          - { name: headline, label: Intro headline (not shown at the moment), widget: string }
-          - { name: bio, label: Intro text (not shown at the moment), widget: text }
-          - { name: clients, label: Clients (not shown at the moment), widget: list, field: { name: client, label: Client, widget: string } }
+          - { name: portrait_cutout, label: Portrait cut-out (same photo with the background removed; sits in front of the EWIS letters. Leave empty to turn off), widget: image, required: false }
+          - { name: headline, label: Intro headline, widget: string }
+          - { name: bio, label: Intro text, widget: text }
+          - { name: clients, label: Clients (scrolling strip), widget: list, field: { name: client, label: Client, widget: string } }
           - { name: personal_note, label: Personal board note, widget: string }
-          - { name: personal_images, label: Personal photos (the focus carousel), widget: list, summary: "{{fields.title}}", fields: [ { name: image, label: Photo, widget: image }, { name: title, label: Title (under the centre photo), widget: string, required: false }, { name: info, label: Small line under the title, widget: string, required: false } ] }
+          - { name: personal_images, label: Personal board photos (up to 6), widget: list, field: { name: image, label: Photo, widget: image } }
           - { name: personal_link, label: Personal work link, widget: string, required: false }
           - { name: cv_pdf, label: CV file (PDF), widget: file, required: false, hint: "The Download CV button appears only when a file is uploaded." }
           - name: cv
@@ -101,9 +96,9 @@ collections:
             fields:
               - { name: chapter, label: Title or role, widget: string }
               - { name: period, label: Dates, widget: string, hint: "e.g. 2019 to 2022, or Now" }
-              - { name: track, label: Track, widget: select, options: [Ideas, Design, Film, Direction, Branding, Creative, Production, Post-production] }
+              - { name: track, label: Track, widget: select, options: [Ideas, Design, Film, Direction] }
               - { name: color, label: Colour, widget: select, options: [digital, print, pitch, film, photography, branding, personal] }
-              - { name: text, label: Description, widget: text, required: false }
+              - { name: text, label: Description, widget: text }
               - { name: tags, label: Tags, widget: list, required: false, field: { name: tag, label: Tag, widget: string } }
               - { name: link_label, label: Link text, widget: string, required: false }
               - { name: link, label: Link address, widget: string, required: false }

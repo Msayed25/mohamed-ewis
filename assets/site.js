@@ -5,15 +5,6 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var root = document.documentElement;
 
-  /* smooth scrolling (Lenis, like adigun.framer.website): the wheel glides, so stacked sections slide over each other smoothly */
-  var lenis = null;
-  if (!reduce && window.Lenis) {
-    lenis = new window.Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 1 });
-    var lenisFrame = function (t) { lenis.raf(t); requestAnimationFrame(lenisFrame); };
-    requestAnimationFrame(lenisFrame);
-  }
-  var holdScroll = function (v) { if (lenis) { if (v) lenis.stop(); else lenis.start(); } };
-
   /* theme toggle (light first) */
   var tog = $('#tog');
   function isDark() { return root.dataset.theme ? root.dataset.theme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
@@ -67,109 +58,52 @@
     $$('.row', rows).forEach(function (r) { r.classList.toggle('out', cat !== 'all' && r.dataset.cat !== cat); });
   });
 
-  /* landing "viewfinder": a film timecode rolls for a moment, then the name slides up and the portrait pulls focus */
-  var land = $('.landing');
-  if (land) {
-    var tc = $('.tc b', land), f = 0;
-    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-    if (reduce || !tc) land.classList.add('go');
-    else {
-      var roll = setInterval(function () {
-        f += 2; tc.textContent = '00:00:' + pad(Math.floor(f / 24)) + ':' + pad(f % 24);
-        if (f >= 48) { clearInterval(roll); land.classList.add('go'); }
-      }, 28);
-    }
-  }
-
-  /* stacked sections: each sticks once its bottom reaches the bottom of the screen, so the next one slides over it */
-  var stk = $$('.stk'), startOf = null;
-  if (stk.length && !reduce) {
-    var fit = function () { stk.forEach(function (el) { el.style.top = Math.min(0, window.innerHeight - el.offsetHeight) + 'px'; }); };
-    fit(); window.addEventListener('resize', fit, { passive: true }); window.addEventListener('load', fit);
-    if (window.ResizeObserver) { var ro = new ResizeObserver(fit); stk.forEach(function (el) { ro.observe(el); }); }
-    /* a stuck section reports its stuck position, so in-page links jump to where each section really starts:
-       the stacked sections follow one another, each starting where the previous one ends */
-    startOf = function (target) {
-      var y = 0;
-      for (var el = document.body.firstElementChild; el && el !== stk[0]; el = el.nextElementSibling) {
-        var ps = getComputedStyle(el).position; if (ps !== 'fixed' && ps !== 'absolute') y += el.offsetHeight;
+  /* intro cover: place the portrait so his whole head sits behind the "IS" of EWIS, whatever the screen shape.
+     Vertically his head top lands across the lower half of the letters (a fixed crop cut his head off on wide
+     screens). On narrow and laptop frames the photo fills the frame, zoomed a little if needed and slid so his
+     head meets the end of the masthead. On wide frames, filling the width would blow his face up, so the photo
+     keeps its laptop size, sits under the letters, and the rest of the frame is the grey of the wall behind him
+     (class "wide" fades the photo's side edges into it). If his head still can't reach the S, the letters move. */
+  var introShot = $('.cover.intro .shot'), introMast = $('.cover.intro .mast');
+  if (introShot && introMast) {
+    var HEAD_TOP = 0.19, HEAD_X = 0.56; /* top and centre of his head, as shares of the portrait's height and width */
+    var MAX_ZOOM = 1.45;                /* never enlarge the photo more than this beyond a plain cover fit */
+    var frame = function () {
+      var imgs = $$('img.in', introShot), im = imgs[0]; if (!im || !im.naturalWidth) return;
+      introMast.style.marginLeft = '';
+      var box = introShot.getBoundingClientRect(), m = introMast.getBoundingClientRect();
+      var W = im.naturalWidth, H = im.naturalHeight;
+      var mastR = m.right - box.left;
+      var tx = mastR - m.width * 0.12;                 /* under the S */
+      var ty = (m.top - box.top) + m.height * 0.55;
+      /* height-led size: the photo reaches the frame's bottom and his head top can still land at ty */
+      var fitH = Math.max(box.height / H, (box.height - ty) / ((1 - HEAD_TOP) * H));
+      var base = Math.max(box.width / W, box.height / H); /* plain cover fit */
+      var wide = base > fitH * 1.3;                       /* filling the width would enlarge him by 30%+ */
+      var s, x;
+      if (wide) {
+        s = fitH;
+        x = Math.min(0, Math.max(W * s - box.width, HEAD_X * W * s - tx)); /* negative: photo starts inside the frame */
+      } else {
+        /* smallest zoom that lets the head reach (tx, ty) while the photo still fills the frame's right and bottom edges */
+        var need = Math.max((box.width - tx) / ((1 - HEAD_X) * W), (box.height - ty) / ((1 - HEAD_TOP) * H));
+        s = Math.min(base * MAX_ZOOM, Math.max(base, need));
+        x = Math.max(0, Math.min(W * s - box.width, HEAD_X * W * s - tx));
       }
-      for (var i = 0; i < stk.length && stk[i] !== target; i++) y += stk[i].offsetHeight;
-      return y;
-    };
-    document.addEventListener('click', function (e) {
-      var a = e.target.closest('a[href*="#"]'); if (!a || a.target === '_blank') return;
-      var u = new URL(a.href, location.href); if (u.pathname !== location.pathname || !u.hash) return;
-      var t = document.getElementById(decodeURIComponent(u.hash.slice(1))); if (!t || stk.indexOf(t) < 0) return;
-      e.preventDefault();
-      setTimeout(function () { if (lenis) lenis.scrollTo(startOf(t), { duration: 1.4 }); else window.scrollTo({ top: startOf(t), behavior: 'smooth' }); }, 0);
-      history.pushState(null, '', u.hash);
-    });
-    /* content rises into place as its section arrives */
-    if (window.IntersectionObserver) {
-      var io = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, { rootMargin: '0px 0px -12% 0px' });
-      stk.forEach(function (el) {
-        if (el.classList.contains('landing')) return;
-        Array.prototype.forEach.call(el.children, function (c) { c.classList.add('rise'); io.observe(c); });
+      introShot.classList.toggle('wide', wide);
+      var w = W * s, h = H * s;
+      var y = Math.max(0, Math.min(h - box.height, HEAD_TOP * h - ty));
+      imgs.forEach(function (i) {
+        i.style.width = w + 'px'; i.style.height = h + 'px'; i.style.left = -x + 'px'; i.style.top = -y + 'px';
       });
-    }
-  }
-
-  /* services: each row comes up from pale as it reaches the middle of the screen */
-  var svcRows = $$('.svc-row');
-  if (svcRows.length && window.IntersectionObserver && !reduce) {
-    var sio = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); sio.unobserve(e.target); } });
-    }, { rootMargin: '0px 0px -35% 0px' });
-    svcRows.forEach(function (r) { sio.observe(r); });
-  } else svcRows.forEach(function (r) { r.classList.add('in'); });
-
-  /* expertise statement: words darken one by one as it scrolls through the screen */
-  var xp = $('.xp-t');
-  if (xp) {
-    var words = xp.textContent.trim().split(/\s+/); xp.textContent = '';
-    words.forEach(function (w, i) { var sp = document.createElement('span'); sp.className = 'w'; sp.textContent = w; xp.appendChild(sp); if (i < words.length - 1) xp.appendChild(document.createTextNode(' ')); });
-    var ws = $$('.w', xp);
-    var light = function () {
-      var vh = window.innerHeight, sec = xp.closest('.stk');
-      /* measured from where the section really starts, so it keeps filling in while the section is stuck */
-      var top = startOf && sec ? startOf(sec) - window.scrollY : xp.getBoundingClientRect().top;
-      var p = reduce ? 1 : Math.max(0, Math.min(1, (vh * 0.9 - top) / (vh * 0.9)));
-      var n = Math.round(p * ws.length);
-      ws.forEach(function (w, i) { w.classList.toggle('on', i < n); });
+      /* still short of the S at the zoom limit: slide the letters over to his head instead */
+      var shift = (HEAD_X * w - x) - tx;
+      if (shift > 1) introMast.style.marginLeft = Math.min(shift, box.width - mastR - 8) + 'px';
     };
-    light(); window.addEventListener('scroll', light, { passive: true }); window.addEventListener('resize', light, { passive: true });
-  }
-
-  /* top bar: slides away while scrolling down, comes back as soon as you scroll up */
-  var nv = $('.nv');
-  if (nv) {
-    var lastY = window.scrollY, ticking = false;
-    window.addEventListener('scroll', function () {
-      if (ticking) return; ticking = true;
-      requestAnimationFrame(function () {
-        var y = window.scrollY, d = y - lastY;
-        if (y < 80 || d < -4) nv.classList.remove('away');
-        else if (d > 4 && !nv.contains(document.activeElement)) nv.classList.add('away');
-        lastY = y; ticking = false;
-      });
-    }, { passive: true });
-  }
-
-  /* menu: a full-screen film slate that claps shut */
-  var slate = $('#slate'), mopen = $('#mopen');
-  if (slate && mopen) {
-    var setSlate = function (v, viaLink) {
-      slate.classList.toggle('open', v); slate.setAttribute('aria-hidden', String(!v));
-      mopen.setAttribute('aria-expanded', String(v)); root.style.overflow = v ? 'hidden' : ''; holdScroll(v);
-      if (v) { var first = $('ol a', slate); if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 450); }
-      else if (!viaLink) mopen.focus({ preventScroll: true }); else if (document.activeElement && slate.contains(document.activeElement)) document.activeElement.blur();
-    };
-    mopen.addEventListener('click', function () { setSlate(true); });
-    $$('[data-slate-close]', slate).forEach(function (el) { el.addEventListener('click', function () { setSlate(false, el.tagName === 'A'); }); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && slate.classList.contains('open')) setSlate(false); });
+    var firstImg = $('img.in', introShot);
+    if (firstImg.complete) frame(); else firstImg.addEventListener('load', frame);
+    window.addEventListener('resize', frame, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(frame);
   }
 
   /* image that follows the cursor over the index (blob reveal) */
@@ -310,7 +244,7 @@
         absolutize(file, url);
         if (!opened) returnFocus = document.activeElement;
         view.innerHTML = ''; view.appendChild(document.importNode(file, true));
-        view.hidden = false; view.scrollTop = 0; root.classList.add('view-open'); holdScroll(true);
+        view.hidden = false; view.scrollTop = 0; root.classList.add('view-open');
         if (!reduce && !fromNav) { view.classList.remove('enter'); void view.offsetWidth; view.classList.add('enter'); }
         var t = $('.ptitle', view); document.title = (t ? t.textContent + ' · ' : '') + 'Mohamed Ewis';
         var bar = $('.progress', view); view.onscroll = function () { progress(view, bar); };
@@ -323,7 +257,7 @@
     var closeProject = function (target) {
       if (view.hidden) return;
       var done = function () {
-        view.hidden = true; view.classList.remove('leave'); view.innerHTML = ''; root.classList.remove('view-open'); holdScroll(false);
+        view.hidden = true; view.classList.remove('leave'); view.innerHTML = ''; root.classList.remove('view-open');
         document.title = 'Mohamed Ewis · Creative Art Director';
         if (target) { var el = document.getElementById(target); if (el) el.scrollIntoView(); }
         else if (returnFocus) returnFocus.focus({ preventScroll: true });
@@ -347,49 +281,6 @@
     /* deep link: index.html#work-gorillaz */
     var m = location.hash.match(/^#work-([\w-]+)$/);
     if (m) { var link = $('a[href*="/work/' + m[1] + '/"], a[href*="work/' + m[1] + '/"]'); if (link) openProject(link.href); }
-  }
-
-  /* personal: focus carousel. Distance from the centre sets size, blur and fade; click a side photo, use the arrows, the keyboard or swipe */
-  var fc = $('#fc');
-  if (fc) {
-    var its = $$('.fc-it', fc), trk = $('.fc-track', fc), num = $('.fc-n', fc), cur = 0, N = its.length;
-    var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
-    var place = function () {
-      var w = its[0] ? its[0].offsetWidth : 300, gap = w * 0.08;
-      its.forEach(function (el, i) {
-        var d = i - cur; if (d > N / 2) d -= N; if (d < -N / 2) d += N;
-        var a = Math.abs(d), x = 0;
-        for (var k = 1; k <= a; k++) x += (w * Math.max(0.42, 1 - (k - 1) * 0.2) + w * Math.max(0.42, 1 - k * 0.2)) / 2 + gap;
-        var s = Math.max(0.42, 1 - a * 0.2);
-        el.style.setProperty('--x', (d < 0 ? -x : x) + 'px'); el.style.setProperty('--s', s);
-        el.style.setProperty('--b', Math.min(a, 4) * 2.4 + 'px'); el.style.setProperty('--sat', a ? 0.75 : 1);
-        el.style.setProperty('--o', a > 3 ? 0 : 1 - a * 0.12); el.style.setProperty('--z', 20 - a);
-        el.classList.toggle('on', a === 0); el.setAttribute('aria-current', a === 0 ? 'true' : 'false'); el.tabIndex = a === 0 ? 0 : -1;
-      });
-      if (num) num.textContent = pad2(cur + 1) + ' / ' + pad2(N);
-      var cap = $('.fc-cap', fc), on = its[cur];
-      if (cap && on) {
-        var ct = $('.fc-t', cap), ci = $('.fc-i', cap), nt = on.dataset.title || '', ni = on.dataset.info || '';
-        if (ct.textContent !== nt || ci.textContent !== ni) {
-          cap.classList.add('swap');
-          setTimeout(function () { ct.textContent = nt; ci.textContent = ni; cap.classList.remove('swap'); }, ct.textContent ? 180 : 0);
-        }
-      }
-    };
-    var go = function (i) { cur = (i % N + N) % N; place(); };
-    its.forEach(function (el, i) { el.addEventListener('click', function () { if (!moved) go(i); }); });
-    var fp = $('.fc-prev', fc), fn = $('.fc-next', fc);
-    if (fp) fp.addEventListener('click', function () { go(cur - 1); });
-    if (fn) fn.addEventListener('click', function () { go(cur + 1); });
-    fc.addEventListener('keydown', function (e) { if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); } if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); } });
-    var sx = null, moved = false;
-    trk.addEventListener('pointerdown', function (e) { sx = e.clientX; moved = false; trk.classList.add('drag'); });
-    window.addEventListener('pointerup', function (e) {
-      if (sx === null) return; var dx = e.clientX - sx; sx = null; trk.classList.remove('drag');
-      if (Math.abs(dx) > 40) { moved = true; go(cur + (dx < 0 ? 1 : -1)); setTimeout(function () { moved = false; }, 50); }
-    });
-    window.addEventListener('resize', place, { passive: true });
-    place();
   }
 
   /* pin-board drifts with the cursor */

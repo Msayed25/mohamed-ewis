@@ -2,7 +2,6 @@
 title: "Damac"
 category: digital
 kind: case
-summary: "A campaign to bring happiness to the Damac community through four pillars: wellness, family, investment and business."
 subtitle: "Brand campaign"
 order: 30
 cover: /images/projects/damac/cover.jpg
