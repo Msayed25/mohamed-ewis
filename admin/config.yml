@@ -53,7 +53,7 @@ collections:
       - { name: subtitle, label: Type of work, widget: string, hint: "e.g. Social campaign, Documentary film, Logo design" }
       - { name: cover, label: Cover image, widget: image }
       - { name: cover_line, label: Cover line, widget: string, required: false, hint: "One short, punchy line in the magazine-cover style. Shown big on the cover." }
-      - { name: featured, label: Show on the home page covers, widget: boolean, default: false, hint: "Needs a cover line." }
+      - { name: featured, label: Show on the home page covers (not shown at the moment), widget: boolean, default: false, hint: "Needs a cover line." }
       - { name: order, label: Order, widget: number, value_type: int, default: 100, hint: "Lower numbers come first in the index." }
       - { name: tags, label: Tags, widget: list, required: false, field: { name: tag, label: Tag, widget: string } }
       - { name: video, label: Video, widget: string, required: false, hint: "For films: paste a YouTube or Vimeo link, or the address of an uploaded video file." }
@@ -81,6 +81,9 @@ collections:
           - { name: status, label: Availability badge, widget: string, required: false, hint: "Shown with a green pulse. Leave empty to hide." }
           - { name: portrait, label: Portrait photo, widget: image }
           - { name: portrait_landing, label: Landing photo (upper body, facing into the page), widget: image, required: false }
+          - { name: expertise, label: Expertise (the big statement after the landing page), widget: text, required: false }
+          - { name: services_intro, label: Services intro line, widget: string, required: false }
+          - { name: services, label: Services, widget: list, fields: [ { name: title, label: Service, widget: string }, { name: text, label: Short description, widget: text, required: false }, { name: image, label: Photo, widget: image, required: false } ] }
           - { name: disciplines, label: Disciplines (the list on the landing page), widget: list, field: { name: discipline, label: Discipline, widget: string } }
           - { name: portrait_cutout, label: Portrait cut-out (not shown at the moment), widget: image, required: false }
           - { name: headline, label: Intro headline (not shown at the moment), widget: string }

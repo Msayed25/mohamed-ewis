@@ -87,6 +87,30 @@
     }, { passive: true });
   }
 
+  /* services: each row comes up from pale as it reaches the middle of the screen */
+  var svcRows = $$('.svc-row');
+  if (svcRows.length && window.IntersectionObserver && !reduce) {
+    var sio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); sio.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -35% 0px' });
+    svcRows.forEach(function (r) { sio.observe(r); });
+  } else svcRows.forEach(function (r) { r.classList.add('in'); });
+
+  /* expertise statement: words darken one by one as it scrolls up the screen */
+  var xp = $('.xp-t');
+  if (xp) {
+    var words = xp.textContent.trim().split(/\s+/); xp.textContent = '';
+    words.forEach(function (w, i) { var sp = document.createElement('span'); sp.className = 'w'; sp.textContent = w; xp.appendChild(sp); if (i < words.length - 1) xp.appendChild(document.createTextNode(' ')); });
+    var ws = $$('.w', xp);
+    var light = function () {
+      var vh = window.innerHeight, top = xp.getBoundingClientRect().top;
+      var p = reduce ? 1 : Math.max(0, Math.min(1, (vh * 0.9 - top) / (vh * 0.55)));
+      var n = Math.round(p * ws.length);
+      ws.forEach(function (w, i) { w.classList.toggle('on', i < n); });
+    };
+    light(); window.addEventListener('scroll', light, { passive: true }); window.addEventListener('resize', light, { passive: true });
+  }
+
   /* menu: a full-screen film slate that claps shut */
   var slate = $('#slate'), mopen = $('#mopen');
   if (slate && mopen) {

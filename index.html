@@ -17,24 +17,23 @@ layout: default
   </div>
 </section>
 
-{% if featured.size > 0 %}
-<section class="sec g" id="featured">
-  <div class="head"><h2>Covers</h2><p>Selected work. One image and one idea per project, like a magazine cover.</p></div>
-  <div class="cover feat" id="covers" aria-roledescription="carousel" aria-label="Featured projects">
-    {% for p in featured %}
-    <article class="slide{% if forloop.first %} on{% endif %}" data-kind="{{ p.kind }}" aria-label="{{ forloop.index }} of {{ featured.size }}">
-      <div class="shot"><img src="{{ p.cover | relative_url }}" alt="{{ p.title }}" {% unless forloop.first %}loading="lazy" decoding="async"{% endunless %}><div class="no">No.{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</div></div>
-      <div class="copy">
-        <div class="issue mono">Issue {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }} / {% if featured.size < 10 %}0{% endif %}{{ featured.size }}</div>
-        <div class="kick mono">{{ p.subtitle }}</div>
-        <p class="line words">{{ p.cover_line }}</p>
-        <div class="client">{{ p.title }} {% include kind.html kind=p.kind %}</div>
-        <div>{% include action.html p=p solid=true %}</div>
-      </div>
-    </article>
-    {% endfor %}
-    <div class="dots" role="tablist" aria-label="Choose a cover">{% for p in featured %}<button type="button" role="tab" aria-label="{{ p.title }}"{% if forloop.first %} aria-current="true"{% endif %}>{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</button>{% endfor %}</div>
-  </div>
+{% if s.expertise and s.expertise != "" %}
+<section class="xp g" id="expertise" aria-label="Expertise">
+  <p class="xp-k mono">(01) Expertise</p>
+  <p class="xp-t">{{ s.expertise }}</p>
+</section>
+{% endif %}
+
+{% if s.services.size > 0 %}
+<section class="svc g" id="services">
+  <div class="svc-head"><h2>Services</h2>{% if s.services_intro != "" %}<p class="mono">{{ s.services_intro }}</p>{% endif %}</div>
+  <ol class="svc-list">
+    {% for v in s.services %}<li class="svc-row">
+      <b class="n">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</b>
+      <div class="t"><h3>{{ v.title }}</h3>{% if v.text != "" %}<p>{{ v.text }}</p>{% endif %}</div>
+      {% if v.image and v.image != "" %}<img src="{{ v.image | relative_url }}" alt="" loading="lazy">{% endif %}
+    </li>{% endfor %}
+  </ol>
 </section>
 {% endif %}
 

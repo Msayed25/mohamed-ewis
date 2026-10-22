@@ -23,7 +23,7 @@
   <a class="brand" href="{{ '/' | relative_url }}">{{ s.short_name }}</a>
   {% if s.status != "" %}<span class="avail"><i></i>{{ s.status }}</span>{% endif %}
   <span class="clock-wrap">{{ s.location | split: "," | first }} <b class="clock" data-offset="{{ s.timezone_offset }}">--:--</b> {{ s.timezone_label }}</span>
-  <nav><a href="{{ '/#featured' | relative_url }}">Covers</a><a href="{{ '/#work' | relative_url }}">Index</a><a href="{{ '/#films' | relative_url }}">Films</a><a href="{{ '/#cv' | relative_url }}">CV</a><a href="{{ '/#talk' | relative_url }}">Contact</a><button class="tog" id="tog" type="button" aria-label="Switch between light and dark">◐ <span id="togl">Dark</span></button></nav>
+  <nav><a href="{{ '/#services' | relative_url }}">Services</a><a href="{{ '/#work' | relative_url }}">Index</a><a href="{{ '/#films' | relative_url }}">Films</a><a href="{{ '/#cv' | relative_url }}">CV</a><a href="{{ '/#talk' | relative_url }}">Contact</a><button class="tog" id="tog" type="button" aria-label="Switch between light and dark">◐ <span id="togl">Dark</span></button></nav>
 </header>
 
 {{ content }}

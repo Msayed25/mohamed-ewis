@@ -9,6 +9,30 @@
   "portrait": "/images/site/portrait.jpg",
   "portrait_landing": "/images/site/portrait-landing.jpg",
   "portrait_cutout": "/images/site/portrait-cutout.webp",
+  "expertise": "My expertise lies in interpreting a brief, researching its context, developing a concept and translating strategy into a relevant visual expression.",
+  "services_intro": "A tailored range of services, from the first idea to the final frame.",
+  "services": [
+    {
+      "title": "Branding",
+      "text": "Art direction · Brand strategy · Tone & voice · Insights · Content strategy",
+      "image": "/images/projects/damac/cover.jpg"
+    },
+    {
+      "title": "Creative",
+      "text": "Storytelling · Copywriting · Social media guidelines · Photo + video direction · 3D visualisation",
+      "image": "/images/projects/gorillaz/cover.jpg"
+    },
+    {
+      "title": "Production",
+      "text": "Scouting · Production management · Content creation · Live action filming · Experience",
+      "image": "/images/projects/sacha-jafri/cover.jpg"
+    },
+    {
+      "title": "Post-production",
+      "text": "Editing · 2D/3D animation · Colour grading · Visual effects · Finishing",
+      "image": "/images/projects/alive/cover.jpg"
+    }
+  ],
   "disciplines": [
     "Art Direction",
     "Photography",
