@@ -328,7 +328,7 @@ html.view-open,html.view-open body{overflow:hidden}
 
 /* ---------- landing "viewfinder" (client feedback, Oct 2026): black and white only. A film timecode rolls, the name slides up, the portrait pulls focus inside a camera viewfinder ---------- */
 .landing{position:relative;min-height:min(86vh,760px);padding-block:clamp(36px,5vw,64px) clamp(28px,4vw,44px);border-bottom:1px solid var(--ink);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
-.landing h1{font:600 clamp(64px,11.5vw,184px)/.86 var(--body);letter-spacing:-.055em;margin:0;position:relative;z-index:2}
+.landing h1{font:600 clamp(96px,17vw,280px)/.86 var(--body);letter-spacing:-.055em;margin:0;position:relative;z-index:2}
 .landing h1 span{display:block;overflow:hidden}
 .landing h1 span b{display:block;font-weight:inherit;transform:translateY(105%);transition:transform 1s cubic-bezier(.2,.9,.2,1)}
 .landing h1 span+span b{transition-delay:.12s}

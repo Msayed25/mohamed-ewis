@@ -7,10 +7,9 @@ layout: default
 {% assign films = projects | where: "kind", "film" %}
 {% assign cats = "digital:Digital,print:Print,pitch:Pitch,film:Film,photography:Photography,branding:Branding,personal:Personal" | split: "," %}
 
-{% assign nm = s.name | split: " " %}
 <section class="landing g" aria-label="{{ s.name }}, {{ s.title }}">
   <div class="tc" aria-hidden="true"><b>00:00:00:00</b><span class="mono">Rolling</span></div>
-  <h1><span><b>{{ nm | first }}</b></span><span><b>{{ nm | last }}</b></span></h1>
+  <h1 aria-label="{{ s.name }}"><span><b>{{ s.short_name }}</b></span></h1>
   <figure class="vf">
     <div class="pic"><i></i><i></i><i></i><i></i><div class="hud mono" aria-hidden="true"><span class="rec">Rec</span><span>ISO 400 · f/2.8</span></div><span class="cross" aria-hidden="true"></span><img src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" fetchpriority="high"></div>
     <figcaption class="mono"><span>Take 01</span><span>{{ s.location | split: "," | first }}</span></figcaption>
