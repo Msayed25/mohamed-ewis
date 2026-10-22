@@ -20,7 +20,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* ---------- top bar (Signal-A + Asher Vale) ---------- */
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ink);padding-block:10px;display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap}
-.bar .brand{font:400 20px/1 var(--display);color:var(--red);letter-spacing:.02em}
+.bar .brand{font:400 20px/1 var(--display);color:var(--ink);letter-spacing:.02em}
 .bar .avail{display:flex;align-items:center;gap:7px}
 .bar .avail i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 var(--green);animation:ping 2s infinite}
 @keyframes ping{70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
