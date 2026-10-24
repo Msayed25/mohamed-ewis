@@ -420,3 +420,9 @@ html.view-open,html.view-open body{overflow:hidden}
 @media (hover:hover){.row:hover .peek,.row:focus-visible .peek{grid-template-rows:1fr}.row:hover .pk-in,.row:focus-visible .pk-in{opacity:1;transition-delay:.08s}}
 @media (max-width:760px){.peek{display:none}}
 @media (prefers-reduced-motion:reduce){.peek,.pk-in{transition:none}}
+
+/* ---------- films reel (client feedback, Oct 2026): the Films section holds in place and the films slide sideways as you scroll down (site.js) ---------- */
+#films.reel-on .reel-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+#films.reel-on .films{display:flex;gap:18px;width:max-content;will-change:transform}
+#films.reel-on .films > *{width:min(42vw,520px);flex:none}
+@media (max-width:760px){#films.reel-on .films{gap:12px}#films.reel-on .films > *{width:78vw}}

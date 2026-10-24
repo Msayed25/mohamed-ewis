@@ -87,6 +87,32 @@
     }, { passive: true });
   }
 
+  /* films reel: the Films section holds in place while the films slide sideways as you keep scrolling down */
+  var reel = $('#films'), reelTrack = reel && $('.films', reel);
+  if (reel && reelTrack && !reduce) {
+    var pin = document.createElement('div'); pin.className = 'reel-pin';
+    while (reel.firstChild) pin.appendChild(reel.firstChild);
+    reel.appendChild(pin); reel.classList.add('reel-on');
+    var reelDist = 0, reelBusy = false;
+    var reelSize = function () {
+      var pad = parseFloat(getComputedStyle(reel).paddingLeft) || 0;
+      reelDist = Math.max(0, reelTrack.scrollWidth - window.innerWidth + pad * 2);
+      reel.style.height = (window.innerHeight + reelDist) + 'px';
+      reelMove();
+    };
+    var reelMove = function () {
+      var r = reel.getBoundingClientRect(), span = reel.offsetHeight - window.innerHeight;
+      var q = Math.max(0, Math.min(1, -r.top / Math.max(1, span)));
+      reelTrack.style.transform = 'translate3d(' + (-q * reelDist).toFixed(1) + 'px,0,0)';
+    };
+    window.addEventListener('scroll', function () {
+      if (reelBusy) return; reelBusy = true;
+      requestAnimationFrame(function () { reelMove(); reelBusy = false; });
+    }, { passive: true });
+    window.addEventListener('resize', reelSize, { passive: true }); window.addEventListener('load', reelSize);
+    reelSize();
+  }
+
   /* services: each row comes up from pale as it reaches the middle of the screen */
   var svcRows = $$('.svc-row');
   if (svcRows.length && window.IntersectionObserver && !reduce) {
