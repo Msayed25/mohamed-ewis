@@ -5,6 +5,16 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var root = document.documentElement;
 
+  /* smooth scrolling (Lenis): each wheel step moves the page a little less than the browser's default and the page
+     glides to a stop, so scrolling never feels rushed. Touch screens keep their own native scrolling. */
+  var lenis = null;
+  if (!reduce && window.Lenis) {
+    lenis = new window.Lenis({ lerp: 0.07, wheelMultiplier: 0.7, smoothWheel: true });
+    var lenisFrame = function (t) { lenis.raf(t); requestAnimationFrame(lenisFrame); };
+    requestAnimationFrame(lenisFrame);
+  }
+  var holdScroll = function (v) { if (lenis) { if (v) lenis.stop(); else lenis.start(); } };
+
   /* theme toggle (light first) */
   var tog = $('#tog');
   function isDark() { return root.dataset.theme ? root.dataset.theme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
@@ -294,7 +304,7 @@
         absolutize(file, url);
         if (!opened) returnFocus = document.activeElement;
         view.innerHTML = ''; view.appendChild(document.importNode(file, true));
-        view.hidden = false; view.scrollTop = 0; root.classList.add('view-open');
+        view.hidden = false; view.scrollTop = 0; root.classList.add('view-open'); holdScroll(true);
         if (!reduce && !fromNav) { view.classList.remove('enter'); void view.offsetWidth; view.classList.add('enter'); }
         var t = $('.ptitle', view); document.title = (t ? t.textContent + ' · ' : '') + 'Mohamed Ewis';
         var bar = $('.progress', view); view.onscroll = function () { progress(view, bar); };
@@ -307,7 +317,7 @@
     var closeProject = function (target) {
       if (view.hidden) return;
       var done = function () {
-        view.hidden = true; view.classList.remove('leave'); view.innerHTML = ''; root.classList.remove('view-open');
+        view.hidden = true; view.classList.remove('leave'); view.innerHTML = ''; root.classList.remove('view-open'); holdScroll(false);
         document.title = 'Mohamed Ewis · Creative Art Director';
         if (target) { var el = document.getElementById(target); if (el) el.scrollIntoView(); }
         else if (returnFocus) returnFocus.focus({ preventScroll: true });
