@@ -93,22 +93,27 @@
     var pin = document.createElement('div'); pin.className = 'reel-pin';
     while (reel.firstChild) pin.appendChild(reel.firstChild);
     reel.appendChild(pin); reel.classList.add('reel-on');
-    var reelDist = 0, reelBusy = false;
+    var reelDist = 0, reelX = 0, reelTo = 0, reelRun = false;
+    var REEL_SLOW = 2;   /* scroll this many pixels down for each pixel the films move sideways */
     var reelSize = function () {
       var pad = parseFloat(getComputedStyle(reel).paddingLeft) || 0;
       reelDist = Math.max(0, reelTrack.scrollWidth - window.innerWidth + pad * 2);
-      reel.style.height = (window.innerHeight + reelDist) + 'px';
+      reel.style.height = (window.innerHeight + reelDist * REEL_SLOW) + 'px';
       reelMove();
+    };
+    /* the films ease towards where the scroll says they should be, so they glide instead of jumping */
+    var reelStep = function () {
+      reelX += (reelTo - reelX) * 0.1;
+      if (Math.abs(reelTo - reelX) < 0.3) reelX = reelTo;
+      reelTrack.style.transform = 'translate3d(' + (-reelX).toFixed(1) + 'px,0,0)';
+      if (reelX !== reelTo) requestAnimationFrame(reelStep); else reelRun = false;
     };
     var reelMove = function () {
       var r = reel.getBoundingClientRect(), span = reel.offsetHeight - window.innerHeight;
-      var q = Math.max(0, Math.min(1, -r.top / Math.max(1, span)));
-      reelTrack.style.transform = 'translate3d(' + (-q * reelDist).toFixed(1) + 'px,0,0)';
+      reelTo = Math.max(0, Math.min(1, -r.top / Math.max(1, span))) * reelDist;
+      if (!reelRun) { reelRun = true; requestAnimationFrame(reelStep); }
     };
-    window.addEventListener('scroll', function () {
-      if (reelBusy) return; reelBusy = true;
-      requestAnimationFrame(function () { reelMove(); reelBusy = false; });
-    }, { passive: true });
+    window.addEventListener('scroll', reelMove, { passive: true });
     window.addEventListener('resize', reelSize, { passive: true }); window.addEventListener('load', reelSize);
     reelSize();
   }
