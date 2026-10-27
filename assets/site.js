@@ -97,6 +97,39 @@
     }, { passive: true });
   }
 
+  /* section motion "Minimal": the landing fills the screen under the top bar and drifts up slower than the page as you leave it */
+  var topBar = $('.bar');
+  var setBarH = function () { root.style.setProperty('--barh', (topBar ? topBar.offsetHeight : 60) + 'px'); };
+  setBarH(); window.addEventListener('resize', setBarH, { passive: true });
+  var landing = $('.landing');
+  if (landing && !reduce) {
+    landing.classList.add('drift');
+    var driftBusy = false;
+    var drift = function () {
+      var r = landing.getBoundingClientRect(), vh = window.innerHeight;
+      var gone = Math.max(0, Math.min(r.height, -r.top)), out = Math.max(0, Math.min(1, (vh - r.bottom) / vh));
+      landing.style.transform = gone > 0 ? 'translate3d(0,' + (gone * 0.45).toFixed(1) + 'px,0)' : '';
+      landing.style.setProperty('--fade', (1 - out * 0.85).toFixed(3));
+      driftBusy = false;
+    };
+    window.addEventListener('scroll', function () { if (!driftBusy) { driftBusy = true; requestAnimationFrame(drift); } }, { passive: true });
+    drift();
+  }
+  /* ...and in every other section the title wipes in and the content rises softly as it arrives */
+  if (window.IntersectionObserver && !reduce) {
+    var rio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    $$('body > section').forEach(function (sec) {
+      if (sec.classList.contains('landing')) return;
+      Array.prototype.forEach.call(sec.children, function (c, k) {
+        if (c.classList.contains('films')) return;   /* the films strip slides sideways instead */
+        var h = c.querySelector && c.querySelector('h2'); if (h) { h.classList.add('rise-h'); rio.observe(h); }
+        c.classList.add('rise-r'); c.style.transitionDelay = Math.min(k, 4) * 0.08 + 's'; rio.observe(c);
+      });
+    });
+  }
+
   /* films reel: the Films section holds in place while the films slide sideways as you keep scrolling down */
   var reel = $('#films'), reelTrack = reel && $('.films', reel);
   if (reel && reelTrack && !reduce) {

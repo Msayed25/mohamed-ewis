@@ -432,3 +432,14 @@ html.lenis,html.lenis body{height:auto}
 html.lenis{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
 .lenis [data-lenis-prevent]{overscroll-behavior:contain}
+
+/* ---------- section motion, "Minimal" (client choice, Oct 2026): the landing fills the screen and drifts away as you leave it;
+   in every other section the title wipes in and the content rises softly (site.js). Only transform, opacity and clip-path animate. ---------- */
+.landing{min-height:calc(100vh - var(--barh,60px));min-height:calc(100svh - var(--barh,60px))}
+.landing.drift{will-change:transform}
+.landing.drift > *{opacity:var(--fade,1)}
+.rise-r{opacity:0;transform:translateY(48px);transition:opacity .9s cubic-bezier(.2,.9,.2,1),transform 1s cubic-bezier(.2,.9,.2,1)}
+.rise-r.in{opacity:1;transform:none}
+h2.rise-h{clip-path:inset(0 0 100% 0);transform:translateY(30%);transition:clip-path 1s cubic-bezier(.7,0,.2,1),transform 1s cubic-bezier(.2,.9,.2,1)}
+h2.rise-h.in{clip-path:inset(0 0 -10% 0);transform:none}
+@media (prefers-reduced-motion:reduce){.rise-r,h2.rise-h{opacity:1;transform:none;clip-path:none;transition:none}}
