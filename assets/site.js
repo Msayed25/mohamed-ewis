@@ -383,7 +383,7 @@
   var fc = $('#fc');
   if (fc) {
     var its = $$('.fc-it', fc), trk = $('.fc-track', fc), N = its.length;
-    var pos = 0, target = 0, vel = 0, running = false, lastShown = -1;
+    var pos = 0, target = 0, running = false, lastShown = -1;
     var OPAC = [1, 1, 0.86, 0.74, 0.64, 0.27];
     var wrap = function (d) { d = ((d % N) + N) % N; return d > N / 2 ? d - N : d; };
     var lerp = function (a, b, t) { return a + (b - a) * t; };
@@ -419,16 +419,20 @@
         }
       }
     };
-    /* spring towards the target slide: quick to start, soft to settle */
-    var tick = function () {
-      var diff = target - pos; vel = vel * 0.78 + diff * 0.09; pos += vel;
-      if (Math.abs(diff) < 0.0008 && Math.abs(vel) < 0.0008) { pos = target; vel = 0; }
+    /* eased glide to the target photo: about 0.9s for one step, a little longer for far photos */
+    var from = 0, t0 = 0, dur = 900;
+    var ease = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+    var tick = function (now) {
+      var k = Math.min(1, (now - t0) / dur); pos = from + (target - from) * ease(k);
       render();
-      if (pos !== target) requestAnimationFrame(tick); else running = false;
+      if (k < 1) requestAnimationFrame(tick); else { pos = target; running = false; }
     };
-    var kick = function () { if (!running) { running = true; requestAnimationFrame(tick); } };
-    var goTo = function (i) {   /* go to slide i the short way round */
-      target = pos + wrap(i - pos); target = Math.round(target); kick();
+    var kick = function () {
+      from = pos; t0 = performance.now(); dur = Math.min(1500, 900 + 150 * (Math.abs(target - from) - 1));
+      if (!running) { running = true; requestAnimationFrame(tick); }
+    };
+    var goTo = function (i) {   /* go to photo i the short way round */
+      target = Math.round(pos + wrap(i - pos)); kick();
     };
     var step = function (n) { target = Math.round(target) + n; kick(); };
     its.forEach(function (el, i) { el.addEventListener('click', function () { goTo(i); }); });
