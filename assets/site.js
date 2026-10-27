@@ -376,47 +376,69 @@
     if (m) { var link = $('a[href*="/work/' + m[1] + '/"], a[href*="work/' + m[1] + '/"]'); if (link) openProject(link.href); }
   }
 
-  /* personal: focus carousel. Distance from the centre sets size, blur and fade; click a side photo, use the arrows, the keyboard or swipe */
+  /* personal: focus carousel, after Framer's "Focus Carousel Pro". The centre photo is large and in colour; every other
+     photo is one smaller size, black and white, and blurs and fades step by step with distance. Clicking a photo glides it
+     to the centre (sizes, colour and blur blend on the way); the arrow keys also work. No drag or wheel control, so
+     scrolling over the section always scrolls the page. */
   var fc = $('#fc');
   if (fc) {
-    var its = $$('.fc-it', fc), trk = $('.fc-track', fc), num = $('.fc-n', fc), cur = 0, N = its.length;
-    var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
-    var place = function () {
-      var w = its[0] ? its[0].offsetWidth : 300, gap = w * 0.08;
+    var its = $$('.fc-it', fc), trk = $('.fc-track', fc), N = its.length;
+    var pos = 0, target = 0, vel = 0, running = false, lastShown = -1;
+    var OPAC = [1, 1, 0.86, 0.74, 0.64, 0.27];
+    var wrap = function (d) { d = ((d % N) + N) % N; return d > N / 2 ? d - N : d; };
+    var lerp = function (a, b, t) { return a + (b - a) * t; };
+    var dims = function () {
+      var cw = Math.min(400, Math.max(200, trk.clientWidth * 0.28)); if (window.innerWidth < 760) cw = Math.min(trk.clientWidth * 0.54, 300);
+      return { cw: cw, ch: cw * 4 / 3, sw: cw * 0.52, sh: cw * 0.52 * 4 / 3, gap: cw * 0.055 };
+    };
+    var D = dims();
+    var render = function () {
       its.forEach(function (el, i) {
-        var d = i - cur; if (d > N / 2) d -= N; if (d < -N / 2) d += N;
-        var a = Math.abs(d), x = 0;
-        for (var k = 1; k <= a; k++) x += (w * Math.max(0.42, 1 - (k - 1) * 0.2) + w * Math.max(0.42, 1 - k * 0.2)) / 2 + gap;
-        var s = Math.max(0.42, 1 - a * 0.2);
-        el.style.setProperty('--x', (d < 0 ? -x : x) + 'px'); el.style.setProperty('--s', s);
-        el.style.setProperty('--b', Math.min(a, 4) * 2.4 + 'px'); el.style.setProperty('--sat', a ? 0.75 : 1);
-        el.style.setProperty('--o', a > 3 ? 0 : 1 - a * 0.12); el.style.setProperty('--z', 20 - a);
-        el.classList.toggle('on', a === 0); el.setAttribute('aria-current', a === 0 ? 'true' : 'false'); el.tabIndex = a === 0 ? 0 : -1;
+        var d = wrap(i - pos), a = Math.abs(d), t = Math.min(1, a);
+        var w = lerp(D.cw, D.sw, t), h = lerp(D.ch, D.sh, t);
+        var near = D.cw / 2 + D.gap + D.sw / 2;
+        var x = a <= 1 ? a * near : near + (a - 1) * (D.sw + D.gap);
+        var k = Math.min(5, Math.floor(a)), f = a - Math.floor(a), op = a >= 5 ? Math.max(0, 0.27 - (a - 5) * 0.3) : lerp(OPAC[k], OPAC[Math.min(5, k + 1)], f);
+        el.style.width = w.toFixed(1) + 'px'; el.style.height = h.toFixed(1) + 'px';
+        el.style.transform = 'translate3d(' + ((d < 0 ? -x : x) - w / 2).toFixed(1) + 'px,' + (-h / 2).toFixed(1) + 'px,0)';
+        el.style.filter = a < 0.01 ? '' : 'grayscale(' + t.toFixed(3) + ') brightness(' + (1 - 0.08 * t).toFixed(3) + ')' + (a > 1 ? ' blur(' + Math.min(10, (a - 1) * 2.5).toFixed(2) + 'px)' : '');
+        el.style.opacity = op.toFixed(3); el.style.zIndex = String(100 - Math.round(a * 10));
+        el.style.visibility = op < 0.01 ? 'hidden' : '';
       });
-      if (num) num.textContent = pad2(cur + 1) + ' / ' + pad2(N);
-      var cap = $('.fc-cap', fc), on = its[cur];
-      if (cap && on) {
-        var ct = $('.fc-t', cap), ci = $('.fc-i', cap), nt = on.dataset.title || '', ni = on.dataset.info || '';
-        if (ct.textContent !== nt || ci.textContent !== ni) {
-          cap.classList.add('swap');
-          setTimeout(function () { ct.textContent = nt; ci.textContent = ni; cap.classList.remove('swap'); }, ct.textContent ? 180 : 0);
+      var cur = ((Math.round(pos) % N) + N) % N;
+      if (cur !== lastShown) {
+        lastShown = cur;
+        its.forEach(function (el, i) { var on = i === cur; el.classList.toggle('on', on); el.setAttribute('aria-current', on ? 'true' : 'false'); el.tabIndex = on ? 0 : -1; });
+        var cap = $('.fc-cap', fc), on = its[cur];
+        if (cap && on) {
+          var ct = $('.fc-t', cap), ci = $('.fc-i', cap), nt = on.dataset.title || '', ni = on.dataset.info || '';
+          if (ct.textContent !== nt || ci.textContent !== ni) {
+            cap.classList.add('swap');
+            setTimeout(function () { ct.textContent = nt; ci.textContent = ni; cap.classList.remove('swap'); }, ct.textContent ? 160 : 0);
+          }
         }
       }
     };
-    var go = function (i) { cur = (i % N + N) % N; place(); };
-    its.forEach(function (el, i) { el.addEventListener('click', function () { if (!moved) go(i); }); });
-    var fp = $('.fc-prev', fc), fn = $('.fc-next', fc);
-    if (fp) fp.addEventListener('click', function () { go(cur - 1); });
-    if (fn) fn.addEventListener('click', function () { go(cur + 1); });
-    fc.addEventListener('keydown', function (e) { if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); } if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); } });
-    var sx = null, moved = false;
-    trk.addEventListener('pointerdown', function (e) { sx = e.clientX; moved = false; trk.classList.add('drag'); });
-    window.addEventListener('pointerup', function (e) {
-      if (sx === null) return; var dx = e.clientX - sx; sx = null; trk.classList.remove('drag');
-      if (Math.abs(dx) > 40) { moved = true; go(cur + (dx < 0 ? 1 : -1)); setTimeout(function () { moved = false; }, 50); }
+    /* spring towards the target slide: quick to start, soft to settle */
+    var tick = function () {
+      var diff = target - pos; vel = vel * 0.78 + diff * 0.09; pos += vel;
+      if (Math.abs(diff) < 0.0008 && Math.abs(vel) < 0.0008) { pos = target; vel = 0; }
+      render();
+      if (pos !== target) requestAnimationFrame(tick); else running = false;
+    };
+    var kick = function () { if (!running) { running = true; requestAnimationFrame(tick); } };
+    var goTo = function (i) {   /* go to slide i the short way round */
+      target = pos + wrap(i - pos); target = Math.round(target); kick();
+    };
+    var step = function (n) { target = Math.round(target) + n; kick(); };
+    its.forEach(function (el, i) { el.addEventListener('click', function () { goTo(i); }); });
+    fc.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
     });
-    window.addEventListener('resize', place, { passive: true });
-    place();
+    var size = function () { trk.style.height = (D.ch + 8) + 'px'; fc.style.setProperty('--cw', D.cw + 'px'); };
+    window.addEventListener('resize', function () { D = dims(); size(); render(); }, { passive: true });
+    size(); render();
   }
 
   /* pin-board drifts with the cursor */
