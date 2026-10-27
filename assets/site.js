@@ -419,8 +419,8 @@
         }
       }
     };
-    /* eased glide to the target photo: about 0.9s for one step, a little longer for far photos */
-    var from = 0, t0 = 0, dur = 900;
+    /* eased glide to the target photo: about 0.65s for one step, a little longer for far photos */
+    var from = 0, t0 = 0, dur = 650;
     var ease = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
     var tick = function (now) {
       var k = Math.min(1, (now - t0) / dur); pos = from + (target - from) * ease(k);
@@ -428,7 +428,7 @@
       if (k < 1) requestAnimationFrame(tick); else { pos = target; running = false; }
     };
     var kick = function () {
-      from = pos; t0 = performance.now(); dur = Math.min(1500, 900 + 150 * (Math.abs(target - from) - 1));
+      from = pos; t0 = performance.now(); dur = Math.min(1100, 650 + 110 * (Math.abs(target - from) - 1));
       if (!running) { running = true; requestAnimationFrame(tick); }
     };
     var goTo = function (i) {   /* go to photo i the short way round */
