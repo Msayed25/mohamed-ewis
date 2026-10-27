@@ -106,10 +106,10 @@
     landing.classList.add('drift');
     var driftBusy = false;
     var drift = function () {
-      var r = landing.getBoundingClientRect(), vh = window.innerHeight;
-      var gone = Math.max(0, Math.min(r.height, -r.top)), out = Math.max(0, Math.min(1, (vh - r.bottom) / vh));
-      landing.style.transform = gone > 0 ? 'translate3d(0,' + (gone * 0.45).toFixed(1) + 'px,0)' : '';
-      landing.style.setProperty('--fade', (1 - out * 0.85).toFixed(3));
+      /* it drifts down a little and fades out quickly, so it is gone before the next section (which sits above it) reaches its text */
+      var h = landing.offsetHeight, gone = Math.max(0, Math.min(h, window.scrollY - landing.offsetTop)), f = Math.min(1, gone / (h * 0.55));
+      landing.style.transform = gone > 0 ? 'translate3d(0,' + (gone * 0.3).toFixed(1) + 'px,0)' : '';
+      landing.style.setProperty('--fade', (1 - f * f * (3 - 2 * f)).toFixed(3));
       driftBusy = false;
     };
     window.addEventListener('scroll', function () { if (!driftBusy) { driftBusy = true; requestAnimationFrame(drift); } }, { passive: true });
