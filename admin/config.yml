@@ -10,8 +10,8 @@ backend:
     delete: "Delete {{collection}} {{slug}} via admin"
     uploadMedia: "Upload {{path}} via admin"
 
-site_url: https://msayed25.github.io/mohamed-ewis
-display_url: https://msayed25.github.io/mohamed-ewis
+site_url: https://mohamedewis.com
+display_url: https://mohamedewis.com
 media_folder: images/uploads
 public_folder: /images/uploads
 
