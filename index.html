@@ -8,12 +8,13 @@ layout: default
 {% assign cats = "digital:Digital,print:Print,pitch:Pitch,film:Film,photography:Photography,branding:Branding,personal:Personal" | split: "," %}
 
 <section class="landing g" aria-label="{{ s.name }}, {{ s.title }}">
-  <div class="tc" aria-hidden="true"><b>00:00:00:00</b><span class="mono">Rolling</span></div>
-  {% assign nm = s.name | split: " " %}<h1><span><b>{{ nm | first }}</b></span><span><b>{{ nm | last }}</b></span></h1>
-  <figure class="vf"><div class="pic"><img src="{% if s.portrait_landing and s.portrait_landing != "" %}{{ s.portrait_landing | relative_url }}{% else %}{{ s.portrait | relative_url }}{% endif %}" alt="{{ s.name }}" fetchpriority="high"></div></figure>
-  <div class="low">
-    {% if s.disciplines.size > 0 %}<ul>{% for d in s.disciplines %}<li>{{ d }}</li>{% endfor %}</ul>{% endif %}
-    <div class="mono meta">{{ s.title }}</div>
+  <div class="stage">
+    <div class="tc" aria-hidden="true"><b>00:00:00:00</b><span class="mono">Rolling</span></div>
+    {% assign nm = s.name | split: " " %}<h1><span><b>{{ nm | first }}</b></span> <span><b class="sf">{{ nm | last }}</b></span></h1>
+    <figure class="vf"><div class="pic"><img src="{% if s.portrait_landing and s.portrait_landing != "" %}{{ s.portrait_landing | relative_url }}{% else %}{{ s.portrait | relative_url }}{% endif %}" alt="{{ s.name }}" fetchpriority="high"></div></figure>
+    <p class="role mono">{{ s.title }}</p>
+    {% if s.landing_bio and s.landing_bio != "" %}<p class="bio">{{ s.landing_bio }}</p>{% endif %}
+    {% if s.disciplines.size > 0 %}<ul class="low">{% for d in s.disciplines %}<li>{{ d }}</li>{% endfor %}</ul>{% endif %}
   </div>
 </section>
 

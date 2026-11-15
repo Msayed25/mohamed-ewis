@@ -97,23 +97,59 @@
     }, { passive: true });
   }
 
-  /* section motion "Minimal": the landing fills the screen under the top bar and drifts up slower than the page as you leave it */
+  /* top-bar height, used by the pinned landing */
   var topBar = $('.bar');
   var setBarH = function () { root.style.setProperty('--barh', (topBar ? topBar.offsetHeight : 60) + 'px'); };
   setBarH(); window.addEventListener('resize', setBarH, { passive: true });
-  var landing = $('.landing');
-  if (landing && !reduce) {
-    landing.classList.add('drift');
-    var driftBusy = false;
-    var drift = function () {
-      /* it drifts down a little and fades out quickly, so it is gone before the next section (which sits above it) reaches its text */
-      var h = landing.offsetHeight, gone = Math.max(0, Math.min(h, window.scrollY - landing.offsetTop)), f = Math.min(1, gone / (h * 0.55));
-      landing.style.transform = gone > 0 ? 'translate3d(0,' + (gone * 0.3).toFixed(1) + 'px,0)' : '';
-      landing.style.setProperty('--fade', (1 - f * f * (3 - 2 * f)).toFixed(3));
-      driftBusy = false;
+  /* landing on scroll (client feedback round 2): the stage stays pinned while the full-width name shrinks into the
+     top-left corner, the portrait grows on the right, the disciplines fade out and a short line fades in */
+  var landing = $('.landing'), stage = landing && $('.stage', landing);
+  if (landing && stage && !reduce) {
+    landing.classList.add('pin');
+    var lName = $('h1', landing), lPic = $('.vf', landing), lRole = $('.role', landing), lBio = $('.bio', landing), lLow = $('.low', landing);
+    var lerp = function (a, b, t) { return a + (b - a) * t; };
+    var clamp01 = function (x) { return Math.max(0, Math.min(1, x)); };
+    var easeIO = function (x) { return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+    var L = null, landBusy = false;
+    var measure = function () {
+      var W = stage.clientWidth, H = stage.clientHeight, g = parseFloat(getComputedStyle(landing).paddingLeft) || 0, phone = W < 760 || H > W * 1.15;
+      if (!g) { landing.classList.remove('pin'); g = parseFloat(getComputedStyle(landing).paddingLeft) || 16; landing.classList.add('pin'); }
+      landing.style.setProperty('--gx', g + 'px');
+      lName.style.transform = 'none';
+      var nw = lName.offsetWidth, nh = lName.offsetHeight, lowH = lLow ? lLow.offsetHeight : 0, lowB = lLow ? parseFloat(getComputedStyle(lLow).bottom) : 24;
+      var big = (W - 2 * g) * 0.98 / nw, small = (phone ? Math.min(170, W * 0.45) : Math.min(280, W * 0.2)) / nw;
+      var bigH = nh * big, smallH = nh * small, top1 = phone ? 18 : 26;
+      /* portrait: small above the disciplines at the start, big on the right at the end */
+      var aw = phone ? Math.min(W * 0.42, 220) : Math.min(W * 0.16, 260, (H - bigH - lowH - 120) / 1.25);
+      aw = Math.max(aw, phone ? 120 : 140);
+      var ay = H - lowB - lowH - 44 - aw * 1.25;
+      var top0 = Math.max(phone ? 24 : 30, Math.min(H * 0.12, ay - bigH - 24));
+      var bw = phone ? Math.min(W * 0.62, (H * 0.5) / 1.25) : Math.min(W * 0.32, 540, (H - 90) / 1.25);
+      var bioTop = phone ? top1 + smallH + 22 : Math.max(top1 + smallH + 40, H * 0.3);
+      var by = phone ? Math.max(bioTop + (lBio ? lBio.offsetHeight : 0) + 28, H - bw * 1.25 - 44) : Math.max(top1 + 10, (H - bw * 1.25) / 2);
+      if (lBio) { lBio.style.maxWidth = (phone ? W - 2 * g : Math.min(560, W - bw - 3 * g - 40)) + 'px'; }
+      L = { W: W, H: H, g: g, nh: nh, bioTop: bioTop, big: big, small: small, top0: top0, top1: top1, aw: aw, ay: ay, bw: bw, by: by };
     };
-    window.addEventListener('scroll', function () { if (!driftBusy) { driftBusy = true; requestAnimationFrame(drift); } }, { passive: true });
-    drift();
+    var landFrame = function () {
+      landBusy = false; if (!L) measure();
+      var r = landing.getBoundingClientRect(), run = landing.offsetHeight - stage.clientHeight;
+      var p = easeIO(clamp01(-(r.top - (parseFloat(getComputedStyle(stage).top) || 0)) / (run * 0.85)));
+      var s = lerp(L.big, L.small, p);
+      lName.style.transform = 'translate3d(' + L.g + 'px,' + lerp(L.top0, L.top1, p).toFixed(1) + 'px,0) scale(' + s.toFixed(4) + ')';
+      var w = lerp(L.aw, L.bw, p), h = w * 1.25, x = L.W - L.g - w, y = lerp(L.ay, L.by, p);
+      lPic.style.width = w.toFixed(1) + 'px'; lPic.style.height = h.toFixed(1) + 'px';
+      lPic.style.left = x.toFixed(1) + 'px'; lPic.style.top = y.toFixed(1) + 'px';
+      if (lRole) lRole.style.top = (y + h + 8).toFixed(1) + 'px';
+      /* the line stays just under the name while the name is still shrinking */
+      if (lBio) lBio.style.top = Math.max(L.bioTop, lerp(L.top0, L.top1, p) + L.nh * s + 18).toFixed(1) + 'px';
+      landing.style.setProperty('--bv', clamp01((p - 0.55) / 0.35).toFixed(3));
+      landing.style.setProperty('--dv', clamp01(1 - p / 0.25).toFixed(3));
+    };
+    var landReq = function () { if (!landBusy) { landBusy = true; requestAnimationFrame(landFrame); } };
+    window.addEventListener('scroll', landReq, { passive: true });
+    window.addEventListener('resize', function () { L = null; landReq(); }, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { L = null; landReq(); });
+    landFrame();
   }
   /* ...and in every other section the title wipes in and the content rises softly as it arrives */
   if (window.IntersectionObserver && !reduce) {

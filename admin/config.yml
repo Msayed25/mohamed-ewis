@@ -82,6 +82,7 @@ collections:
           - { name: status, label: Availability badge, widget: string, required: false, hint: "Shown with a green pulse. Leave empty to hide." }
           - { name: portrait, label: Portrait photo, widget: image }
           - { name: portrait_landing, label: Landing photo (upper body, facing into the page), widget: image, required: false }
+          - { name: landing_bio, label: Landing line (fades in next to the photo as you scroll), widget: text, required: false }
           - { name: expertise, label: Expertise (the big statement after the landing page), widget: text, required: false }
           - { name: services_intro, label: Services intro line, widget: string, required: false }
           - { name: services, label: Services, widget: list, fields: [ { name: title, label: Service, widget: string }, { name: text, label: Short description, widget: text, required: false }, { name: image, label: Photo, widget: image, required: false } ] }
