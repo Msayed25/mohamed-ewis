@@ -13,7 +13,7 @@ layout: default
   <figure class="vf"><div class="pic"><img src="{% if s.portrait_landing and s.portrait_landing != "" %}{{ s.portrait_landing | relative_url }}{% else %}{{ s.portrait | relative_url }}{% endif %}" alt="{{ s.name }}" fetchpriority="high"></div></figure>
   <div class="low">
     {% if s.disciplines.size > 0 %}<ul>{% for d in s.disciplines %}<li>{{ d }}</li>{% endfor %}</ul>{% endif %}
-    <div class="mono meta">{{ s.title }} · {{ s.location }}{% if s.status != "" %}<br><span class="on"><i></i>{{ s.status }}</span>{% endif %}</div>
+    <div class="mono meta">{{ s.title }}</div>
   </div>
 </section>
 

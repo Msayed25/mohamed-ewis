@@ -1,7 +1,7 @@
 {
   "name": "Mohamed Ewis",
   "short_name": "EWIS",
-  "title": "Creative Art Director",
+  "title": "Creative/Art Director",
   "location": "Dubai, UAE",
   "timezone_offset": 4,
   "timezone_label": "GST",
@@ -34,10 +34,11 @@
     }
   ],
   "disciplines": [
+    "Creative Direction",
     "Art Direction",
-    "Photography",
     "Film",
-    "Collage"
+    "Photography",
+    "Brand Worlds"
   ],
   "headline": "Pepsi, Google, Nike and Mini already called. Your move.",
   "bio": "Art director and visual artist. He finds one big idea, then makes it loud through photography, film, collage, AR and design.",
