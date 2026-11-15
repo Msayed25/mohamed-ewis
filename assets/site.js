@@ -126,8 +126,11 @@
       var top0 = Math.max(phone ? 24 : 30, Math.min(H * 0.12, ay - bigH - 24));
       var bw = phone ? Math.min(W * 0.62, (H * 0.5) / 1.25) : Math.min(W * 0.32, 540, (H - 90) / 1.25);
       var bioTop = phone ? top1 + smallH + 22 : Math.max(top1 + smallH + 40, H * 0.3);
-      var by = phone ? Math.max(bioTop + (lBio ? lBio.offsetHeight : 0) + 28, H - bw * 1.25 - 44) : Math.max(top1 + 10, (H - bw * 1.25) / 2);
-      if (lBio) { lBio.style.maxWidth = (phone ? W - 2 * g : Math.min(560, W - bw - 3 * g - 40)) + 'px'; }
+      if (lBio) lBio.style.maxWidth = (phone ? W - 2 * g : Math.min(560, W - bw - 3 * g - 40)) + 'px';
+      var bioH = lBio ? lBio.offsetHeight : 0;
+      /* on phones the photo takes the room left under the text (never smaller than it started) */
+      if (phone) bw = Math.max(aw, Math.min(bw, (H - bioTop - bioH - 28 - 34) / 1.25));
+      var by = phone ? Math.max(bioTop + bioH + 28, H - bw * 1.25 - 34) : Math.max(top1 + 10, (H - bw * 1.25) / 2);
       L = { W: W, H: H, g: g, nh: nh, bioTop: bioTop, big: big, small: small, top0: top0, top1: top1, aw: aw, ay: ay, bw: bw, by: by };
     };
     var landFrame = function () {
