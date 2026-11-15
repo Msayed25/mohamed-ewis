@@ -416,8 +416,6 @@ html.view-open,html.view-open body{overflow:hidden}
 .pk-in{overflow:hidden;display:grid;grid-template-columns:70px 140px minmax(0,46ch);gap:14px;align-items:start;opacity:0;transition:opacity .3s}
 .pk-in img{grid-column:2;width:140px;aspect-ratio:4/3;object-fit:cover;margin-top:14px}
 .pk-t{grid-column:3;margin-top:14px;color:var(--soft);font-size:14px;line-height:1.55}
-.pk-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.pk-tags span{border:1px solid var(--hair);border-radius:99px;padding:4px 9px;color:var(--ink)}
 @media (hover:hover){.row:hover .peek,.row:focus-visible .peek{grid-template-rows:1fr}.row:hover .pk-in,.row:focus-visible .pk-in{opacity:1;transition-delay:.08s}}
 @media (max-width:760px){.peek{display:none}}
 @media (prefers-reduced-motion:reduce){.peek,.pk-in{transition:none}}
@@ -448,7 +446,7 @@ h2.rise-h.in{clip-path:inset(0 0 -10% 0);transform:none}
    by site.js; the centre photo is large and in colour, the rest are one smaller size in black and white ---------- */
 .fc{position:relative;--cw:300px}
 .fc-track{position:relative;height:420px;overflow:hidden;-webkit-user-select:none;user-select:none}
-.fc-it{position:absolute;left:50%;top:50%;width:200px;height:260px;padding:0;border:0;background:var(--wash);overflow:hidden;cursor:pointer;will-change:transform,filter}
+.fc-it{position:absolute;left:50%;top:50%;width:200px;height:260px;padding:0;border:0;background:var(--wash);overflow:hidden;cursor:pointer;will-change:transform,opacity}
 .fc-it img{width:100%;height:100%;object-fit:cover;pointer-events:none}
 .fc-it.on{cursor:default}
 .fc-cap{position:relative;display:flex;justify-content:space-between;align-items:baseline;gap:16px;width:var(--cw);margin:16px auto 0;padding-top:16px;min-height:44px;transition:opacity .3s}

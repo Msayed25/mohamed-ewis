@@ -415,9 +415,9 @@
     if (m) { var link = $('a[href*="/work/' + m[1] + '/"], a[href*="work/' + m[1] + '/"]'); if (link) openProject(link.href); }
   }
 
-  /* personal: focus carousel, after Framer's "Focus Carousel Pro". The centre photo is large and in colour; every other
-     photo is one smaller size, black and white, and blurs and fades step by step with distance. Clicking a photo glides it
-     to the centre (sizes, colour and blur blend on the way); the arrow keys also work. No drag or wheel control, so
+  /* personal: focus carousel. The centre photo is large; every other photo is one smaller size and fades step by step
+     with distance, all in colour and sharp (client feedback round 2: no blur, no black and white, just a fade, like
+     Framer's "3D Scale Carousel"). Clicking a photo glides it to the centre (sizes and fade blend on the way); the arrow keys also work. No drag or wheel control, so
      scrolling over the section always scrolls the page. */
   var fc = $('#fc');
   if (fc) {
@@ -440,7 +440,6 @@
         var k = Math.min(5, Math.floor(a)), f = a - Math.floor(a), op = a >= 5 ? Math.max(0, 0.27 - (a - 5) * 0.3) : lerp(OPAC[k], OPAC[Math.min(5, k + 1)], f);
         el.style.width = w.toFixed(1) + 'px'; el.style.height = h.toFixed(1) + 'px';
         el.style.transform = 'translate3d(' + ((d < 0 ? -x : x) - w / 2).toFixed(1) + 'px,' + (-h / 2).toFixed(1) + 'px,0)';
-        el.style.filter = a < 0.01 ? '' : 'grayscale(' + t.toFixed(3) + ') brightness(' + (1 - 0.08 * t).toFixed(3) + ')' + (a > 1 ? ' blur(' + Math.min(10, (a - 1) * 2.5).toFixed(2) + 'px)' : '');
         el.style.opacity = op.toFixed(3); el.style.zIndex = String(100 - Math.round(a * 10));
         el.style.visibility = op < 0.01 ? 'hidden' : '';
       });
