@@ -338,7 +338,7 @@ html.view-open,html.view-open body{overflow:hidden}
 
 /* ---------- landing (client feedback round 2, Nov 2026): a film timecode rolls, the name slides up and the portrait fades in.
    Then, while you scroll, the stage stays pinned: the full-width name shrinks into the top-left corner, the portrait grows,
-   the disciplines fade out and a short line fades in (site.js adds .pin and sets the positions). Without script, or with
+   the disciplines fade out and a short line fades in (site.js adds .pinned and sets the positions). Without script, or with
    reduced motion, it is a plain stacked layout. ---------- */
 .landing{position:relative;border-bottom:1px solid var(--ink);padding-block:clamp(36px,5vw,64px) clamp(28px,4vw,44px)}
 .landing h1{font:600 clamp(36px,10.5vw,184px)/.9 var(--body);letter-spacing:-.05em;margin:0;white-space:nowrap;position:relative;z-index:2}
@@ -351,7 +351,7 @@ html.view-open,html.view-open body{overflow:hidden}
 .landing .vf .pic{aspect-ratio:4/5;overflow:hidden;background:#c2c2c2;height:100%}
 .landing .vf img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;filter:grayscale(1);display:block;opacity:0;transition:opacity 1.1s ease .45s}
 .landing.go .vf img{opacity:1}
-.landing .role{margin:8px 0 0;text-align:right;color:var(--soft);opacity:0;transition:opacity .8s .9s}
+.landing .role{margin:8px 0 0;text-align:right;color:var(--ink);font-weight:700;opacity:0;transition:opacity .8s .9s}
 .landing .bio{font-size:clamp(16px,1.35vw,20px);line-height:1.5;max-width:560px;margin:28px 0 0}
 .landing .low{list-style:none;margin:28px 0 0;padding:12px 0 0;border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;gap:2px 14px;font:700 clamp(15px,1.4vw,22px)/1.3 var(--body);letter-spacing:-.01em;opacity:0;transition:opacity .8s .9s}
 .landing .low li+li::before{content:"/";margin-right:14px;color:var(--soft)}
@@ -362,14 +362,14 @@ html.view-open,html.view-open body{overflow:hidden}
 .landing .tc span{margin-left:14px;margin-bottom:12px;color:var(--soft)}
 .landing.go .tc{opacity:0;visibility:hidden}
 /* pinned (scripted) version */
-.landing.pin{height:250vh;padding:0}
-.landing.pin .stage{position:sticky;top:var(--barh,60px);height:calc(100vh - var(--barh,60px));height:calc(100svh - var(--barh,60px));overflow:hidden}
-.landing.pin h1{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
-.landing.pin .vf,.landing.pin .role,.landing.pin .bio,.landing.pin .low{position:absolute;margin:0}
-.landing.pin .vf{will-change:transform}
-.landing.pin .role{right:var(--gx)}
-.landing.pin .bio{left:var(--gx);opacity:var(--bv,0);transform:translateY(calc((1 - var(--bv,0)) * 20px))}
-.landing.pin .low{left:var(--gx);right:var(--gx);bottom:clamp(18px,3vh,32px)}
+.landing.pinned{height:250vh;padding:0}
+.landing.pinned .stage{position:sticky;top:var(--barh,60px);height:calc(100vh - var(--barh,60px));height:calc(100svh - var(--barh,60px));overflow:hidden}
+.landing.pinned h1{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.landing.pinned .vf,.landing.pinned .role,.landing.pinned .bio,.landing.pinned .low{position:absolute;margin:0}
+.landing.pinned .vf{will-change:transform}
+.landing.pinned .role{right:var(--gx)}
+.landing.pinned .bio{left:var(--gx);opacity:var(--bv,0);transform:translateY(calc((1 - var(--bv,0)) * 20px))}
+.landing.pinned .low{left:var(--gx);right:var(--gx);bottom:clamp(18px,3vh,32px)}
 @media (prefers-reduced-motion:reduce){.landing .tc{display:none}.landing h1 b,.landing .vf img,.landing .low,.landing .role{transition:none}}
 
 /* ---------- expertise statement after the landing (deck slide 7): one heavy paragraph, first line indented; words darken as you scroll (site.js) ---------- */

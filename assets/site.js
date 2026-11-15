@@ -105,7 +105,7 @@
      top-left corner, the portrait grows on the right, the disciplines fade out and a short line fades in */
   var landing = $('.landing'), stage = landing && $('.stage', landing);
   if (landing && stage && !reduce) {
-    landing.classList.add('pin');
+    landing.classList.add('pinned');
     var lName = $('h1', landing), lPic = $('.vf', landing), lRole = $('.role', landing), lBio = $('.bio', landing), lLow = $('.low', landing);
     var lerp = function (a, b, t) { return a + (b - a) * t; };
     var clamp01 = function (x) { return Math.max(0, Math.min(1, x)); };
@@ -113,7 +113,7 @@
     var L = null, landBusy = false;
     var measure = function () {
       var W = stage.clientWidth, H = stage.clientHeight, g = parseFloat(getComputedStyle(landing).paddingLeft) || 0, phone = W < 760 || H > W * 1.15;
-      if (!g) { landing.classList.remove('pin'); g = parseFloat(getComputedStyle(landing).paddingLeft) || 16; landing.classList.add('pin'); }
+      if (!g) { landing.classList.remove('pinned'); g = parseFloat(getComputedStyle(landing).paddingLeft) || 16; landing.classList.add('pinned'); }
       landing.style.setProperty('--gx', g + 'px');
       lName.style.transform = 'none';
       var nw = lName.offsetWidth, nh = lName.offsetHeight, lowH = lLow ? lLow.offsetHeight : 0, lowB = lLow ? parseFloat(getComputedStyle(lLow).bottom) : 24;
