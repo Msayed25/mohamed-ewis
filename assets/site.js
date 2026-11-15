@@ -423,7 +423,7 @@
   if (fc) {
     var its = $$('.fc-it', fc), trk = $('.fc-track', fc), N = its.length;
     var pos = 0, target = 0, running = false, lastShown = -1;
-    var OPAC = [1, 1, 0.86, 0.74, 0.64, 0.27];
+    var OPAC = [1, 0.85, 0.62, 0.45, 0.3, 0.12];
     var wrap = function (d) { d = ((d % N) + N) % N; return d > N / 2 ? d - N : d; };
     var lerp = function (a, b, t) { return a + (b - a) * t; };
     var dims = function () {
@@ -437,7 +437,7 @@
         var w = lerp(D.cw, D.sw, t), h = lerp(D.ch, D.sh, t);
         var near = D.cw / 2 + D.gap + D.sw / 2;
         var x = a <= 1 ? a * near : near + (a - 1) * (D.sw + D.gap);
-        var k = Math.min(5, Math.floor(a)), f = a - Math.floor(a), op = a >= 5 ? Math.max(0, 0.27 - (a - 5) * 0.3) : lerp(OPAC[k], OPAC[Math.min(5, k + 1)], f);
+        var k = Math.min(5, Math.floor(a)), f = a - Math.floor(a), op = a >= 5 ? Math.max(0, 0.12 - (a - 5) * 0.15) : lerp(OPAC[k], OPAC[Math.min(5, k + 1)], f);
         el.style.width = w.toFixed(1) + 'px'; el.style.height = h.toFixed(1) + 'px';
         el.style.transform = 'translate3d(' + ((d < 0 ? -x : x) - w / 2).toFixed(1) + 'px,' + (-h / 2).toFixed(1) + 'px,0)';
         el.style.opacity = op.toFixed(3); el.style.zIndex = String(100 - Math.round(a * 10));
