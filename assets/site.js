@@ -396,15 +396,21 @@
     };
     var closeProject = function (target) {
       if (view.hidden) return;
-      var done = function () {
-        view.hidden = true; view.classList.remove('leave'); view.innerHTML = ''; root.classList.remove('view-open'); holdScroll(false);
+      /* the page underneath starts gliding to its destination straight away, while the project wipes up and uncovers it,
+         so leaving a project reads as one movement */
+      var go = function () {
+        root.classList.remove('view-open'); holdScroll(false);
         document.title = 'Mohamed Ewis · Creative/Art Director';
         if (target === 'top') glideTo(0);
         else if (target) { var el = document.getElementById(target); if (el) glideTo(el.getBoundingClientRect().top + window.scrollY - (topBar ? topBar.offsetHeight : 0)); }
-        else if (returnFocus) returnFocus.focus({ preventScroll: true });
+      };
+      var done = function () {
+        view.hidden = true; view.classList.remove('leave'); view.innerHTML = '';
+        if (!target && returnFocus) returnFocus.focus({ preventScroll: true });
       };
       if (opened) { opened = false; try { history.replaceState(null, '', location.pathname + location.search + (target && target !== 'top' ? '#' + target : '')); } catch (e) {} }
-      if (reduce) done(); else { view.classList.add('leave'); setTimeout(done, 340); }
+      go();
+      if (reduce) done(); else { view.classList.add('leave'); setTimeout(done, 750); }
     };
     document.addEventListener('click', function (e) {
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;

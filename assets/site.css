@@ -269,7 +269,7 @@ h1.line{font-weight:400}
 /* project opened from the home page: same tab, slides up over the home page, starts at the top */
 .view{position:fixed;inset:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;background:var(--paper);-webkit-overflow-scrolling:touch}
 .view.enter{animation:viewin .55s cubic-bezier(.2,.9,.2,1) both}
-.view.leave{animation:viewout .35s cubic-bezier(.4,0,.6,1) both}
+.view.leave{animation:viewout .75s cubic-bezier(.65,0,.35,1) both;pointer-events:none}
 @keyframes viewin{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
 @keyframes viewout{to{clip-path:inset(0 0 100% 0)}}
 .view .progress{top:0}
