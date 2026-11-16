@@ -13,6 +13,8 @@
     var lenisFrame = function (t) { lenis.raf(t); requestAnimationFrame(lenisFrame); };
     requestAnimationFrame(lenisFrame);
   }
+  /* current scroll position; with Lenis it comes from Lenis itself, which avoids asking the page (asking can force a layout) */
+  var scrollPos = function () { return lenis && !lenis.isStopped ? lenis.scroll : window.scrollY; };
   var holdScroll = function (v) { if (lenis) { if (v) lenis.stop(); else lenis.start(); } };
 
   /* theme toggle (light first) */
@@ -131,23 +133,33 @@
       /* on phones the photo takes the room left under the text (never smaller than it started) */
       if (phone) bw = Math.max(aw, Math.min(bw, (H - bioTop - bioH - 28 - 34) / 1.25));
       var by = phone ? Math.max(bioTop + bioH + 28, H - bw * 1.25 - 34) : Math.max(top1 + 10, (H - bw * 1.25) / 2);
-      L = { W: W, H: H, g: g, nh: nh, bioTop: bioTop, big: big, small: small, top0: top0, top1: top1, aw: aw, ay: ay, bw: bw, by: by };
+      /* the portrait box is laid out once at its final size; scrolling only moves and scales it (transform), so the
+         browser never has to redo the page layout while you scroll */
+      lPic.style.width = bw.toFixed(1) + 'px'; lPic.style.height = (bw * 1.25).toFixed(1) + 'px';
+      lPic.style.left = (W - g - bw).toFixed(1) + 'px'; lPic.style.top = '0px';
+      if (lRole) lRole.style.top = '0px';
+      if (lBio) lBio.style.top = '0px';
+      var stTop = parseFloat(getComputedStyle(stage).top) || 0;
+      L = { W: W, H: H, g: g, nh: nh, bioTop: bioTop, big: big, small: small, top0: top0, top1: top1, aw: aw, ay: ay, bw: bw, by: by,
+            start: landing.getBoundingClientRect().top + window.scrollY - stTop, run: (landing.offsetHeight - H) * 0.85 };
     };
+    var lastP = -1;
     var landFrame = function () {
-      landBusy = false; if (!L) measure();
-      var r = landing.getBoundingClientRect(), run = landing.offsetHeight - stage.clientHeight;
-      var p = easeIO(clamp01(-(r.top - (parseFloat(getComputedStyle(stage).top) || 0)) / (run * 0.85)));
-      var s = lerp(L.big, L.small, p);
-      lName.style.transform = 'translate3d(' + L.g + 'px,' + lerp(L.top0, L.top1, p).toFixed(1) + 'px,0) scale(' + s.toFixed(4) + ')';
-      var w = lerp(L.aw, L.bw, p), h = w * 1.25, x = L.W - L.g - w, y = lerp(L.ay, L.by, p);
-      lPic.style.width = w.toFixed(1) + 'px'; lPic.style.height = h.toFixed(1) + 'px';
-      lPic.style.left = x.toFixed(1) + 'px'; lPic.style.top = y.toFixed(1) + 'px';
-      if (lRole) lRole.style.top = (y + h + 8).toFixed(1) + 'px';
-      /* the line stays just under the name while the name is still shrinking */
-      if (lBio) lBio.style.top = Math.max(L.bioTop, lerp(L.top0, L.top1, p) + L.nh * s + 18).toFixed(1) + 'px';
-      landing.style.setProperty('--bv', clamp01((p - 0.55) / 0.35).toFixed(3));
-      landing.style.setProperty('--dv', clamp01(1 - p / 0.25).toFixed(3));
+      landBusy = false; if (!L) { measure(); lastP = -1; }
+      var p = easeIO(clamp01((scrollPos() - L.start) / L.run));
+      if (p === lastP) return; lastP = p;   /* nothing to change (e.g. scrolling further down the page) */
+      var s = lerp(L.big, L.small, p), ny = lerp(L.top0, L.top1, p);
+      lName.style.transform = 'translate3d(' + L.g + 'px,' + ny.toFixed(1) + 'px,0) scale(' + s.toFixed(4) + ')';
+      var w = lerp(L.aw, L.bw, p), h = w * 1.25, y = lerp(L.ay, L.by, p);
+      lPic.style.transform = 'translate3d(' + (L.bw - w).toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + (w / L.bw).toFixed(4) + ')';
+      if (lRole) lRole.style.transform = 'translate3d(0,' + (y + h + 8).toFixed(1) + 'px,0)';
+      /* the line stays just under the name while the name is still shrinking, and fades in */
+      var bv = clamp01((p - 0.55) / 0.35);
+      if (lBio) { lBio.style.opacity = bv.toFixed(3); lBio.style.transform = 'translate3d(0,' + (Math.max(L.bioTop, ny + L.nh * s + 18) + (1 - bv) * 20).toFixed(1) + 'px,0)'; }
+      if (lLow && landing.classList.contains('ready')) lLow.style.opacity = clamp01(1 - p / 0.25).toFixed(3);
     };
+    /* after the opening animation the disciplines follow the scroll directly (no transition delay) */
+    setTimeout(function () { landing.classList.add('ready'); lastP = -1; landReq(); }, 2600);
     var landReq = function () { if (!landBusy) { landBusy = true; requestAnimationFrame(landFrame); } };
     window.addEventListener('scroll', landReq, { passive: true });
     window.addEventListener('resize', function () { L = null; landReq(); }, { passive: true });
@@ -175,12 +187,13 @@
     var pin = document.createElement('div'); pin.className = 'reel-pin';
     while (reel.firstChild) pin.appendChild(reel.firstChild);
     reel.appendChild(pin); reel.classList.add('reel-on');
-    var reelDist = 0, reelX = 0, reelTo = 0, reelRun = false;
+    var reelDist = 0, reelX = 0, reelTo = 0, reelRun = false, reelSpan = 1, reelTop = 0;
     var REEL_SLOW = 2;   /* scroll this many pixels down for each pixel the films move sideways */
     var reelSize = function () {
       var pad = parseFloat(getComputedStyle(reel).paddingLeft) || 0;
       reelDist = Math.max(0, reelTrack.scrollWidth - window.innerWidth + pad * 2);
-      reel.style.height = (window.innerHeight + reelDist * REEL_SLOW) + 'px';
+      reel.style.height = (window.innerHeight + reelDist * REEL_SLOW) + 'px'; reelSpan = reelDist * REEL_SLOW;
+      reelTop = reel.getBoundingClientRect().top + window.scrollY;
       reelMove();
     };
     /* the films ease towards where the scroll says they should be, so they glide instead of jumping */
@@ -191,9 +204,10 @@
       if (reelX !== reelTo) requestAnimationFrame(reelStep); else reelRun = false;
     };
     var reelMove = function () {
-      var r = reel.getBoundingClientRect(), span = reel.offsetHeight - window.innerHeight;
-      reelTo = Math.max(0, Math.min(1, -r.top / Math.max(1, span))) * reelDist;
-      if (r.bottom < 0 || r.top > window.innerHeight) { reelX = reelTo; reelTrack.style.transform = 'translate3d(' + (-reelX).toFixed(1) + 'px,0,0)'; return; }   /* off screen: no need to animate */
+      /* position from remembered numbers, so scrolling never forces the browser to measure the page */
+      var top = reelTop - scrollPos(), span = reelSpan;
+      reelTo = Math.max(0, Math.min(1, -top / Math.max(1, span))) * reelDist;
+      if (top + span + window.innerHeight < 0 || top > window.innerHeight) { reelX = reelTo; reelTrack.style.transform = 'translate3d(' + (-reelX).toFixed(1) + 'px,0,0)'; return; }   /* off screen: no need to animate */
       if (!reelRun) { reelRun = true; requestAnimationFrame(reelStep); }
     };
     window.addEventListener('scroll', reelMove, { passive: true });
@@ -216,13 +230,20 @@
     var words = xp.textContent.trim().split(/\s+/); xp.textContent = '';
     words.forEach(function (w, i) { var sp = document.createElement('span'); sp.className = 'w'; sp.textContent = w; xp.appendChild(sp); if (i < words.length - 1) xp.appendChild(document.createTextNode(' ')); });
     var ws = $$('.w', xp);
+    var litN = -1, xpTop = 0;
+    var xpMeasure = function () { xpTop = xp.getBoundingClientRect().top + window.scrollY; };
     var light = function () {
-      var vh = window.innerHeight, top = xp.getBoundingClientRect().top;
+      var vh = window.innerHeight, top = xpTop - scrollPos();
       var p = reduce ? 1 : Math.max(0, Math.min(1, (vh * 0.9 - top) / (vh * 0.55)));
       var n = Math.round(p * ws.length);
-      ws.forEach(function (w, i) { w.classList.toggle('on', i < n); });
+      if (n === litN) return;   /* only touch the words when the count changes */
+      ws.forEach(function (w, i) { if ((i < n) !== (i < litN)) w.classList.toggle('on', i < n); });
+      litN = n;
     };
-    light(); window.addEventListener('scroll', light, { passive: true }); window.addEventListener('resize', light, { passive: true });
+    xpMeasure(); light(); window.addEventListener('scroll', light, { passive: true });
+    var xpRe = function () { xpMeasure(); litN = -1; light(); };
+    window.addEventListener('resize', xpRe, { passive: true }); window.addEventListener('load', xpRe);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(xpRe);
   }
 
   /* menu: a full-screen film slate that claps shut */
@@ -529,9 +550,17 @@
     var paint = function (s) { out.innerHTML = ''; var b = document.createElement('b'); b.textContent = s.slice(0, Math.min(s.length, at)); out.appendChild(b); out.appendChild(document.createTextNode(s.slice(at))); };
     if (reduce || !('IntersectionObserver' in window)) paint(full);
     else {
-      var i = 0, type = function () { paint(full.slice(0, i)); i++; if (i <= full.length) setTimeout(type, 38); else setTimeout(function () { i = 0; type(); }, 6000); };
-      new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { o.disconnect(); type(); } }).observe(cmd);
+      /* types while the line is on screen; the replay every 6 s only happens while it is visible */
+      var i = 0, seen = false, typing = false;
+      var type = function () { typing = true; paint(full.slice(0, i)); i++; if (i <= full.length) setTimeout(type, 38); else { typing = false; setTimeout(function () { if (seen) { i = 0; type(); } }, 6000); } };
+      new IntersectionObserver(function (es) { seen = es[0].isIntersecting; if (seen && !typing && i === 0) type(); else if (seen && !typing && i > full.length) { i = 0; type(); } }).observe(cmd);
     }
+  }
+
+  /* looping animations (REC dots, CV caret and play-head) pause while their section is off screen */
+  if ('IntersectionObserver' in window) {
+    var aio = new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('anim-off', !e.isIntersecting); }); });
+    $$('#films, #cv').forEach(function (s) { aio.observe(s); });
   }
 
   /* copy buttons */

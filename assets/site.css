@@ -19,7 +19,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px}
 
 /* ---------- top bar (Signal-A + Asher Vale) ---------- */
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ink);padding-block:10px;display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 97%,transparent);border-bottom:1px solid var(--ink);padding-block:10px;display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap}
 .bar .brand{font:400 20px/1 var(--display);color:var(--ink);letter-spacing:.02em}
 .bar .avail{display:flex;align-items:center;gap:7px}
 .bar .avail i{position:relative;width:8px;height:8px;border-radius:50%;background:var(--green)}
@@ -143,9 +143,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .tl .trk>span.tlab{position:absolute;left:-54px;top:8px;color:var(--soft)}
 .tl .clip{position:absolute;top:4px;height:22px;border-radius:2px;background:var(--c);color:var(--clipfg,#fff);font:500 10px/22px var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:0 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:transform .2s,box-shadow .2s}
 .tl .clip:hover,.tl .clip.cur{transform:translateY(-2px);box-shadow:0 3px 0 var(--ink)}
-.tl .head-line{position:absolute;top:0;bottom:0;width:2px;background:var(--red);left:64px;animation:play 9s linear infinite}
-.tl .head-line::before{content:"";position:absolute;top:0;left:-5px;border:6px solid transparent;border-top-color:var(--red)}
-@keyframes play{from{left:64px}to{left:calc(100% - 14px)}}
+/* play-head: a transparent box spanning the track, its right edge is the red line; it slides with transform only (no layout per frame) */
+.tl .head-line{position:absolute;top:0;bottom:0;left:64px;right:14px;border-right:2px solid var(--red);pointer-events:none;transform:translateX(-100%);animation:play 9s linear infinite}
+.tl .head-line::before{content:"";position:absolute;top:0;right:-7px;border:6px solid transparent;border-top-color:var(--red)}
+@keyframes play{from{transform:translateX(-100%)}to{transform:none}}
 .entry{border-top:1px solid var(--ink);padding-block:20px 28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px 36px;transition:background .3s;scroll-margin-top:90px}
 .entry.cur{background:linear-gradient(90deg,color-mix(in srgb,var(--c) 10%,transparent),transparent 70%)}
 .entry .lab{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -271,6 +272,8 @@ h1.line{font-weight:400}
 .view{position:fixed;inset:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;background:var(--paper);-webkit-overflow-scrolling:touch;will-change:opacity,transform}
 /* while a project fully covers the screen, the page behind it is not drawn (site.js adds .view-still after the opening wipe) */
 html.view-still body > *:not(.view):not(script){visibility:hidden}
+/* looping animations pause while their section is off screen (site.js toggles .anim-off) */
+.anim-off *,.anim-off *::before,.anim-off *::after{animation-play-state:paused!important}
 html.view-still body > *:not(.view) *,html.view-still body > *:not(.view)::before,html.view-still body > *:not(.view) *::after{animation-play-state:paused!important}
 .view.enter{animation:viewin .55s cubic-bezier(.2,.9,.2,1) both}
 .view.leave{animation:viewout .6s cubic-bezier(.4,0,.2,1) both;pointer-events:none;will-change:opacity,transform}
@@ -348,7 +351,8 @@ html.view-open,html.view-open body{overflow:hidden}
 .landing .bio{font-size:clamp(16px,1.35vw,20px);line-height:1.5;max-width:560px;margin:28px 0 0}
 .landing .low{list-style:none;margin:28px 0 0;padding:12px 0 0;border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;gap:2px 14px;font:700 clamp(15px,1.4vw,22px)/1.3 var(--body);letter-spacing:-.01em;opacity:0;transition:opacity .8s .9s}
 .landing .low li+li::before{content:"/";margin-right:14px;color:var(--soft)}
-.landing.go .low{opacity:var(--dv,1)}
+.landing.go .low{opacity:1}
+.landing.ready .low,.landing.ready .role{transition:none}
 .landing.go .role{opacity:1}
 .landing .tc{position:absolute;inset:0;z-index:5;background:var(--paper);display:flex;align-items:flex-end;padding:0 clamp(16px,3.5vw,44px) 28px;transition:opacity .6s .2s,visibility 0s .8s}
 .landing .tc b{font:600 clamp(40px,6vw,90px)/1 var(--mono);letter-spacing:-.02em}
@@ -359,9 +363,10 @@ html.view-open,html.view-open body{overflow:hidden}
 .landing.pinned .stage{position:sticky;top:var(--barh,60px);height:calc(100vh - var(--barh,60px));height:calc(100svh - var(--barh,60px));overflow:hidden}
 .landing.pinned h1{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
 .landing.pinned .vf,.landing.pinned .role,.landing.pinned .bio,.landing.pinned .low{position:absolute;margin:0}
-.landing.pinned .vf{will-change:transform}
+.landing.pinned .vf{will-change:transform;transform-origin:0 0}
+.landing.pinned .role,.landing.pinned .bio{top:0;will-change:transform}
 .landing.pinned .role{right:var(--gx)}
-.landing.pinned .bio{left:var(--gx);opacity:var(--bv,0);transform:translateY(calc((1 - var(--bv,0)) * 20px))}
+.landing.pinned .bio{left:var(--gx);opacity:0}
 .landing.pinned .low{left:var(--gx);right:var(--gx);bottom:clamp(18px,3vh,32px)}
 @media (prefers-reduced-motion:reduce){.landing .tc{display:none}.landing h1 b,.landing .vf img,.landing .low,.landing .role{transition:none}}
 
