@@ -391,17 +391,18 @@
       var done = function () {
         view.hidden = true; view.classList.remove('leave'); view.innerHTML = ''; root.classList.remove('view-open'); holdScroll(false);
         document.title = 'Mohamed Ewis · Creative/Art Director';
-        if (target) { var el = document.getElementById(target); if (el) el.scrollIntoView(); }
+        if (target === 'top') window.scrollTo(0, 0);
+        else if (target) { var el = document.getElementById(target); if (el) el.scrollIntoView(); }
         else if (returnFocus) returnFocus.focus({ preventScroll: true });
       };
-      if (opened) { opened = false; try { history.replaceState(null, '', location.pathname + location.search + (target ? '#' + target : '')); } catch (e) {} }
+      if (opened) { opened = false; try { history.replaceState(null, '', location.pathname + location.search + (target && target !== 'top' ? '#' + target : '')); } catch (e) {} }
       if (reduce) done(); else { view.classList.add('leave'); setTimeout(done, 340); }
     };
     document.addEventListener('click', function (e) {
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
       var a = e.target.closest('a'); if (!a) return;
       if (view.contains(a) && a.hasAttribute('data-close')) {
-        e.preventDefault(); var h = a.getAttribute('href').split('#')[1]; closeProject(h === 'work' ? null : h); return;
+        e.preventDefault(); var h = a.getAttribute('href').split('#')[1]; closeProject(a.hasAttribute('data-go') ? h : (h === 'work' ? null : h)); return;   /* data-go: always land on the target (the project footer) */
       }
       if (view.contains(a) && a.hasAttribute('data-jump')) {
         e.preventDefault(); var t = view.querySelector(a.getAttribute('href')); if (t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); return;

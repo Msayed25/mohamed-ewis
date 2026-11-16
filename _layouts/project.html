@@ -64,9 +64,9 @@
     </section>
     {% endif %}
 
-    <nav class="pnext g mono" aria-label="More">
-      <a href="{{ '/' | relative_url }}" data-close>← Back home</a>
-      <a href="{{ next.url | relative_url }}" data-proj aria-label="More work: {{ next.title }}">More work →</a>
+    <nav class="pnext" aria-label="Leave this project">
+      <a href="{{ '/' | relative_url }}#top" data-close data-go><span class="mono">Home</span><b><i>←</i> Back home</b></a>
+      <a href="{{ '/#work' | relative_url }}" data-close data-go><span class="mono">All projects</span><b>More work <i>→</i></b></a>
     </nav>
   </article>
 
