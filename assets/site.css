@@ -392,21 +392,18 @@ html.view-open,html.view-open body{overflow:hidden}
 .progress i{background:var(--ink)}
 .casebar{background:var(--ink);color:var(--paper)}
 .cb-close:hover{background:var(--paper);color:var(--ink)}
-.pfoot{border-top:0}
-/* project footer (client feedback round 2): two halves, Back home (top of the home page) and More work (the Index list).
-   On hover a half fills with ink from the bottom and its arrow slides */
-.pnext{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
-.pnext a{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:clamp(10px,1.4vw,18px);padding:clamp(28px,4.5vw,64px) clamp(16px,3.5vw,44px);color:var(--ink);text-decoration:none;isolation:isolate;transition:color .35s}
-.pnext a+a{border-left:1px solid var(--ink);align-items:flex-end;text-align:right}
-.pnext a::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--ink);transform:scaleY(0);transform-origin:50% 100%;transition:transform .45s cubic-bezier(.2,.9,.2,1)}
-.pnext a:hover,.pnext a:focus-visible{color:var(--paper)}
-.pnext a:hover::before,.pnext a:focus-visible::before{transform:none}
-.pnext span{color:inherit;opacity:.6}
-.pnext b{font:600 clamp(22px,3.4vw,52px)/1 var(--body);letter-spacing:-.035em;white-space:nowrap}
-.pnext i{font-style:normal;display:inline-block;transition:transform .45s cubic-bezier(.2,.9,.2,1)}
-.pnext a:hover i,.pnext a:focus-visible i{transform:translateX(-.25em)}
-.pnext a+a:hover i,.pnext a+a:focus-visible i{transform:translateX(.25em)}
-@media (prefers-reduced-motion:reduce){.pnext a,.pnext a::before,.pnext i{transition:none}}
+.pfoot{border-top:1px solid var(--hair)}
+/* project footer (client feedback round 2): one plain row, Back home (top of the home page) on the left and
+   More work (the Index list) on the right. On hover an underline draws in and the arrow nudges outward */
+.pnext{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:clamp(28px,4vw,48px);border-top:1px solid var(--ink)}
+.pnext a{position:relative;color:var(--ink);text-decoration:none;font:500 clamp(15px,1.25vw,19px)/1.2 var(--body);letter-spacing:-.01em;padding-bottom:4px}
+.pnext a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:0 50%;transition:transform .35s cubic-bezier(.2,.9,.2,1)}
+.pnext a+a::after{transform-origin:100% 50%}
+.pnext a:hover::after,.pnext a:focus-visible::after{transform:none}
+.pnext i{font-style:normal;display:inline-block;transition:transform .35s cubic-bezier(.2,.9,.2,1)}
+.pnext a:hover i,.pnext a:focus-visible i{transform:translateX(-4px)}
+.pnext a+a:hover i,.pnext a+a:focus-visible i{transform:translateX(4px)}
+@media (prefers-reduced-motion:reduce){.pnext a::after,.pnext i{transition:none}}
 
 /* ---------- index hover (client feedback, Oct 2026): simple. The floating cursor photo is gone; on hover a row opens to show a small black-and-white picture, a line about the project and a few tags ---------- */
 .row{grid-template-rows:auto auto;align-items:center}
