@@ -238,26 +238,20 @@ h1.line{font-weight:400}
 .phero{position:relative;height:min(82vh,820px);min-height:440px;overflow:hidden;background:#111;color:#fff}
 .phero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none;animation:zoomout 1.4s cubic-bezier(.2,.9,.2,1) both}
 @keyframes zoomout{from{transform:scale(1.18);filter:grayscale(1)}to{transform:none;filter:none}}
-.phero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.72))}
-.phero-copy{position:absolute;left:0;right:0;bottom:clamp(20px,4vw,48px);z-index:2;display:grid;gap:10px}
-.pkick{color:#fff;opacity:.85}
-.ptitle{font:400 clamp(60px,12vw,190px)/.82 var(--display);text-transform:uppercase;margin:0;text-wrap:balance;animation:rise .9s .15s cubic-bezier(.2,.9,.2,1) both}
-.pline{font:italic 400 clamp(24px,3vw,42px)/1.05 var(--serif);margin:0;max-width:24ch;animation:rise .9s .3s cubic-bezier(.2,.9,.2,1) both}
-@keyframes rise{from{opacity:0;transform:translateY(30px)}}
-.pnum{position:absolute;right:clamp(12px,3vw,40px);top:8px;z-index:2;font:400 clamp(90px,18vw,280px)/.8 var(--display);color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.75)}
-.spec{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(24px,5vw,80px);padding-block:clamp(36px,6vw,80px);background:color-mix(in srgb,var(--c) 7%,var(--paper));border-bottom:1px solid var(--hair)}
-.sheet{margin:0;display:grid;align-content:start;border-top:2px solid var(--c)}
-.sheet div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:12px 0;border-bottom:1px solid var(--hair)}
-.sheet dt{color:var(--soft)}
-.sheet dd{margin:0;text-transform:none;letter-spacing:.02em;font-size:13px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.sheet .dot{width:9px;height:9px;border-radius:50%;background:var(--c);display:inline-block}
-.ptags span{border:1px solid var(--hair);border-radius:99px;padding:4px 8px;font-size:11px;background:var(--paper)}
-.ptext{max-width:66ch;font-size:clamp(17px,1.45vw,20px);line-height:1.62;display:grid;align-content:start}
+/* project header (client feedback round 2): the photo carries no text; below it three plain columns:
+   campaign line and brand | description | role */
+.spec{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);gap:clamp(20px,4vw,64px);padding-block:clamp(32px,5vw,64px);border-bottom:1px solid var(--hair)}
+.sp-who{display:grid;align-content:start;gap:6px}
+.sp-line{margin:0;font-size:clamp(15px,1.15vw,17px);line-height:1.45}
+.ptitle{margin:0;font:700 clamp(17px,1.3vw,20px)/1.3 var(--body);letter-spacing:-.01em}
+.sp-type,.sp-live{margin:4px 0 0;color:var(--soft)}
+.sp-live a{color:var(--ink)}
+.ptext{max-width:62ch;font-size:clamp(15px,1.15vw,17px);line-height:1.6;display:grid;align-content:start}
+.sp-role{margin:0;font-size:clamp(15px,1.15vw,17px);line-height:1.6}
+.sp-role b{font-weight:700}
 .ptext p{margin:0 0 1em}
-.ptext p:first-child::first-letter{font:400 3.4em/.8 var(--display);float:left;margin:.06em .08em 0 0;color:var(--c)}
 .ptext strong{font-family:var(--mono);font-size:.62em;letter-spacing:.1em;text-transform:uppercase;color:var(--c);display:block;margin-bottom:.3em;font-weight:500}
 .cat-film .ptext strong,.cat-personal .ptext strong{color:var(--red)}
-.ptext p:first-child:has(> strong:first-child)::first-letter{font:inherit;float:none;margin:0;color:inherit}
 .pcta:empty{display:none}
 .gallery{display:grid;gap:clamp(14px,2.4vw,32px);padding-block:clamp(28px,5vw,64px)}
 .gallery figure{margin:0;display:grid;gap:8px}
@@ -268,14 +262,9 @@ h1.line{font-weight:400}
 .playbig{position:absolute;inset:0;background-size:cover;background-position:center;display:grid;place-items:center;align-content:center;gap:12px;color:#fff}
 .playbig span{width:96px;height:96px;border-radius:50%;background:var(--red);display:grid;place-items:center;font-size:30px;transition:transform .3s}
 .playbig:hover span{transform:scale(1.12)}
-.next{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,40%);grid-template-rows:auto 1fr;gap:6px 24px;align-items:end;text-decoration:none;background:var(--c);color:var(--on-c);padding-block:clamp(28px,5vw,56px)}
-.next .nt{font:400 clamp(44px,8vw,120px)/.88 var(--display);text-transform:uppercase}
-.next .nt span{display:inline-block;transition:transform .4s}
-.next:hover .nt span{transform:translateX(.2em)}
-.next img{grid-column:2;grid-row:1/3;width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform .5s}
-.next:hover img{transform:scale(1.02)}
 .pfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:18px 28px;color:var(--soft)}
-@media (max-width:760px){.spec{grid-template-columns:1fr}.cb-id{order:3;width:100%}.next{grid-template-columns:1fr}.next img{grid-column:1;grid-row:auto}.phero{height:72vh}}
+@media (max-width:760px){.spec{grid-template-columns:1fr}.cb-id{order:3;width:100%}.phero{height:56vh;min-height:300px}}
+@media (min-width:761px) and (max-width:1100px){.spec{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}.sp-role{grid-column:2}}
 
 /* project opened from the home page: same tab, slides up over the home page, starts at the top */
 .view{position:fixed;inset:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;background:var(--paper);-webkit-overflow-scrolling:touch}
@@ -403,9 +392,11 @@ html.view-open,html.view-open body{overflow:hidden}
 .progress i{background:var(--ink)}
 .casebar{background:var(--ink);color:var(--paper)}
 .cb-close:hover{background:var(--paper);color:var(--ink)}
-.next{background:var(--wash);color:var(--ink);border-top:1px solid var(--ink)}
-.next > .mono{color:var(--soft)}
 .pfoot{border-top:1px solid var(--hair)}
+/* simple project footer (client feedback round 2): back home on the left, more work on the right */
+.pnext{display:flex;justify-content:space-between;gap:16px;padding-block:clamp(28px,5vw,56px);border-top:1px solid var(--ink)}
+.pnext a{color:var(--ink);text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px;font-size:clamp(12px,1vw,14px)}
+.pnext a:hover{text-decoration-thickness:2px}
 
 /* ---------- index hover (client feedback, Oct 2026): simple. The floating cursor photo is gone; on hover a row opens to show a small black-and-white picture, a line about the project and a few tags ---------- */
 .row{grid-template-rows:auto auto;align-items:center}

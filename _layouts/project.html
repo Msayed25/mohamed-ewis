@@ -38,27 +38,20 @@
   <article class="proj">
     <section class="phero">
       <img src="{{ p.cover | relative_url }}" alt="{{ p.title }}">
-      <div class="phero-copy g">
-        <div class="mono pkick">{{ catlabel }} · {{ p.subtitle }}</div>
-        <h1 class="ptitle">{{ p.title }}</h1>
-        {% if p.cover_line != "" %}<p class="pline">{{ p.cover_line }}</p>{% endif %}
-      </div>
-      <div class="pnum" aria-hidden="true">{% if num < 10 %}0{% endif %}{{ num }}</div>
     </section>
 
     <section class="spec g">
-      <dl class="sheet mono">
-        <div><dt>Project</dt><dd>{{ p.title }}</dd></div>
-        <div><dt>Discipline</dt><dd><i class="dot"></i>{{ catlabel }}</dd></div>
-        <div><dt>Work</dt><dd>{{ p.subtitle }}</dd></div>
-        <div><dt>Format</dt><dd>{% include kind.html kind=p.kind %}</dd></div>
-        {% if p.tags.size > 0 %}<div><dt>Role</dt><dd class="ptags">{% for t in p.tags %}<span>{{ t }}</span>{% endfor %}</dd></div>{% endif %}
-        {% if p.kind == 'link' and p.link != '' %}<div><dt>Live</dt><dd><a href="{{ p.link | relative_url }}" target="_blank" rel="noopener">{{ p.link_label | default: p.link }} ↗</a></dd></div>{% endif %}
-      </dl>
+      <div class="sp-who">
+        {% if p.cover_line != "" %}<p class="sp-line">{{ p.cover_line }}</p>{% endif %}
+        <h1 class="ptitle">{{ p.title }}</h1>
+        <p class="sp-type mono">{{ catlabel }} · {{ p.subtitle }}</p>
+        {% if p.kind == 'link' and p.link != '' %}<p class="sp-live mono"><a href="{{ p.link | relative_url }}" target="_blank" rel="noopener">{{ p.link_label | default: p.link }} ↗</a></p>{% endif %}
+      </div>
       <div class="ptext">
         {{ content }}
         <div class="pcta">{% if p.kind == 'film' and p.video != '' %}<a class="btn solid" href="#watch-{{ p.slug }}" data-jump>▶ Watch the film</a>{% elsif p.kind == 'link' and p.link != '' %}{% include action.html p=p solid=true %}{% endif %}</div>
       </div>
+      {% if p.tags.size > 0 %}<p class="sp-role"><b>Role:</b> {{ p.tags | join: ", " }}.</p>{% endif %}
     </section>
 
     {% if p.kind == 'film' and p.video != '' %}
@@ -71,11 +64,10 @@
     </section>
     {% endif %}
 
-    <a class="next g" href="{{ next.url | relative_url }}" data-proj>
-      <span class="mono">Next case</span>
-      <span class="nt">{{ next.title }} <span>→</span></span>
-      <img src="{{ next.cover | relative_url }}" alt="" loading="lazy" decoding="async">
-    </a>
+    <nav class="pnext g mono" aria-label="More">
+      <a href="{{ '/' | relative_url }}" data-close>← Back home</a>
+      <a href="{{ next.url | relative_url }}" data-proj aria-label="More work: {{ next.title }}">More work →</a>
+    </nav>
   </article>
 
   <footer class="pfoot g mono"><span>© {{ site.time | date: "%Y" }} {{ s.name }}</span><a href="{{ '/#talk' | relative_url }}" data-close>Let's work together →</a></footer>

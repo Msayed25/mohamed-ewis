@@ -390,7 +390,7 @@
       if (view.hidden) return;
       var done = function () {
         view.hidden = true; view.classList.remove('leave'); view.innerHTML = ''; root.classList.remove('view-open'); holdScroll(false);
-        document.title = 'Mohamed Ewis · Creative Art Director';
+        document.title = 'Mohamed Ewis · Creative/Art Director';
         if (target) { var el = document.getElementById(target); if (el) el.scrollIntoView(); }
         else if (returnFocus) returnFocus.focus({ preventScroll: true });
       };
