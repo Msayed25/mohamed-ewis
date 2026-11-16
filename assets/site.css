@@ -22,8 +22,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ink);padding-block:10px;display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap}
 .bar .brand{font:400 20px/1 var(--display);color:var(--ink);letter-spacing:.02em}
 .bar .avail{display:flex;align-items:center;gap:7px}
-.bar .avail i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 var(--green);animation:ping 2s infinite}
-@keyframes ping{70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.bar .avail i{position:relative;width:8px;height:8px;border-radius:50%;background:var(--green)}
+.bar .avail i::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--green);animation:ping 2s infinite}
+@keyframes ping{0%{transform:scale(1);opacity:.6}70%,100%{transform:scale(2.75);opacity:0}}
 .bar nav{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}
 .bar nav a{text-decoration:none;position:relative}
 .bar nav a::after{content:"";position:absolute;left:0;right:100%;bottom:-3px;height:1px;background:currentColor;transition:right .3s}
@@ -267,11 +268,14 @@ h1.line{font-weight:400}
 @media (min-width:761px) and (max-width:1100px){.spec{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}.sp-role{grid-column:2}}
 
 /* project opened from the home page: same tab, slides up over the home page, starts at the top */
-.view{position:fixed;inset:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;background:var(--paper);-webkit-overflow-scrolling:touch}
+.view{position:fixed;inset:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;background:var(--paper);-webkit-overflow-scrolling:touch;will-change:opacity,transform}
+/* while a project fully covers the screen, the page behind it is not drawn (site.js adds .view-still after the opening wipe) */
+html.view-still body > *:not(.view):not(script){visibility:hidden}
+html.view-still body > *:not(.view) *,html.view-still body > *:not(.view)::before,html.view-still body > *:not(.view) *::after{animation-play-state:paused!important}
 .view.enter{animation:viewin .55s cubic-bezier(.2,.9,.2,1) both}
-.view.leave{animation:viewout .75s cubic-bezier(.65,0,.35,1) both;pointer-events:none}
+.view.leave{animation:viewout .6s cubic-bezier(.4,0,.2,1) both;pointer-events:none;will-change:opacity,transform}
 @keyframes viewin{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
-@keyframes viewout{to{clip-path:inset(0 0 100% 0)}}
+@keyframes viewout{to{opacity:0;transform:translateY(-3vh)}}
 .view .progress{top:0}
 .view-loading{position:fixed;inset:auto 16px 16px auto;z-index:61;background:var(--ink);color:var(--paper);padding:8px 12px}
 html.view-open,html.view-open body{overflow:hidden}

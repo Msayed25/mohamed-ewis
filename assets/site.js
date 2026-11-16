@@ -193,6 +193,7 @@
     var reelMove = function () {
       var r = reel.getBoundingClientRect(), span = reel.offsetHeight - window.innerHeight;
       reelTo = Math.max(0, Math.min(1, -r.top / Math.max(1, span))) * reelDist;
+      if (r.bottom < 0 || r.top > window.innerHeight) { reelX = reelTo; reelTrack.style.transform = 'translate3d(' + (-reelX).toFixed(1) + 'px,0,0)'; return; }   /* off screen: no need to animate */
       if (!reelRun) { reelRun = true; requestAnimationFrame(reelStep); }
     };
     window.addEventListener('scroll', reelMove, { passive: true });
@@ -377,6 +378,8 @@
         if (!opened) returnFocus = document.activeElement;
         view.innerHTML = ''; view.appendChild(document.importNode(file, true));
         view.hidden = false; view.scrollTop = 0; root.classList.add('view-open'); holdScroll(true);
+        /* once the project fully covers the screen, stop drawing the page behind it (it is hidden anyway) */
+        clearTimeout(stillT); stillT = setTimeout(function () { if (!view.hidden) root.classList.add('view-still'); }, reduce ? 0 : 600);
         if (!reduce && !fromNav) { view.classList.remove('enter'); void view.offsetWidth; view.classList.add('enter'); }
         var t = $('.ptitle', view); document.title = (t ? t.textContent + ' · ' : '') + 'Mohamed Ewis';
         var bar = $('.progress', view); view.onscroll = function () { progress(view, bar); };
@@ -386,31 +389,27 @@
         opened = true;
       }).catch(function () { location.href = url; }).then(function () { var l = $('#vload'); if (l) l.remove(); });
     };
-    /* after a project closes, the page glides to where the link points (longer trips take a little longer) */
-    var glideTo = function (y) {
+    /* leaving a project: while the project still covers the screen, the page underneath moves straight to where the link
+       points (unseen), then the project fades and lifts away to reveal it. Only opacity and transform animate, so it stays smooth */
+    var stillT = 0;
+    var jumpTo = function (y) {
       y = Math.max(0, y);
-      if (reduce) { window.scrollTo(0, y); return; }
-      var dur = Math.min(1.8, 0.8 + Math.abs(y - window.scrollY) / 4000);
-      if (lenis) lenis.scrollTo(y, { duration: dur, easing: function (k) { return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; } });
-      else window.scrollTo({ top: y, behavior: 'smooth' });
+      if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y);
     };
     var closeProject = function (target) {
       if (view.hidden) return;
-      /* the page underneath starts gliding to its destination straight away, while the project wipes up and uncovers it,
-         so leaving a project reads as one movement */
-      var go = function () {
-        root.classList.remove('view-open'); holdScroll(false);
-        document.title = 'Mohamed Ewis · Creative/Art Director';
-        if (target === 'top') glideTo(0);
-        else if (target) { var el = document.getElementById(target); if (el) glideTo(el.getBoundingClientRect().top + window.scrollY - (topBar ? topBar.offsetHeight : 0)); }
-      };
+      clearTimeout(stillT); root.classList.remove('view-still', 'view-open'); holdScroll(false);
+      document.title = 'Mohamed Ewis · Creative/Art Director';
+      if (target === 'top') jumpTo(0);
+      else if (target) { var el = document.getElementById(target); if (el) jumpTo(el.getBoundingClientRect().top + window.scrollY - (topBar ? topBar.offsetHeight : 0)); }
       var done = function () {
         view.hidden = true; view.classList.remove('leave'); view.innerHTML = '';
         if (!target && returnFocus) returnFocus.focus({ preventScroll: true });
       };
       if (opened) { opened = false; try { history.replaceState(null, '', location.pathname + location.search + (target && target !== 'top' ? '#' + target : '')); } catch (e) {} }
-      go();
-      if (reduce) done(); else { view.classList.add('leave'); setTimeout(done, 750); }
+      /* let the page draw once under the still-solid project, then fade the project away */
+      if (reduce) done();
+      else requestAnimationFrame(function () { requestAnimationFrame(function () { setTimeout(function () { view.classList.add('leave'); setTimeout(done, 650); }, 30); }); });
     };
     document.addEventListener('click', function (e) {
       if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
