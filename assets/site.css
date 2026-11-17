@@ -109,7 +109,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .film .rec{position:absolute;left:10px;top:10px;color:#fff;display:flex;gap:6px;align-items:center}
 .film .rec i{width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 1.2s steps(2) infinite}
 @keyframes blink{50%{opacity:0}}
-.film b{font:400 24px/1 var(--display);text-transform:uppercase}
+.film b{font:400 30px/1 var(--cond);text-transform:uppercase;letter-spacing:.005em}
 .film small{color:var(--soft)}
 
 /* ---------- PIN-BOARD (collage) ---------- */
@@ -186,7 +186,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;paddin
 .lb .prog i{position:absolute;inset:0 auto 0 0;background:#ff4335;animation:pr 12s linear infinite}
 @keyframes pr{from{width:0}to{width:100%}}
 .lb .top{display:flex;justify-content:space-between;gap:12px;align-items:end;flex-wrap:wrap}
-.lb .top b{font:400 clamp(26px,4vw,44px)/1 var(--display);text-transform:uppercase}
+.lb .top b{font:400 clamp(30px,4.6vw,52px)/1 var(--cond);text-transform:uppercase}
 .lb .x{border:1px solid #f2f1ed;padding:8px 12px;font:500 11px/1 var(--mono);text-transform:uppercase;color:#f2f1ed}
 .lb p{margin:0;color:#bdbcb7;font-size:14px}
 
