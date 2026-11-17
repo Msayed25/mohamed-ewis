@@ -253,14 +253,13 @@
   var dc = $('#dc');
   if (dc) {
     var dcStage = $('.dc-stage', dc), dcCards = $$('.dc-card', dc), dcDash = $$('.dc-dash button', dc), dcN = dcCards.length, dcI = 0;
-    var dcTxt = $('.dc-txt', dc), dcNum = $('.dc-i', dc), dcU = $('.dc-u', dc), dcT = $('.dc-t', dc), dcS = $('.dc-s', dc);
+    var dcTxt = $('.dc-txt', dc), dcU = $('.dc-u', dc), dcT = $('.dc-t', dc), dcS = $('.dc-s', dc);
     var DX, DS, DF;
     var dcLook = function (ph) {   /* where each waiting card sits (share of the front card's width), its size and paleness; phones show fewer */
       if (ph) { DX = [0, 0.86, 1.3, 1.56]; DS = [1, 0.74, 0.56, 0.44]; DF = [0, 0.14, 0.34, 0.54]; }
       else { DX = [0, 0.98, 1.58, 1.95, 2.2, 2.38]; DS = [1, 0.82, 0.66, 0.54, 0.45, 0.38]; DF = [0, 0.1, 0.24, 0.38, 0.52, 0.66]; }
     };
     var dcW = 0;
-    var dcPad = function (n) { return (n < 10 ? '0' : '') + n; };
     var dcPose = function (c, d) {   /* d: 0 = front, 1 = first one behind, ... */
       var j = Math.min(d, DX.length - 1);
       c.style.transform = 'translate3d(' + (DX[j] * dcW).toFixed(1) + 'px,' + ((1 - DS[j]) * dcW * 0.2).toFixed(1) + 'px,0) scale(' + DS[j] + ') rotateY(' + (d ? 14 : 7) + 'deg)';
@@ -299,7 +298,7 @@
     };
     var dcInfo = function () {
       var c = dcCards[dcI];
-      dcNum.textContent = dcPad(dcI + 1); dcU.textContent = c.dataset.sub || ''; dcT.textContent = c.dataset.title || ''; dcS.textContent = c.dataset.sum || '';
+      dcU.textContent = c.dataset.sub || ''; dcT.textContent = c.dataset.title || ''; dcS.textContent = c.dataset.sum || '';
       dcDash.forEach(function (b, k) { if (k === dcI) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
     };
     var dcTimer = 0;
