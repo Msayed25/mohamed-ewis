@@ -4,7 +4,7 @@
   --paper:#ffffff; --ink:#0e0e0e; --soft:#5e5e5b; --hair:#e2e1dd; --wash:#f3f2ef; --red:#e2231a; --green:#17a34a;
   --c-digital:#e8335a; --c-print:#1f7fe0; --c-pitch:#8f1f7a; --c-film:#0e0e0e; --c-photography:#1c7a2a; --c-branding:#f05a3c; --c-personal:#e0aa00;
   --yellow:#ffe600; --pink:#ff3d8b; --teal:#22b3a3;
-  --display:"Anton",Impact,sans-serif; --body:"Hanken Grotesk",system-ui,sans-serif; --serif:"Instrument Serif",Georgia,serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --display:"Anton",Impact,sans-serif; --body:"Hanken Grotesk",system-ui,sans-serif; --serif:"Instrument Serif",Georgia,serif; --mono:"JetBrains Mono",ui-monospace,monospace; --cond:"Antonio","Oswald",Impact,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#121211;--ink:#f2f1ed;--soft:#a3a29d;--hair:#2b2a28;--wash:#1b1b19;--red:#ff4335;--c-film:#f2f1ed;--c-pitch:#d35bbd;--c-photography:#3fbf55;--c-print:#4b9cff;color-scheme:dark}}
 :root[data-theme="dark"]{--paper:#121211;--ink:#f2f1ed;--soft:#a3a29d;--hair:#2b2a28;--wash:#1b1b19;--red:#ff4335;--c-film:#f2f1ed;--c-pitch:#d35bbd;--c-photography:#3fbf55;--c-print:#4b9cff;color-scheme:dark}
@@ -66,7 +66,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* ---------- section heads ---------- */
 .sec{padding-block:clamp(56px,8vw,110px) 0}
 .head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
-.head h2{font:800 clamp(40px,7vw,96px)/.9 var(--body);letter-spacing:-.05em;margin:0}
+/* section headings: tall condensed capitals (client feedback round 2, slide 25 "Fonts") */
+.head h2{font:400 clamp(50px,8.4vw,136px)/.86 var(--cond);letter-spacing:-.005em;text-transform:uppercase;margin:0}
 .head p{max-width:42ch;color:var(--soft);margin:0}
 
 /* ---------- INDEX (Signal-A / Ethan Clark) ---------- */
@@ -283,7 +284,7 @@ html.view-still body > *:not(.view) *,html.view-still body > *:not(.view)::befor
 .view-loading{position:fixed;inset:auto 16px 16px auto;z-index:61;background:var(--ink);color:var(--paper);padding:8px 12px}
 html.view-open,html.view-open body{overflow:hidden}
 /* contact heading "LET'S work TOGETHER" (client feedback, Oct 2026): thin condensed capitals with "work" in the italic serif */
-.talk a.big{align-items:flex-end;font:300 clamp(40px,12.5vw,200px)/.92 "Oswald",var(--display);letter-spacing:-.005em}
+.talk a.big{align-items:flex-end;font:300 clamp(40px,12.5vw,200px)/.92 var(--cond);letter-spacing:-.005em}
 .talk a.big .nw{white-space:nowrap}
 .talk a.big .t{display:inline-block}
 .talk a.big .t em{font:italic 400 .62em/1 "Instrument Serif",serif;text-transform:none;letter-spacing:0;margin-right:.08em}
@@ -384,7 +385,7 @@ html.view-open,html.view-open body{overflow:hidden}
 .svc-h,.svc-txt{width:fit-content;max-width:100%;margin-inline:auto}
 .svc-move .svc-h{transform-origin:0 0;will-change:transform}
 .svc-move .svc-txt{will-change:transform}
-.svc-head h2{font:800 clamp(56px,11vw,170px)/.86 var(--body);letter-spacing:-.06em;margin:0;text-transform:uppercase}
+.svc-head h2{font:400 clamp(72px,13vw,210px)/.84 var(--cond);letter-spacing:-.005em;margin:0;text-transform:uppercase}
 /* his line under the heading: the quote large, the sentence smaller */
 .svc-q{font:italic 400 clamp(26px,3.6vw,54px)/1.08 var(--serif);letter-spacing:-.01em;max-width:24ch;margin:clamp(22px,3vw,40px) auto 0;text-wrap:balance}
 .svc-i{max-width:52ch;margin:18px auto 0;color:var(--soft);font-size:clamp(15px,1.25vw,18px);line-height:1.6;text-wrap:pretty}
