@@ -80,7 +80,7 @@ collections:
           - { name: location, label: Location, widget: string }
           - { name: timezone_offset, label: Hours ahead of UTC (for the clock), widget: number, value_type: float }
           - { name: timezone_label, label: Time zone name, widget: string }
-          - { name: status, label: Availability badge, widget: string, required: false, hint: "Shown with a green pulse. Leave empty to hide." }
+          - { name: status, label: Availability badge (not shown at the moment), widget: string, required: false }
           - { name: portrait, label: Portrait photo, widget: image }
           - { name: portrait_landing, label: Landing photo (upper body, facing into the page), widget: image, required: false }
           - { name: landing_bio, label: Landing line (fades in next to the photo as you scroll), widget: text, required: false }
