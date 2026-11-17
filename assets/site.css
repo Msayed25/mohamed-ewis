@@ -382,19 +382,64 @@ html.view-open,html.view-open body{overflow:hidden}
 .svc{padding-block:clamp(56px,8vw,110px)}
 .svc-head{text-align:center;margin-bottom:clamp(40px,6vw,80px)}
 .svc-head h2{font:800 clamp(56px,11vw,170px)/.86 var(--body);letter-spacing:-.06em;margin:0;text-transform:uppercase}
-.svc-head p{max-width:34ch;margin:18px auto 0;color:var(--soft);line-height:1.6}
-.svc-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair);background-image:linear-gradient(90deg,transparent calc(33.33% - .5px),var(--hair) calc(33.33% - .5px),var(--hair) calc(33.33% + .5px),transparent calc(33.33% + .5px))}
-.svc-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) auto;gap:clamp(16px,3vw,40px);align-items:start;padding-block:clamp(22px,3vw,36px);border-bottom:1px solid var(--hair);opacity:.22;transition:opacity .7s cubic-bezier(.2,.9,.2,1)}
+/* his line under the heading: the quote large, the sentence smaller */
+.svc-q{font:italic 400 clamp(26px,3.6vw,54px)/1.08 var(--serif);letter-spacing:-.01em;max-width:24ch;margin:clamp(22px,3vw,40px) auto 0;text-wrap:balance}
+.svc-i{max-width:52ch;margin:18px auto 0;color:var(--soft);font-size:clamp(15px,1.25vw,18px);line-height:1.6;text-wrap:pretty}
+/* the services side by side: 4 columns, 2 x 2 on tablets, one under the other on phones */
+.svc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
+.svc-row{padding:clamp(20px,2.4vw,32px) clamp(14px,1.8vw,26px) clamp(26px,3vw,40px);border-left:1px solid var(--hair);opacity:.22;transition:opacity .7s cubic-bezier(.2,.9,.2,1)}
+.svc-row:first-child{border-left:0;padding-left:0}
 .svc-row.in{opacity:1}
-.svc-row .n{font:800 clamp(34px,4.4vw,64px)/1 var(--body);letter-spacing:-.05em}
-.svc-row .t{padding-left:clamp(0px,2vw,24px)}
-.svc-row h3{font:800 clamp(30px,3.8vw,56px)/1 var(--body);letter-spacing:-.05em;margin:0 0 clamp(18px,2.5vw,34px);transition:transform .4s cubic-bezier(.2,.9,.2,1)}
-.svc-row p{margin:0;max-width:40ch;color:var(--soft);font-size:15px;line-height:1.55}
-.svc-row img{width:clamp(96px,10vw,150px);aspect-ratio:1;object-fit:cover;border-radius:10px;transition:transform .5s cubic-bezier(.2,.9,.2,1)}
-.svc-row:hover h3{transform:translateX(10px)}
-.svc-row:hover img{transform:scale(1.06) rotate(-2deg)}
-@media (max-width:760px){.svc-list{background-image:none}.svc-row{grid-template-columns:auto minmax(0,1fr)}.svc-row img{display:none}.svc-row .t{padding-left:0}}
+.svc-row .n{display:block;font:400 11px/1 var(--mono);letter-spacing:.08em;color:var(--soft);margin-bottom:clamp(26px,4vw,64px)}
+.svc-row h3{font:800 clamp(24px,2.3vw,38px)/1 var(--body);letter-spacing:-.045em;margin:0 0 18px}
+.svc-row ul{list-style:none;margin:0;padding:0;color:var(--soft);font-size:15px;line-height:1.5}
+.svc-row li{padding:7px 0;border-top:1px solid var(--hair)}
+.svc-row img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;margin-bottom:18px}
+@media (max-width:1100px){.svc-list{grid-template-columns:repeat(2,minmax(0,1fr))}.svc-row:nth-child(odd){border-left:0;padding-left:0}.svc-row:nth-child(n+3){border-top:1px solid var(--hair)}}
+@media (max-width:600px){.svc-list{grid-template-columns:minmax(0,1fr)}.svc-row{border-left:0;padding-left:0;padding-right:0}.svc-row+.svc-row{border-top:1px solid var(--hair)}.svc-row .n{margin-bottom:16px}}
 @media (prefers-reduced-motion:reduce){.svc-row{opacity:1;transition:none}}
+
+/* ---------- selected work: depth carousel. The project in front is large; the next ones line up behind it,
+   each smaller and paler. Only transform and opacity animate. Without JS the cards are a sideways strip. ---------- */
+.dc{padding-block:clamp(48px,7vw,96px);border-bottom:1px solid var(--ink)}
+.dc-k{color:var(--soft);margin:0 0 clamp(22px,3vw,40px)}
+.dc-wrap{display:grid;grid-template-columns:minmax(220px,.85fr) minmax(0,2.4fr);gap:clamp(20px,3vw,48px);align-items:stretch}
+.dc-info{display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-width:0}
+.dc-n{margin:0;display:flex;align-items:flex-start;gap:8px}
+.dc-i{font:400 clamp(56px,6.4vw,104px)/.85 var(--body);letter-spacing:-.05em}
+.dc-of{color:var(--soft);font-size:10px;padding-top:4px}
+.dc-txt{transition:opacity .35s,transform .45s cubic-bezier(.2,.9,.2,1)}
+.dc-txt.out{opacity:0;transform:translateY(10px);transition-duration:.2s}
+.dc-u{margin:0 0 10px;color:var(--soft)}
+.dc-t{font:500 clamp(26px,2.6vw,42px)/1.02 var(--body);letter-spacing:-.035em;margin:0 0 12px}
+.dc-s{margin:0;color:var(--soft);font-size:15px;line-height:1.55;max-width:34ch;min-height:4.65em}
+.dc-ctl{display:flex;align-items:center;gap:8px;margin-top:22px}
+.dc-dash{display:flex;align-items:center;gap:5px;margin-right:12px}
+.dc-dash button{width:16px;height:22px;padding:0;position:relative;transition:width .45s cubic-bezier(.2,.9,.2,1)}
+.dc-dash button::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:var(--hair);transition:background .3s}
+.dc-dash button:hover::before{background:var(--soft)}
+.dc-dash button[aria-current="true"]{width:54px}
+.dc-dash button[aria-current="true"]::before{background:var(--ink)}
+.dc-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--hair);display:grid;place-items:center;font-size:15px;transition:background .25s,color .25s,border-color .25s}
+.dc-btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.dc-stage{position:relative;min-width:0;display:flex;gap:12px;overflow-x:auto}
+.dc-card{position:relative;display:block;-webkit-user-drag:none;user-select:none;flex:0 0 min(70%,320px);aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--wash)}
+.dc-card img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none}
+.dc-play{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;display:grid;place-items:center;font-size:15px;color:#fff;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.6)}
+/* with JS: a 3D stage */
+.dc-on .dc-stage{display:block;overflow:visible;perspective:1800px;perspective-origin:30% 45%;touch-action:pan-y;cursor:grab}
+.dc-on .dc-card{position:absolute;left:0;top:0;width:var(--cw);aspect-ratio:auto;height:calc(var(--cw)*1.25);transform-origin:0 50%;will-change:transform;
+  transition:transform .85s cubic-bezier(.2,.8,.2,1),opacity .6s;box-shadow:0 30px 50px -30px rgba(0,0,0,.35)}
+.dc-on .dc-card::after{content:"";position:absolute;inset:0;background:var(--paper);opacity:var(--fade,0);transition:opacity .85s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.dc-on .dc-card.off{opacity:0;pointer-events:none}
+.dc-on .dc-card:not(.on) .dc-play{opacity:0}
+.dc-on .dc-card.on{cursor:pointer}
+.dc-on.drag .dc-stage{cursor:grabbing}
+:root[data-theme="dark"] .dc-on .dc-card{box-shadow:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dc-on .dc-card{box-shadow:none}}
+@media (max-width:1100px){.dc-dash button{width:10px}.dc-dash button[aria-current="true"]{width:36px}.dc-dash{margin-right:6px}}
+@media (max-width:900px){.dc-wrap{grid-template-columns:minmax(0,1fr)}.dc-info{order:2;gap:14px}.dc-i{font-size:48px}.dc-s{min-height:0}.dc-ctl{margin-top:4px}}
+@media (prefers-reduced-motion:reduce){.dc-on .dc-card,.dc-on .dc-card::after,.dc-txt{transition:none}}
 
 /* ---------- black-and-white headers and footers on project pages (deck slide 12); the category colour stays inside the page body ---------- */
 .progress{background:color-mix(in srgb,var(--ink) 14%,transparent)}

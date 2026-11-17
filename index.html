@@ -18,21 +18,42 @@ layout: default
   </div>
 </section>
 
+{% if featured.size > 0 %}
+<section class="dc g" id="selected" aria-label="Selected work">
+  <p class="dc-k mono">(01) Selected work</p>
+  <div class="dc-wrap" id="dc" aria-roledescription="carousel">
+    <div class="dc-info">
+      <p class="dc-n" aria-hidden="true"><b class="dc-i">01</b><span class="dc-of mono">/ {% if featured.size < 10 %}0{% endif %}{{ featured.size }}</span></p>
+      <div class="dc-txt" aria-live="polite"><p class="dc-u mono">{{ featured[0].subtitle }}</p><h3 class="dc-t">{{ featured[0].title }}</h3><p class="dc-s"></p></div>
+      <div class="dc-ctl">
+        <div class="dc-dash">{% for p in featured %}<button type="button" aria-label="{{ p.title }}"{% if forloop.first %} aria-current="true"{% endif %}></button>{% endfor %}</div>
+        <button type="button" class="dc-btn dc-prev" aria-label="Previous project">←</button><button type="button" class="dc-btn dc-next" aria-label="Next project">→</button>
+      </div>
+    </div>
+    <div class="dc-stage">
+      {% for p in featured %}<a class="dc-card" draggable="false" data-kind="{{ p.kind }}" data-video="{% if p.video != "" %}{{ p.video | relative_url }}{% endif %}" data-title="{{ p.title }}" data-sub="{{ p.subtitle }}" data-page="{{ p.url | relative_url }}" data-sum="{% if p.summary and p.summary != "" %}{{ p.summary | escape }}{% else %}{{ p.content | strip_html | strip_newlines | truncatewords: 22 | escape }}{% endif %}"
+         href="{% if p.kind == 'link' and p.link != '' %}{{ p.link }}{% else %}{{ p.url | relative_url }}{% endif %}"{% if p.kind == 'link' and p.link != '' %} target="_blank" rel="noopener"{% endif %}><img src="{% if p.card_image and p.card_image != "" %}{{ p.card_image | relative_url }}{% else %}{{ p.cover | relative_url }}{% endif %}" alt="{{ p.title }}" loading="lazy" decoding="async" draggable="false">{% if p.kind == 'film' %}<span class="dc-play" aria-hidden="true">▶</span>{% endif %}</a>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
 {% if s.expertise and s.expertise != "" %}
 <section class="xp g" id="expertise" aria-label="Expertise">
-  <p class="xp-k mono">(01) Expertise</p>
+  <p class="xp-k mono">(02) Expertise</p>
   <p class="xp-t">{{ s.expertise }}</p>
 </section>
 {% endif %}
 
 {% if s.services.size > 0 %}
 <section class="svc g" id="services">
-  <div class="svc-head"><h2>Services</h2>{% if s.services_intro != "" %}<p class="mono">{{ s.services_intro }}</p>{% endif %}</div>
+  <div class="svc-head"><h2>Services</h2>{% if s.services_quote and s.services_quote != "" %}<p class="svc-q">{{ s.services_quote }}</p>{% endif %}{% if s.services_intro != "" %}<p class="svc-i">{{ s.services_intro }}</p>{% endif %}</div>
   <ol class="svc-list">
     {% for v in s.services %}<li class="svc-row">
-      <b class="n">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</b>
-      <div class="t"><h3>{{ v.title }}</h3>{% if v.text != "" %}<p>{{ v.text }}</p>{% endif %}</div>
       {% if v.image and v.image != "" %}<img src="{{ v.image | relative_url }}" alt="" loading="lazy">{% endif %}
+      <b class="n">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</b>
+      <h3>{{ v.title }}</h3>
+      {% if v.text != "" %}{% assign items = v.text | newline_to_br | replace: "<br />", "·" | split: "·" %}<ul>{% for it in items %}{% assign it2 = it | strip %}{% if it2 != "" %}<li>{{ it2 }}</li>{% endif %}{% endfor %}</ul>{% endif %}
     </li>{% endfor %}
   </ol>
 </section>
