@@ -363,11 +363,13 @@
     var shFrame = function () {
       if (!shA) return;
       var vh = window.innerHeight, top = shA.top - scrollPos();
-      var p = Math.max(0, Math.min(1, (vh * 0.78 - top) / (vh * 0.5)));
+      var p = Math.max(0, Math.min(1, (vh * 0.85 - top) / (vh * 0.8)));
       p = Math.round(p * 1000) / 1000; if (p === shP) return; shP = p;
-      var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-      shH.style.transform = 'translate3d(' + (shA.hx * e).toFixed(1) + 'px,' + (shA.hy * e).toFixed(1) + 'px,0) scale(' + (1 + (SH_S - 1) * e).toFixed(3) + ')';
-      shT.style.transform = 'translate3d(' + (shA.tx * e).toFixed(1) + 'px,' + (shA.ty * e).toFixed(1) + 'px,0)';
+      /* sideways first, up/down a little later, so the heading and the line never cross */
+      var io = function (x) { x = Math.max(0, Math.min(1, x)); return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+      var ex = io(p / 0.7), ey = io((p - 0.3) / 0.7);
+      shH.style.transform = 'translate3d(' + (shA.hx * ex).toFixed(1) + 'px,' + (shA.hy * ey).toFixed(1) + 'px,0) scale(' + (1 + (SH_S - 1) * ex).toFixed(3) + ')';
+      shT.style.transform = 'translate3d(' + (shA.tx * ex).toFixed(1) + 'px,' + (shA.ty * ey).toFixed(1) + 'px,0)';
     };
     var shRe = function () { shMeasure(); shFrame(); };
     shRe(); window.addEventListener('scroll', shFrame, { passive: true });
