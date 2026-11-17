@@ -380,7 +380,10 @@ html.view-open,html.view-open body{overflow:hidden}
 
 /* ---------- services (deck slide 8, after adigun.framer.website): big centred title, numbered rows with a small photo; rows come up from pale as they reach the middle of the screen ---------- */
 .svc{padding-block:clamp(56px,8vw,110px)}
-.svc-head{text-align:center;margin-bottom:clamp(40px,6vw,80px)}
+.svc-head{position:relative;text-align:center;margin-bottom:clamp(40px,6vw,80px)}
+.svc-h,.svc-txt{width:fit-content;max-width:100%;margin-inline:auto}
+.svc-move .svc-h{transform-origin:0 0;will-change:transform}
+.svc-move .svc-txt{will-change:transform}
 .svc-head h2{font:800 clamp(56px,11vw,170px)/.86 var(--body);letter-spacing:-.06em;margin:0;text-transform:uppercase}
 /* his line under the heading: the quote large, the sentence smaller */
 .svc-q{font:italic 400 clamp(26px,3.6vw,54px)/1.08 var(--serif);letter-spacing:-.01em;max-width:24ch;margin:clamp(22px,3vw,40px) auto 0;text-wrap:balance}
@@ -402,7 +405,11 @@ html.view-open,html.view-open body{overflow:hidden}
 /* ---------- selected work: depth carousel. The project in front is large; the next ones line up behind it,
    each smaller and paler. Only transform and opacity animate. Without JS the cards are a sideways strip. ---------- */
 .dc{padding-block:clamp(48px,7vw,96px);border-bottom:1px solid var(--ink)}
-.dc-k{color:var(--soft);margin:0 0 clamp(22px,3vw,40px)}
+.dc .head{margin-bottom:clamp(28px,4vw,56px)}
+.dc-all{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--ink);border-radius:99px;padding:11px 20px;text-decoration:none;font:500 15px/1 var(--body);transition:background .25s,color .25s}
+.dc-all i{font-style:normal;transition:transform .3s cubic-bezier(.2,.9,.2,1)}
+.dc-all:hover{background:var(--ink);color:var(--paper)}
+.dc-all:hover i{transform:translateX(4px)}
 .dc-wrap{display:grid;grid-template-columns:minmax(220px,.85fr) minmax(0,2.4fr);gap:clamp(20px,3vw,48px);align-items:stretch}
 .dc-info{display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-width:0}
 .dc-n{margin:0;display:flex;align-items:flex-start;gap:8px}
@@ -506,3 +513,13 @@ h2.rise-h.in{clip-path:inset(0 0 -10% 0);transform:none}
 .fc-cap.swap{opacity:0}
 .fc-t{font:600 clamp(15px,1.3vw,18px)/1.2 var(--body);letter-spacing:-.01em;text-align:left}
 .fc-i{color:var(--soft);text-align:right}
+
+/* scrollbar drawn by site.js on screens with a mouse: it scrolls through the same smooth scrolling as the wheel */
+html.sbar-on{scrollbar-width:none}
+html.sbar-on::-webkit-scrollbar{display:none}
+.sbar{position:fixed;top:0;right:0;bottom:0;width:14px;z-index:55;opacity:0;transition:opacity .4s}
+.sbar:hover,.sbar.show{opacity:1}
+.sbar i{position:absolute;top:0;right:3px;width:5px;border-radius:9px;background:color-mix(in srgb,var(--ink) 38%,transparent);cursor:grab;will-change:transform;transition:width .2s,background .2s}
+.sbar:hover i,.sbar.drag i{width:8px;background:color-mix(in srgb,var(--ink) 60%,transparent)}
+.sbar.drag i{cursor:grabbing}
+html.view-open .sbar{display:none}

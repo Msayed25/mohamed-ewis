@@ -20,7 +20,7 @@ layout: default
 
 {% if featured.size > 0 %}
 <section class="dc g" id="selected" aria-label="Selected work">
-  <p class="dc-k mono">(01) Selected work</p>
+  <div class="head"><h2>Selected work</h2><a class="dc-all" href="#work">View all work <i aria-hidden="true">→</i></a></div>
   <div class="dc-wrap" id="dc" aria-roledescription="carousel">
     <div class="dc-info">
       <p class="dc-n" aria-hidden="true"><b class="dc-i">01</b><span class="dc-of mono">/ {% if featured.size < 10 %}0{% endif %}{{ featured.size }}</span></p>
@@ -38,16 +38,9 @@ layout: default
 </section>
 {% endif %}
 
-{% if s.expertise and s.expertise != "" %}
-<section class="xp g" id="expertise" aria-label="Expertise">
-  <p class="xp-k mono">(02) Expertise</p>
-  <p class="xp-t">{{ s.expertise }}</p>
-</section>
-{% endif %}
-
 {% if s.services.size > 0 %}
 <section class="svc g" id="services">
-  <div class="svc-head"><h2>Services</h2>{% if s.services_quote and s.services_quote != "" %}<p class="svc-q">{{ s.services_quote }}</p>{% endif %}{% if s.services_intro != "" %}<p class="svc-i">{{ s.services_intro }}</p>{% endif %}</div>
+  <div class="svc-head"><div class="svc-h"><h2>Services</h2></div><div class="svc-txt">{% if s.services_quote and s.services_quote != "" %}<p class="svc-q">{{ s.services_quote }}</p>{% endif %}{% if s.services_intro != "" %}<p class="svc-i">{{ s.services_intro }}</p>{% endif %}</div></div>
   <ol class="svc-list">
     {% for v in s.services %}<li class="svc-row">
       {% if v.image and v.image != "" %}<img src="{{ v.image | relative_url }}" alt="" loading="lazy">{% endif %}
@@ -56,6 +49,13 @@ layout: default
       {% if v.text != "" %}{% assign items = v.text | newline_to_br | replace: "<br />", "·" | split: "·" %}<ul>{% for it in items %}{% assign it2 = it | strip %}{% if it2 != "" %}<li>{{ it2 }}</li>{% endif %}{% endfor %}</ul>{% endif %}
     </li>{% endfor %}
   </ol>
+</section>
+{% endif %}
+
+{% if s.expertise and s.expertise != "" %}
+<section class="xp g" id="expertise" aria-label="Expertise">
+  <p class="xp-k mono">Expertise</p>
+  <p class="xp-t">{{ s.expertise }}</p>
 </section>
 {% endif %}
 
