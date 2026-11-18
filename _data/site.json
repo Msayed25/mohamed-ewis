@@ -19,6 +19,7 @@
     "/images/projects/emirati-womens-day/cover.jpg"
   ],
   "expertise": "My expertise lies in interpreting a brief, researching its context, developing a concept and translating strategy into a relevant visual expression.",
+  "hide_expertise": true,
   "services_quote": "“Independent when the project needs one mind. Scalable when it needs many”.",
   "services_intro": "Depending on the brief, I work independently or assemble and lead a tailored team of designers, filmmakers, animators, photographers, strategists and specialists.",
   "services": [
@@ -43,6 +44,7 @@
       "image": ""
     }
   ],
+  "hide_films": true,
   "disciplines": [
     "Creative Direction",
     "Art Direction",
@@ -73,19 +75,9 @@
       "info": "Personal photography"
     },
     {
-      "image": "/images/site/board-golds.jpg",
-      "title": "Gold's Gym",
-      "info": "On ground"
-    },
-    {
       "image": "/images/site/personal-3.jpg",
       "title": "Untitled 02",
       "info": "Personal photography"
-    },
-    {
-      "image": "/images/projects/nike/cover.jpg",
-      "title": "Nike",
-      "info": "E-commerce"
     },
     {
       "image": "/images/site/personal-5.jpg",
@@ -96,11 +88,6 @@
       "image": "/images/site/personal-2.jpg",
       "title": "Untitled 04",
       "info": "Personal photography"
-    },
-    {
-      "image": "/images/projects/swyp/cover.jpg",
-      "title": "Swyp",
-      "info": "On ground"
     },
     {
       "image": "/images/site/board-red.jpg",
@@ -177,8 +164,7 @@
         "Scouting",
         "Production management",
         "Content creation",
-        "Live action filming",
-        "Experience"
+        "Live action filming"
       ],
       "link_label": "",
       "link": ""
@@ -193,8 +179,7 @@
         "Editing",
         "2D/3D animation",
         "Colour grading",
-        "Visual effects",
-        "Finishing"
+        "Visual effects"
       ],
       "link_label": "",
       "link": ""

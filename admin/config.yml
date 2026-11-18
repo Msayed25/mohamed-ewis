@@ -88,6 +88,8 @@ collections:
           - { name: about_text, label: About text, widget: text, required: false, hint: "Shown on the About page (mohamedewis.com/about/). The About menu item appears when this has text." }
           - { name: about_photos, label: About photos (round, shown in black and white), widget: list, required: false, field: { name: photo, label: Photo, widget: image } }
           - { name: expertise, label: Expertise (the big statement after the landing page), widget: text, required: false }
+          - { name: hide_expertise, label: Hide the Expertise section, widget: boolean, default: false, required: false }
+          - { name: hide_films, label: Hide the Films section, widget: boolean, default: false, required: false }
           - { name: services_quote, label: Services quote (large line under the Services heading), widget: string, required: false }
           - { name: services_intro, label: Services intro (smaller line under the quote), widget: text, required: false }
           - { name: services, label: Services, widget: list, fields: [ { name: title, label: Service, widget: string }, { name: text, label: "What it covers (separate with · or put each on its own line)", widget: text, required: false }, { name: image, label: Photo (optional), widget: image, required: false } ] }

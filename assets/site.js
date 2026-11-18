@@ -646,7 +646,7 @@
     var lerp = function (a, b, t) { return a + (b - a) * t; };
     var dims = function () {
       var cw = Math.min(400, Math.max(200, trk.clientWidth * 0.28)); if (window.innerWidth < 760) cw = Math.min(trk.clientWidth * 0.54, 300);
-      return { cw: cw, ch: cw * 4 / 3, sw: cw * 0.52, sh: cw * 0.52 * 4 / 3, gap: cw * 0.055 };
+      return { cw: cw, ch: cw * 4 / 3, sw: cw * 0.4, sh: cw * 0.4 * 4 / 3, gap: cw * 0.055 };
     };
     var D = dims();
     var render = function () {
