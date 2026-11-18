@@ -645,8 +645,15 @@
     var wrap = function (d) { d = ((d % N) + N) % N; return d > N / 2 ? d - N : d; };
     var lerp = function (a, b, t) { return a + (b - a) * t; };
     var dims = function () {
-      var cw = Math.min(400, Math.max(200, trk.clientWidth * 0.28)); if (window.innerWidth < 760) cw = Math.min(trk.clientWidth * 0.54, 300);
-      return { cw: cw, ch: cw * 4 / 3, sw: cw * 0.4, sh: cw * 0.4 * 4 / 3, gap: cw * 0.055 };
+      var W = trk.clientWidth, ph = window.innerWidth < 760;
+      var cw = ph ? Math.min(W * 0.54, 300) : Math.min(400, Math.max(200, W * 0.28));
+      var gap = cw * 0.055, sw = cw * 0.4, side = Math.min(3, Math.floor((N - 1) / 2));
+      if (!ph && side > 0) {   /* fill the row to both edges: side photos between 30% and 50% of the centre one, spacing takes the rest */
+        var room = W / 2 - cw / 2;
+        sw = Math.max(cw * 0.3, Math.min(cw * 0.5, (room - side * gap) / side));
+        gap = Math.max(gap, (room - side * sw) / side);
+      }
+      return { cw: cw, ch: cw * 4 / 3, sw: sw, sh: sw * 4 / 3, gap: gap };
     };
     var D = dims();
     var render = function () {
@@ -758,5 +765,20 @@
     root.classList.add('js-motion');
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.remove('pre'); io.unobserve(e.target); } }); }, { threshold: 0.12 });
     $$('.rv').forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('pre'); io.observe(el); } });
+  }
+
+  /* moving between pages: browsers with cross-page view transitions animate it from site.css; the others get a short
+     fade-out here before the next page loads */
+  if (!('onpagereveal' in window) && !reduce) {
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
+      var a = e.target.closest('a[href]'); if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+      var u; try { u = new URL(a.getAttribute('href'), location.href); } catch (err) { return; }
+      if (u.origin !== location.origin || u.pathname.replace(/index\.html$/, '') === location.pathname.replace(/index\.html$/, '')) return;
+      if (/\/admin\//.test(u.pathname)) return;
+      e.preventDefault(); root.classList.add('page-out');
+      setTimeout(function () { location.href = u.href; }, 340);
+    });
+    window.addEventListener('pageshow', function () { root.classList.remove('page-out'); });
   }
 })();

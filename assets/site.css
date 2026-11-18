@@ -160,8 +160,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* ---------- TALK (Asher Vale) ---------- */
 .talk{padding-block:clamp(60px,9vw,120px) 30px}
 .talk a.big{display:inline-flex;max-width:100%;align-items:center;gap:.2em;font:400 clamp(64px,15vw,230px)/.85 var(--display);text-transform:uppercase;text-decoration:none;letter-spacing:-.01em}
-.talk a.big .t{background:linear-gradient(var(--red),var(--red)) 0 100%/0 .06em no-repeat;transition:background-size .5s cubic-bezier(.2,.9,.2,1)}
-.talk a.big:hover .t,.talk a.big:focus-visible .t{background-size:100% .06em}
+.talk a.big .nw{background:linear-gradient(var(--red),var(--red)) 0 100%/0 .035em no-repeat;transition:background-size .5s cubic-bezier(.2,.9,.2,1)}
+.talk a.big:hover .nw,.talk a.big:focus-visible .nw{background-size:100% .035em}
 .talk a.big .arr{display:grid;place-items:center;flex:none;width:1.1em;height:1.1em;margin-block:-.125em;color:var(--red);line-height:1}
 .talk a.big .arr i{display:inline-block;font-style:normal;pointer-events:none;transform:rotate(180deg);transition:transform .4s cubic-bezier(.2,.9,.2,1)}
 .talk a.big:hover .arr i,.talk a.big:focus-visible .arr i{transform:rotate(135deg)}
@@ -528,3 +528,15 @@ html.view-open .sbar{display:none}
 .ab-next{margin-top:clamp(48px,7vw,96px)}
 .ab-text{margin:0;font:400 clamp(20px,1.6vw,25px)/1.38 var(--serif);text-wrap:pretty}
 @media (max-width:760px){.ab-ph{grid-template-columns:repeat(2,minmax(0,1fr))}.ab-body{grid-template-columns:minmax(0,1fr)}}
+
+/* moving between pages (home <-> About): the old page lifts away and fades, the new one rises in; the top bar stays put.
+   Browsers without cross-page transitions get a short fade-out from site.js instead. */
+@view-transition{navigation:auto}
+.bar{view-transition-name:topbar}
+::view-transition-group(topbar),::view-transition-old(topbar),::view-transition-new(topbar){animation:none}
+::view-transition-old(root){animation:vt-out .42s cubic-bezier(.4,0,.2,1) both}
+::view-transition-new(root){animation:vt-in .6s cubic-bezier(.2,.8,.2,1) .08s both}
+@keyframes vt-out{to{opacity:0;transform:translateY(-3vh)}}
+@keyframes vt-in{from{opacity:0;transform:translateY(5vh)}}
+html.page-out body > *:not(.bar){opacity:0;transform:translateY(-3vh);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1)}
+@media (prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}html.page-out body > *{transition:none}}
