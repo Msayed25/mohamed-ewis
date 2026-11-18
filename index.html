@@ -13,7 +13,7 @@ layout: default
     {% assign nm = s.name | split: " " %}<h1><span><b>{{ nm | first }}</b></span> <span><b class="sf">{{ nm | last }}</b></span></h1>
     <figure class="vf"><div class="pic"><img src="{% if s.portrait_landing and s.portrait_landing != "" %}{{ s.portrait_landing | relative_url }}{% else %}{{ s.portrait | relative_url }}{% endif %}" alt="{{ s.name }}" fetchpriority="high"></div></figure>
     <p class="role mono">{{ s.title }}</p>
-    {% if s.landing_bio and s.landing_bio != "" %}<p class="bio">{{ s.landing_bio }}</p>{% endif %}
+    {% if s.landing_bio and s.landing_bio != "" %}<p class="bio">{{ s.landing_bio }}{% if s.about_text and s.about_text != "" %}<a class="bio-more" href="#about">About me <i aria-hidden="true">→</i></a>{% endif %}</p>{% endif %}
     {% if s.disciplines.size > 0 %}<ul class="low">{% for d in s.disciplines %}<li>{{ d }}</li>{% endfor %}</ul>{% endif %}
   </div>
 </section>
@@ -95,6 +95,17 @@ layout: default
   <div class="fc" id="fc" aria-roledescription="carousel" aria-label="Personal work">
     <div class="fc-track">{% for ph in s.personal_images %}{% if ph.image %}{% assign src = ph.image %}{% else %}{% assign src = ph %}{% endif %}<button type="button" class="fc-it" data-title="{{ ph.title | escape }}" data-info="{{ ph.info | escape }}" aria-label="{% if ph.title %}{{ ph.title | escape }}{% else %}Photo {{ forloop.index }}{% endif %}"><img src="{{ src | relative_url }}" alt="" loading="lazy" decoding="async" draggable="false"></button>{% endfor %}</div>
     <div class="fc-cap" aria-live="polite"><b class="fc-t"></b><span class="fc-i mono"></span></div>
+  </div>
+</section>
+{% endif %}
+
+{% if s.about_text and s.about_text != "" %}
+<section class="sec g ab" id="about">
+  <div class="head"><h2>About</h2></div>
+  {% if s.about_photos.size > 0 %}<ul class="ab-ph" aria-hidden="true">{% for ph in s.about_photos %}<li><img src="{{ ph | relative_url }}" alt="" loading="lazy" decoding="async"></li>{% endfor %}</ul>{% endif %}
+  <div class="ab-body">
+    {% if s.about_line and s.about_line != "" %}<p class="ab-line">{{ s.about_line }}</p>{% endif %}
+    <p class="ab-text">{{ s.about_text }}</p>
   </div>
 </section>
 {% endif %}

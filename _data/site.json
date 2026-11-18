@@ -9,7 +9,15 @@
   "portrait": "/images/site/portrait.jpg",
   "portrait_landing": "/images/site/portrait-landing.jpg",
   "portrait_cutout": "/images/site/portrait-cutout.webp",
-  "landing_bio": "Mohamed, an experienced Art Director and Visual Artist with a degree in Mass Communication, he has collaborated with top-tier Art and Creative Directors on diverse projects for clients such as Mini, Subaru, Pepsi, Etisalat and Google. Mohamed excels in crafting ideas, Art directions and Design , showcasing a blend of expressive and bold concepts through mixed multimedia techniques.",
+  "landing_bio": "I turn ideas into visual worlds across campaigns, brands, films and experiences.",
+  "about_line": "I turn ideas into visual worlds across campaigns, brands, films and experiences.",
+  "about_text": "Mohamed, an experienced Art Director and Visual Artist with a degree in Mass Communication, he has collaborated with top-tier Art and Creative Directors on diverse projects for clients such as Mini, Subaru, Pepsi, Etisalat and Google. Mohamed excels in crafting ideas, Art directions and Design , showcasing a blend of expressive and bold concepts through mixed multimedia techniques.",
+  "about_photos": [
+    "/images/site/portrait-landing.jpg",
+    "/images/projects/sacha-jafri/cover.jpg",
+    "/images/site/portrait.jpg",
+    "/images/projects/emirati-womens-day/cover.jpg"
+  ],
   "expertise": "My expertise lies in interpreting a brief, researching its context, developing a concept and translating strategy into a relevant visual expression.",
   "services_quote": "“Independent when the project needs one mind. Scalable when it needs many”.",
   "services_intro": "Depending on the brief, I work independently or assemble and lead a tailored team of designers, filmmakers, animators, photographers, strategists and specialists.",
