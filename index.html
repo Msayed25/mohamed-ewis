@@ -55,7 +55,7 @@ layout: default
 {% endif %}
 
 <section class="sec g" id="work">
-  <div class="head"><h2>Index</h2><p>Every project, by discipline. Click one to open its page.</p></div>
+  <div class="head"><h2>Index</h2></div>
   <div class="filters" id="filters">
     <button type="button" aria-pressed="true" data-cat="all" style="--c:var(--ink)"><i></i>All <span>{{ projects.size }}</span></button>
     {% for c in cats %}{% assign kv = c | split: ":" %}{% assign n = projects | where: "category", kv[0] %}{% if n.size > 0 %}<button type="button" aria-pressed="false" data-cat="{{ kv[0] }}" style="--c:var(--c-{{ kv[0] }})"><i></i>{{ kv[1] }} <span>{{ n.size }}</span></button>{% endif %}{% endfor %}

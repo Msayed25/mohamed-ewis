@@ -383,8 +383,9 @@ html.view-open,html.view-open body{overflow:hidden}
 .svc-move .svc-txt{will-change:transform}
 .svc-head h2{font:400 clamp(72px,13vw,210px)/.84 var(--cond);letter-spacing:-.005em;margin:0;text-transform:uppercase}
 /* his line under the heading: the quote large, the sentence smaller */
+.svc-q+.svc-i{margin-top:18px}
 .svc-q{font:italic 400 clamp(26px,3.6vw,54px)/1.08 var(--serif);letter-spacing:-.01em;max-width:24ch;margin:clamp(22px,3vw,40px) auto 0;text-wrap:balance}
-.svc-i{max-width:52ch;margin:18px auto 0;color:var(--soft);font-size:clamp(15px,1.25vw,18px);line-height:1.6;text-wrap:pretty}
+.svc-i{max-width:52ch;margin:clamp(22px,3vw,40px) auto 0;color:var(--soft);font-size:clamp(15px,1.25vw,18px);line-height:1.6;text-wrap:pretty}
 /* the services side by side: 4 columns, 2 x 2 on tablets, one under the other on phones */
 .svc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
 .svc-row{padding:clamp(20px,2.4vw,32px) clamp(14px,1.8vw,26px) clamp(26px,3vw,40px);border-left:1px solid var(--hair);opacity:.22;transition:opacity .7s cubic-bezier(.2,.9,.2,1)}
@@ -525,7 +526,6 @@ html.view-open .sbar{display:none}
 .ab-ph li:hover img{transform:scale(1.06)}
 .ab-body{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,5vw,90px);align-items:start;border-top:1px solid var(--hair);padding-top:clamp(22px,3vw,36px)}
 .ab-line{margin:0;font:500 clamp(28px,3.1vw,48px)/1.1 var(--body);letter-spacing:-.035em;text-wrap:balance}
-.ab-next{margin-top:clamp(48px,7vw,96px)}
 .ab-text{margin:0;font:400 clamp(20px,1.6vw,25px)/1.38 var(--serif);text-wrap:pretty}
 @media (max-width:760px){.ab-ph{grid-template-columns:repeat(2,minmax(0,1fr))}.ab-body{grid-template-columns:minmax(0,1fr)}}
 
