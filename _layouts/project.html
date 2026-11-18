@@ -18,7 +18,10 @@
 <link rel="stylesheet" href="{{ '/assets/site.css' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M' }}">
 <script>try{var t=localStorage.getItem('ewis-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
-{% assign projects = site.projects | sort: "order" %}
+{% assign allp = site.projects | sort: "order" %}
+{% comment %} Prev/Next and the case number only count projects shown in the Index; a hidden project keeps its place so its own arrows still work {% endcomment %}
+{% assign projects = "" | split: "" %}{% assign shown = 0 %}
+{% for x in allp %}{% if x.hide_in_index != true %}{% assign shown = shown | plus: 1 %}{% endif %}{% if x.hide_in_index != true or x.url == page.url %}{% assign projects = projects | push: x %}{% endif %}{% endfor %}
 {% for x in projects %}{% if x.url == page.url %}{% assign idx = forloop.index0 %}{% endif %}{% endfor %}
 {% assign nidx = idx | plus: 1 %}{% if nidx >= projects.size %}{% assign nidx = 0 %}{% endif %}
 {% assign pidx = idx | minus: 1 %}{% if pidx < 0 %}{% assign pidx = projects.size | minus: 1 %}{% endif %}
@@ -31,7 +34,7 @@
   <div class="progress" aria-hidden="true"><i></i></div>
   <header class="casebar g mono">
     <a class="cb-close" href="{{ '/#work' | relative_url }}" data-close>✕ <span>All work</span></a>
-    <span class="cb-id">Case No.{% if num < 10 %}0{% endif %}{{ num }} / {{ projects.size }} · {{ catlabel }}</span>
+    <span class="cb-id">{% if page.hide_in_index != true %}Case No.{% if num < 10 %}0{% endif %}{{ num }} / {{ shown }} · {% endif %}{{ catlabel }}</span>
     <nav class="cb-nav"><a href="{{ prev.url | relative_url }}" data-proj aria-label="Previous project: {{ prev.title }}">← Prev</a><a href="{{ next.url | relative_url }}" data-proj aria-label="Next project: {{ next.title }}">Next →</a><button class="tog" type="button" data-tog aria-label="Switch between light and dark">◐</button></nav>
   </header>
 
