@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{% if page.title and page.layout == 'project' %}{{ page.title }} · {% endif %}{{ site.data.site.name }} · {{ site.data.site.title }}</title>
+<title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.data.site.name }} · {{ site.data.site.title }}</title>
 <meta name="description" content="{% if page.layout == 'project' %}{{ page.subtitle }} by {{ site.data.site.name }}. {{ page.content | strip_html | truncatewords: 24 | strip_newlines }}{% else %}{{ site.data.site.bio }}{% endif %}">
-<meta property="og:title" content="{% if page.layout == 'project' %}{{ page.title }} · {% endif %}{{ site.data.site.name }}">
+<meta property="og:title" content="{% if page.title %}{{ page.title }} · {% endif %}{{ site.data.site.name }}">
 <meta property="og:image" content="{{ site.data.site.portrait | absolute_url }}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ page.url | absolute_url }}">
@@ -22,7 +22,7 @@
 <header class="bar g mono">
   <a class="brand" href="{{ '/' | relative_url }}" aria-label="Home, {{ s.name }}">Home</a>
   <span class="clock-wrap">{{ s.location | split: "," | first }} <b class="clock" data-offset="{{ s.timezone_offset }}">--:--</b> {{ s.timezone_label }}</span>
-  <nav>{% if s.about_text and s.about_text != "" %}<a href="{{ '/#about' | relative_url }}">About</a>{% endif %}<a href="{{ '/#services' | relative_url }}">Services</a><a href="{{ '/#work' | relative_url }}">Index</a><a href="{{ '/#films' | relative_url }}">Films</a><a href="{{ '/#cv' | relative_url }}">CV</a><a href="{{ '/#talk' | relative_url }}">Contact</a><button class="tog" id="tog" type="button" aria-label="Switch between light and dark">◐ <span id="togl">Dark</span></button></nav>
+  <nav>{% if s.about_text and s.about_text != "" %}<a href="{{ '/about/' | relative_url }}">About</a>{% endif %}<a href="{{ '/#services' | relative_url }}">Services</a><a href="{{ '/#work' | relative_url }}">Index</a><a href="{{ '/#films' | relative_url }}">Films</a><a href="{{ '/#cv' | relative_url }}">CV</a><a href="{{ '/#talk' | relative_url }}">Contact</a><button class="tog" id="tog" type="button" aria-label="Switch between light and dark">◐ <span id="togl">Dark</span></button></nav>
 </header>
 
 {{ content }}

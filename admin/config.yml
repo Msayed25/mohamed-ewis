@@ -83,9 +83,9 @@ collections:
           - { name: status, label: Availability badge (not shown at the moment), widget: string, required: false }
           - { name: portrait, label: Portrait photo, widget: image }
           - { name: portrait_landing, label: Landing photo (upper body, facing into the page), widget: image, required: false }
-          - { name: landing_bio, label: Landing line (fades in next to the photo as you scroll; an About me link follows it), widget: text, required: false }
+          - { name: landing_bio, label: Landing line (fades in next to the photo as you scroll), widget: text, required: false }
           - { name: about_line, label: About heading line (large), widget: text, required: false }
-          - { name: about_text, label: About text, widget: text, required: false, hint: "The About section appears on the home page when this has text." }
+          - { name: about_text, label: About text, widget: text, required: false, hint: "Shown on the About page (mohamedewis.com/about/). The About menu item appears when this has text." }
           - { name: about_photos, label: About photos (round, shown in black and white), widget: list, required: false, field: { name: photo, label: Photo, widget: image } }
           - { name: expertise, label: Expertise (the big statement after the landing page), widget: text, required: false }
           - { name: services_quote, label: Services quote (large line under the Services heading), widget: string, required: false }

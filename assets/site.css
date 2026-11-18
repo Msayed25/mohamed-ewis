@@ -63,7 +63,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .sec{padding-block:clamp(56px,8vw,110px) 0}
 .head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
 /* section headings: tall condensed capitals (client feedback round 2, slide 25 "Fonts") */
-.head h2{font:400 clamp(50px,8.4vw,136px)/.86 var(--cond);letter-spacing:-.005em;text-transform:uppercase;margin:0}
+.head h2,.head h1{font:400 clamp(50px,8.4vw,136px)/.86 var(--cond);letter-spacing:-.005em;text-transform:uppercase;margin:0}
 .head p{max-width:42ch;color:var(--soft);margin:0}
 
 /* ---------- INDEX (Signal-A / Ethan Clark) ---------- */
@@ -346,12 +346,6 @@ html.view-open,html.view-open body{overflow:hidden}
 .landing.go .vf img{opacity:1}
 .landing .role{margin:8px 0 0;text-align:right;color:var(--ink);font-weight:700;opacity:0;transition:opacity .8s .9s}
 .landing .bio{font-size:clamp(16px,1.35vw,20px);line-height:1.5;max-width:560px;margin:28px 0 0}
-/* "About me" under the landing line: glides down to the About section */
-.bio-more{display:table;margin-top:14px;font-weight:500;text-decoration:none;position:relative}
-.bio-more::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;transform-origin:0 50%;transition:transform .35s cubic-bezier(.2,.9,.2,1)}
-.bio-more:hover::after{transform:scaleX(.35)}
-.bio-more i{font-style:normal;display:inline-block;transition:transform .3s cubic-bezier(.2,.9,.2,1)}
-.bio-more:hover i{transform:translateX(4px)}
 .landing .low{list-style:none;margin:28px 0 0;padding:12px 0 0;border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;gap:2px 14px;font:700 clamp(15px,1.4vw,22px)/1.3 var(--body);letter-spacing:-.01em;opacity:0;transition:opacity .8s .9s}
 .landing .low li+li::before{content:"/";margin-right:14px;color:var(--soft)}
 .landing.go .low{opacity:1}
@@ -531,5 +525,6 @@ html.view-open .sbar{display:none}
 .ab-ph li:hover img{transform:scale(1.06)}
 .ab-body{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,5vw,90px);align-items:start;border-top:1px solid var(--hair);padding-top:clamp(22px,3vw,36px)}
 .ab-line{margin:0;font:500 clamp(28px,3.1vw,48px)/1.1 var(--body);letter-spacing:-.035em;text-wrap:balance}
+.ab-next{margin-top:clamp(48px,7vw,96px)}
 .ab-text{margin:0;font:400 clamp(20px,1.6vw,25px)/1.38 var(--serif);text-wrap:pretty}
 @media (max-width:760px){.ab-ph{grid-template-columns:repeat(2,minmax(0,1fr))}.ab-body{grid-template-columns:minmax(0,1fr)}}
