@@ -55,6 +55,7 @@ collections:
       - { name: cover, label: Cover image, widget: image }
       - { name: cover_line, label: Cover line, widget: string, required: false, hint: "One short, punchy line in the magazine-cover style. Shown big on the cover." }
       - { name: featured, label: Show in Selected work (the carousel near the top of the home page), widget: boolean, default: false }
+      - { name: hide_in_index, label: Hide from the Index (the project page still exists), widget: boolean, default: false, required: false }
       - { name: card_image, label: Selected work picture (optional; a tall picture looks best there; the cover is used if empty), widget: image, required: false }
       - { name: order, label: Order, widget: number, value_type: int, default: 100, hint: "Lower numbers come first in the index." }
       - { name: tags, label: Tags, widget: list, required: false, field: { name: tag, label: Tag, widget: string } }

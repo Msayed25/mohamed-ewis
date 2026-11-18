@@ -5,6 +5,7 @@ layout: default
 {% assign projects = site.projects | sort: "order" %}
 {% assign featured = projects | where: "featured", true %}
 {% assign films = projects | where: "kind", "film" %}
+{% assign listed = projects | where_exp: "p", "p.hide_in_index != true" %}
 {% assign cats = "digital:Digital,print:Print,pitch:Pitch,film:Film,photography:Photography,branding:Branding,personal:Personal" | split: "," %}
 
 <section class="landing g" aria-label="{{ s.name }}, {{ s.title }}">
@@ -57,12 +58,12 @@ layout: default
 <section class="sec g" id="work">
   <div class="head"><h2>Index</h2></div>
   <div class="filters" id="filters">
-    <button type="button" aria-pressed="true" data-cat="all" style="--c:var(--ink)"><i></i>All <span>{{ projects.size }}</span></button>
-    {% for c in cats %}{% assign kv = c | split: ":" %}{% assign n = projects | where: "category", kv[0] %}{% if n.size > 0 %}<button type="button" aria-pressed="false" data-cat="{{ kv[0] }}" style="--c:var(--c-{{ kv[0] }})"><i></i>{{ kv[1] }} <span>{{ n.size }}</span></button>{% endif %}{% endfor %}
+    <button type="button" aria-pressed="true" data-cat="all" style="--c:var(--ink)"><i></i>All <span>{{ listed.size }}</span></button>
+    {% for c in cats %}{% assign kv = c | split: ":" %}{% assign n = listed | where: "category", kv[0] %}{% if n.size > 0 %}<button type="button" aria-pressed="false" data-cat="{{ kv[0] }}" style="--c:var(--c-{{ kv[0] }})"><i></i>{{ kv[1] }} <span>{{ n.size }}</span></button>{% endif %}{% endfor %}
   </div>
   <div class="legend mono soft"><span>▶ Film</span><span>◼ Case study</span><span>Click a project to open it</span></div>
   <div class="rows" id="rows">
-    {% for p in projects %}{% assign catlabel = "" %}{% for c in cats %}{% assign kv = c | split: ":" %}{% if kv[0] == p.category %}{% assign catlabel = kv[1] %}{% endif %}{% endfor %}
+    {% for p in listed %}{% assign catlabel = "" %}{% for c in cats %}{% assign kv = c | split: ":" %}{% if kv[0] == p.category %}{% assign catlabel = kv[1] %}{% endif %}{% endfor %}
     {% if p.kind == 'link' %}{% assign rk = 'case' %}{% else %}{% assign rk = p.kind %}{% endif %}<a class="row" style="--c:var(--c-{{ p.category }})" data-cat="{{ p.category }}" data-kind="{{ rk }}" data-img="{{ p.cover | relative_url }}" data-title="{{ p.title }}" data-sub="{{ p.subtitle }}" data-page="{{ p.url | relative_url }}"
        href="{{ p.url | relative_url }}">
       <span class="id mono">{{ catlabel | slice: 0 }}—{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span><span class="nm">{{ p.title }}</span><span class="sub">{{ p.subtitle }}</span><span class="sub mono">{{ catlabel }}</span><span class="act">{% include kind.html kind=rk %}</span>

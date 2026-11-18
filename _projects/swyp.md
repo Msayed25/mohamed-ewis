@@ -7,6 +7,7 @@ order: 70
 cover: /images/projects/swyp/cover.jpg
 cover_line: ""
 featured: false
+hide_in_index: true
 tags:
   - "Print"
   - "Illustration"

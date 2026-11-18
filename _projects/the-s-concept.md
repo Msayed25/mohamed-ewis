@@ -7,6 +7,7 @@ order: 140
 cover: /images/projects/the-s-concept/cover.jpg
 cover_line: ""
 featured: false
+hide_in_index: true
 tags:
   - "Photography"
   - "Art direction"

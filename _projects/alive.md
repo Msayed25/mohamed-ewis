@@ -7,6 +7,7 @@ order: 130
 cover: /images/projects/alive/cover.jpg
 cover_line: "Shot in the dark. Literally."
 featured: true
+hide_in_index: true
 tags:
   - "Concept"
   - "Film treatment"

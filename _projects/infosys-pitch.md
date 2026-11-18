@@ -7,6 +7,7 @@ order: 80
 cover: /images/projects/infosys-pitch/cover.jpg
 cover_line: ""
 featured: false
+hide_in_index: true
 tags:
   - "Art direction"
   - "Design"

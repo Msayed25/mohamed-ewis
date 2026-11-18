@@ -7,6 +7,7 @@ order: 160
 cover: /images/projects/orca-studios/cover.jpg
 cover_line: ""
 featured: false
+hide_in_index: true
 tags:
   - "Branding"
   - "Logo"
