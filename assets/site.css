@@ -122,7 +122,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* ---------- CV (Eddy Naboulet's git-log CV, translated into an editing timeline) ---------- */
 .cv{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:clamp(24px,4vw,56px)}
-.cv aside{position:sticky;top:80px;align-self:start;display:grid;gap:14px}
+.cv aside{position:sticky;top:calc(var(--barh,60px) + 24px);align-self:start;display:grid;gap:14px}
+.cv-head{margin-bottom:4px}   /* the CV heading travels down the page with his name, title and city */
+.cv-intro{max-width:42ch;color:var(--soft);margin:0 0 22px}
 .cv aside .pic{aspect-ratio:4/5;overflow:hidden;background:var(--wash)}
 .cv aside .pic img{width:100%;height:100%;object-fit:cover;max-width:none;filter:grayscale(1)}
 .cv aside .dl{border:1px solid var(--ink);padding:12px 14px;display:flex;justify-content:space-between;text-decoration:none;transition:background .2s,color .2s}
@@ -541,3 +543,7 @@ html.view-open .sbar{display:none}
 @keyframes vt-in{from{opacity:0;transform:translateY(5vh)}}
 html.page-out body > *:not(.bar){opacity:0;transform:translateY(-3vh);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1)}
 @media (prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}html.page-out body > *{transition:none}}
+
+/* About page: a ruled line between his bio and Services */
+.ab-rule{margin-top:clamp(56px,8vw,110px)}
+.ab-rule div{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--ink);padding-top:14px;font:400 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}

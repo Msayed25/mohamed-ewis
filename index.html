@@ -87,15 +87,16 @@ layout: default
 {% endif %}
 
 <section class="sec g" id="cv">
-  <div class="head"><h2>CV</h2><p>A career, cut like a film. Each chapter is a clip on the timeline. Click one to jump to it.</p></div>
   <div class="cv">
     <aside>
+      <div class="head cv-head"><h2>CV</h2></div>
       <div class="stack">
         <div class="mono">{{ s.name }}<br>{{ s.title }}<br>{{ s.location }}</div>
         {% if s.cv_pdf != "" %}<a class="dl mono" href="{{ s.cv_pdf | relative_url }}" download>⎙ Download CV (PDF) <span>↓</span></a>{% endif %}
       </div>
     </aside>
     <div class="cvmain">
+      <p class="cv-intro">A career, cut like a film. Each chapter is a clip on the timeline. Click one to jump to it.</p>
       <div class="tl">
         <div class="tbar mono"><span>~/{{ s.short_name | downcase }} / career.prproj</span><span>{{ s.cv.size }} clips</span></div>
         <div class="cmd mono" data-cmd="{{ s.short_name | downcase }}@{{ s.location | split: ',' | first | downcase }}:~$ render career --to &quot;{{ s.title }}&quot;"><span class="typed"></span><span class="caret"></span></div>
