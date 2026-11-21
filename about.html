@@ -2,6 +2,7 @@
 layout: default
 title: About
 permalink: /about/
+contact: false
 ---
 {% assign s = site.data.site %}
 <section class="sec g ab" id="about">
@@ -12,3 +13,5 @@ permalink: /about/
     <p class="ab-text">{{ s.about_text }}</p>
   </div>
 </section>
+
+{% include services.html %}

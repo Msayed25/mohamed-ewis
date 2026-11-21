@@ -90,7 +90,6 @@ layout: default
   <div class="head"><h2>CV</h2><p>A career, cut like a film. Each chapter is a clip on the timeline. Click one to jump to it.</p></div>
   <div class="cv">
     <aside>
-      <div class="pic"><img src="{{ s.portrait | relative_url }}" alt="{{ s.name }}" loading="lazy" decoding="async"></div>
       <div class="stack">
         <div class="mono">{{ s.name }}<br>{{ s.title }}<br>{{ s.location }}</div>
         {% if s.cv_pdf != "" %}<a class="dl mono" href="{{ s.cv_pdf | relative_url }}" download>⎙ Download CV (PDF) <span>↓</span></a>{% endif %}
@@ -121,16 +120,4 @@ layout: default
   </div>
 </section>
 
-{% if s.services.size > 0 %}
-<section class="svc g" id="services">
-  <div class="svc-head"><div class="svc-h"><h2>Services</h2></div><div class="svc-txt">{% if s.services_quote and s.services_quote != "" %}<p class="svc-q">{{ s.services_quote }}</p>{% endif %}{% if s.services_intro != "" %}<p class="svc-i">{{ s.services_intro }}</p>{% endif %}</div></div>
-  <ol class="svc-list">
-    {% for v in s.services %}<li class="svc-row">
-      {% if v.image and v.image != "" %}<img src="{{ v.image | relative_url }}" alt="" loading="lazy">{% endif %}
-      <b class="n">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</b>
-      <h3>{{ v.title }}</h3>
-      {% if v.text != "" %}{% assign items = v.text | newline_to_br | replace: "<br />", "·" | split: "·" %}<ul>{% for it in items %}{% assign it2 = it | strip %}{% if it2 != "" %}<li>{{ it2 }}</li>{% endif %}{% endfor %}</ul>{% endif %}
-    </li>{% endfor %}
-  </ol>
-</section>
-{% endif %}
+{% if s.services_on_home == true %}{% include services.html %}{% endif %}

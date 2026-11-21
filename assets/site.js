@@ -77,9 +77,17 @@
     var pad = function (n) { return (n < 10 ? '0' : '') + n; };
     if (reduce || !tc) land.classList.add('go');
     else {
+      /* the name only slides up once its font has arrived (at most ~1.6 s), so phones don't redo the layout mid-animation;
+         the timecode simply keeps rolling while it waits */
+      var fontsIn = !(document.fonts && document.fonts.ready);
+      if (!fontsIn) document.fonts.ready.then(function () { fontsIn = true; });
       var roll = setInterval(function () {
         f += 2; tc.textContent = '00:00:' + pad(Math.floor(f / 24)) + ':' + pad(f % 24);
-        if (f >= 48) { clearInterval(roll); land.classList.add('go'); }
+        if (f >= 48 && (fontsIn || f >= 114)) {
+          clearInterval(roll); land.classList.add('anim');
+          requestAnimationFrame(function () { land.classList.add('go'); });
+          setTimeout(function () { land.classList.remove('anim'); }, 2200);
+        }
       }, 28);
     }
   }
@@ -646,11 +654,12 @@
     var lerp = function (a, b, t) { return a + (b - a) * t; };
     var dims = function () {
       var W = trk.clientWidth, ph = window.innerWidth < 760;
-      var cw = ph ? Math.min(W * 0.54, 300) : Math.min(400, Math.max(200, W * 0.28));
-      var gap = cw * 0.055, sw = cw * 0.4, side = Math.min(3, Math.floor((N - 1) / 2));
-      if (!ph && side > 0) {   /* fill the row to both edges: side photos between 30% and 50% of the centre one, spacing takes the rest */
+      var base = ph ? Math.min(W * 0.54, 300) : Math.min(400, Math.max(200, W * 0.28));
+      var cw = base * 0.75;   /* the centre photo is a quarter smaller than the size the side photos are worked out from */
+      var gap = base * 0.055, sw = base * 0.4, side = Math.min(3, Math.floor((N - 1) / 2));
+      if (!ph && side > 0) {   /* fill the row to both edges: side photos between 30% and 50% of the base size, spacing takes the rest */
         var room = W / 2 - cw / 2;
-        sw = Math.max(cw * 0.3, Math.min(cw * 0.5, (room - side * gap) / side));
+        sw = Math.max(base * 0.3, Math.min(base * 0.5, (room - side * gap) / side));
         gap = Math.max(gap, (room - side * sw) / side);
       }
       return { cw: cw, ch: cw * 4 / 3, sw: sw, sh: sw * 4 / 3, gap: gap };
@@ -703,7 +712,7 @@
       if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
       if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
     });
-    var size = function () { trk.style.height = (D.ch + 8) + 'px'; fc.style.setProperty('--cw', D.cw + 'px'); };
+    var size = function () { trk.style.height = (D.ch + 8) + 'px'; fc.style.setProperty('--cw', Math.min(trk.clientWidth, Math.max(D.cw, 300)) + 'px'); };   /* the caption keeps room for one line under the smaller photo */
     window.addEventListener('resize', function () { D = dims(); size(); render(); }, { passive: true });
     size(); render();
   }

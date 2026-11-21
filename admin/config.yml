@@ -91,6 +91,7 @@ collections:
           - { name: expertise, label: Expertise (the big statement after the landing page), widget: text, required: false }
           - { name: hide_expertise, label: Hide the Expertise section, widget: boolean, default: false, required: false }
           - { name: hide_films, label: Hide the Films section, widget: boolean, default: false, required: false }
+          - { name: services_on_home, label: Also show Services on the home page (it is always on the About page), widget: boolean, default: false, required: false }
           - { name: services_quote, label: Services quote (large line under the Services heading), widget: string, required: false }
           - { name: services_intro, label: Services intro (smaller line under the quote), widget: text, required: false }
           - { name: services, label: Services, widget: list, fields: [ { name: title, label: Service, widget: string }, { name: text, label: "What it covers (separate with · or put each on its own line)", widget: text, required: false }, { name: image, label: Photo (optional), widget: image, required: false } ] }

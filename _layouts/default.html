@@ -22,11 +22,12 @@
 <header class="bar g mono">
   <a class="brand" href="{{ '/' | relative_url }}" aria-label="Home, {{ s.name }}">Home</a>
   <span class="clock-wrap">{{ s.location | split: "," | first }} <b class="clock" data-offset="{{ s.timezone_offset }}">--:--</b> {{ s.timezone_label }}</span>
-  <nav>{% if s.about_text and s.about_text != "" %}<a href="{{ '/about/' | relative_url }}">About</a>{% endif %}<a href="{{ '/#services' | relative_url }}">Services</a><a href="{{ '/#work' | relative_url }}">Index</a><a href="{{ '/#talk' | relative_url }}">Contact</a><button class="tog" id="tog" type="button" aria-label="Switch between light and dark">◐ <span id="togl">Dark</span></button></nav>
+  <nav>{% if s.about_text and s.about_text != "" %}<a href="{{ '/about/' | relative_url }}">About</a>{% endif %}{% if s.services.size > 0 %}<a href="{% if s.services_on_home == true %}{{ '/#services' | relative_url }}{% else %}{{ '/about/#services' | relative_url }}{% endif %}">Services</a>{% endif %}<a href="{{ '/#work' | relative_url }}">Index</a><a href="{{ '/#talk' | relative_url }}">Contact</a><button class="tog" id="tog" type="button" aria-label="Switch between light and dark">◐ <span id="togl">Dark</span></button></nav>
 </header>
 
 {{ content }}
 
+{% unless page.contact == false %}
 <section class="talk g" id="talk">
   <div class="mono soft">Got a brief?</div>
   {% assign wa = "" %}{% assign mail = "" %}{% for c in s.contacts %}{% if c.label == 'Phone' %}{% assign wa = c.value | remove: "+" | remove: " " | remove: "-" %}{% endif %}{% if c.label == 'Email' %}{% assign mail = c.value %}{% endif %}{% endfor %}
@@ -37,6 +38,7 @@
     {% endfor %}
   </div>
 </section>
+{% endunless %}
 <footer class="g mono soft"><span>© {{ site.time | date: "%Y" }} {{ s.name }}</span><span>{{ s.location }}</span><span>{{ s.location | split: "," | first }} <span class="clock" data-offset="{{ s.timezone_offset }}">--:--</span></span></footer>
 
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Film player">

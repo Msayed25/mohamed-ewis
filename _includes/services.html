@@ -1,0 +1,14 @@
+{% assign s = site.data.site %}
+{% if s.services.size > 0 %}
+<section class="svc g" id="services">
+  <div class="svc-head"><div class="svc-h"><h2>Services</h2></div><div class="svc-txt">{% if s.services_quote and s.services_quote != "" %}<p class="svc-q">{{ s.services_quote }}</p>{% endif %}{% if s.services_intro != "" %}<p class="svc-i">{{ s.services_intro }}</p>{% endif %}</div></div>
+  <ol class="svc-list">
+    {% for v in s.services %}<li class="svc-row">
+      {% if v.image and v.image != "" %}<img src="{{ v.image | relative_url }}" alt="" loading="lazy">{% endif %}
+      <b class="n">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</b>
+      <h3>{{ v.title }}</h3>
+      {% if v.text != "" %}{% assign items = v.text | newline_to_br | replace: "<br />", "·" | split: "·" %}<ul>{% for it in items %}{% assign it2 = it | strip %}{% if it2 != "" %}<li>{{ it2 }}</li>{% endif %}{% endfor %}</ul>{% endif %}
+    </li>{% endfor %}
+  </ol>
+</section>
+{% endif %}
