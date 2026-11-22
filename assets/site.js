@@ -187,7 +187,7 @@
     landFrame();
   }
   /* ...and in every other section the title wipes in and the content rises softly as it arrives */
-  if (window.IntersectionObserver && !reduce) {
+  if (window.IntersectionObserver && !reduce && !touchUI) {   /* phones: sections are simply there */
     var rio = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } });
     }, { rootMargin: '0px 0px -12% 0px' });
@@ -237,7 +237,7 @@
 
   /* services: each row comes up from pale as it reaches the middle of the screen */
   var svcRows = $$('.svc-row');
-  if (svcRows.length && window.IntersectionObserver && !reduce) {
+  if (svcRows.length && window.IntersectionObserver && !reduce && !touchUI) {
     var sio = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); sio.unobserve(e.target); } });
     }, { rootMargin: '0px 0px -35% 0px' });
@@ -782,7 +782,7 @@
   });
 
   /* gentle reveal: content is visible without JS; only lifts items that start below the fold */
-  if (!reduce && 'IntersectionObserver' in window) {
+  if (!reduce && !touchUI && 'IntersectionObserver' in window) {
     root.classList.add('js-motion');
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.remove('pre'); io.unobserve(e.target); } }); }, { threshold: 0.12 });
     $$('.rv').forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('pre'); io.observe(el); } });
