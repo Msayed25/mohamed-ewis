@@ -4,6 +4,18 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var root = document.documentElement;
+  /* layout recalculation on resize. On touch phones and tablets the address bar hides and reappears while scrolling,
+     which changes only the height; that must not resize or move anything mid-scroll, so there only a change of width
+     (e.g. turning the phone) counts. Desktop windows still react to any resize. */
+  var touchUI = window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(pointer: fine)').matches;
+  var lastRW = window.innerWidth;
+  var onResize = function (fn) {
+    window.addEventListener('resize', function () {
+      if (touchUI && window.innerWidth === lastRW) return;
+      fn();
+    }, { passive: true });
+  };
+  window.addEventListener('resize', function () { setTimeout(function () { lastRW = window.innerWidth; }, 0); }, { passive: true });
 
   /* smooth scrolling (Lenis): each wheel step moves the page a little less than the browser's default and the page
      glides to a stop, so scrolling never feels rushed. Touch screens keep their own native scrolling. */
@@ -170,7 +182,7 @@
     setTimeout(function () { landing.classList.add('ready'); lastP = -1; landReq(); }, 2600);
     var landReq = function () { if (!landBusy) { landBusy = true; requestAnimationFrame(landFrame); } };
     window.addEventListener('scroll', landReq, { passive: true });
-    window.addEventListener('resize', function () { L = null; landReq(); }, { passive: true });
+    onResize(function () { L = null; landReq(); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { L = null; landReq(); });
     landFrame();
   }
@@ -219,7 +231,7 @@
       if (!reelRun) { reelRun = true; requestAnimationFrame(reelStep); }
     };
     window.addEventListener('scroll', reelMove, { passive: true });
-    window.addEventListener('resize', reelSize, { passive: true }); window.addEventListener('load', reelSize);
+    onResize(reelSize); window.addEventListener('load', reelSize);
     reelSize();
   }
 
@@ -250,7 +262,7 @@
     };
     xpMeasure(); light(); window.addEventListener('scroll', light, { passive: true });
     var xpRe = function () { xpMeasure(); litN = -1; light(); };
-    window.addEventListener('resize', xpRe, { passive: true }); window.addEventListener('load', xpRe);
+    onResize(xpRe); window.addEventListener('load', xpRe);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(xpRe);
   }
 
@@ -347,7 +359,7 @@
       else if (e.key === 'ArrowLeft') { e.preventDefault(); dcGo(dcI - 1, -1); }
     });
     dc.classList.add('dc-on'); dcInfo(); dcSize();
-    window.addEventListener('resize', dcSize, { passive: true });
+    onResize(dcSize);
   }
 
   /* services header: starts centred (heading over his line); as it scrolls up, the heading slides to the left and
@@ -381,7 +393,7 @@
     };
     var shRe = function () { shMeasure(); shFrame(); };
     shRe(); window.addEventListener('scroll', shFrame, { passive: true });
-    window.addEventListener('resize', shRe, { passive: true }); window.addEventListener('load', shRe);
+    onResize(shRe); window.addEventListener('load', shRe);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(shRe);
   }
 
@@ -713,7 +725,7 @@
       if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
     });
     var size = function () { trk.style.height = (D.ch + 8) + 'px'; fc.style.setProperty('--cw', Math.min(trk.clientWidth, Math.max(D.cw, 300)) + 'px'); };   /* the caption keeps room for one line under the smaller photo */
-    window.addEventListener('resize', function () { D = dims(); size(); render(); }, { passive: true });
+    onResize(function () { D = dims(); size(); render(); });
     size(); render();
   }
 
