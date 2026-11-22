@@ -163,28 +163,80 @@
       L = { W: W, H: H, g: g, nh: nh, bioTop: bioTop, big: big, small: small, top0: top0, top1: top1, aw: aw, ay: ay, bw: bw, by: by,
             start: landing.getBoundingClientRect().top + window.scrollY - stTop, run: (landing.offsetHeight - H) * 0.85 };
     };
+    /* where everything sits at progress p (0 = start, 1 = end) */
+    var pose = function (p) {
+      var s = lerp(L.big, L.small, p), ny = lerp(L.top0, L.top1, p);
+      var w = lerp(L.aw, L.bw, p), h = w * 1.25, y = lerp(L.ay, L.by, p);
+      /* the line stays just under the name while the name is still shrinking, and fades in */
+      var bv = clamp01((p - 0.55) / 0.35);
+      return {
+        name: 'translate3d(' + L.g + 'px,' + ny.toFixed(1) + 'px,0) scale(' + s.toFixed(4) + ')',
+        pic: 'translate3d(' + (L.bw - w).toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + (w / L.bw).toFixed(4) + ')',
+        role: 'translate3d(0,' + (y + h + 8).toFixed(1) + 'px,0)',
+        bioO: bv.toFixed(3), bio: 'translate3d(0,' + (Math.max(L.bioTop, ny + L.nh * s + 18) + (1 - bv) * 20).toFixed(1) + 'px,0)',
+        low: clamp01(1 - p / 0.25).toFixed(3)
+      };
+    };
+    /* phones and tablets with scroll-linked CSS animations (Safari 26+, Chrome): the browser itself moves the name and
+       photo as you scroll, so it doesn't wait for this script on every step (iPhone Safari could only manage ~9 updates
+       a second that way). The motion is sampled from pose() so it is the same as on desktop. */
+    var sda = touchUI && window.CSS && CSS.supports('animation-timeline', 'scroll()') && CSS.supports('animation-range', '0px 100px');
+    var sdaCss = null, sdaN = 0;
+    var buildSda = function () {
+      measure(); sdaN++;
+      var k = { n: '', p: '', r: '', b: '', l: '' };
+      for (var i = 0; i <= 24; i++) {
+        var o = pose(easeIO(i / 24)), at = (i / 24 * 100).toFixed(3) + '%';
+        k.n += at + '{transform:' + o.name + '}'; k.p += at + '{transform:' + o.pic + '}'; k.r += at + '{transform:' + o.role + '}';
+        k.b += at + '{opacity:' + o.bioO + ';transform:' + o.bio + '}'; k.l += at + '{opacity:' + o.low + '}';
+      }
+      var a = function (id) { return 'animation:ewis-' + id + sdaN + ' auto linear both;animation-timeline:scroll(root);animation-range:' + L.start.toFixed(1) + 'px ' + (L.start + L.run).toFixed(1) + 'px}'; };
+      if (!sdaCss) { sdaCss = document.createElement('style'); document.head.appendChild(sdaCss); }
+      sdaCss.textContent = '@keyframes ewis-n' + sdaN + '{' + k.n + '}@keyframes ewis-p' + sdaN + '{' + k.p + '}@keyframes ewis-r' + sdaN + '{' + k.r + '}@keyframes ewis-b' + sdaN + '{' + k.b + '}@keyframes ewis-l' + sdaN + '{' + k.l + '}' +
+        '.landing.sda h1{' + a('n') + '.landing.sda .vf{' + a('p') + '.landing.sda .role{' + a('r') + '.landing.sda .bio{' + a('b') + '.landing.sda.ready .low{' + a('l');
+      landing.classList.add('sda');
+    };
     var lastP = -1;
     var landFrame = function () {
       landBusy = false; if (!L) { measure(); lastP = -1; }
       var p = easeIO(clamp01((scrollPos() - L.start) / L.run));
       if (p === lastP) return; lastP = p;   /* nothing to change (e.g. scrolling further down the page) */
-      var s = lerp(L.big, L.small, p), ny = lerp(L.top0, L.top1, p);
-      lName.style.transform = 'translate3d(' + L.g + 'px,' + ny.toFixed(1) + 'px,0) scale(' + s.toFixed(4) + ')';
-      var w = lerp(L.aw, L.bw, p), h = w * 1.25, y = lerp(L.ay, L.by, p);
-      lPic.style.transform = 'translate3d(' + (L.bw - w).toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + (w / L.bw).toFixed(4) + ')';
-      if (lRole) lRole.style.transform = 'translate3d(0,' + (y + h + 8).toFixed(1) + 'px,0)';
-      /* the line stays just under the name while the name is still shrinking, and fades in */
-      var bv = clamp01((p - 0.55) / 0.35);
-      if (lBio) { lBio.style.opacity = bv.toFixed(3); lBio.style.transform = 'translate3d(0,' + (Math.max(L.bioTop, ny + L.nh * s + 18) + (1 - bv) * 20).toFixed(1) + 'px,0)'; }
-      if (lLow && landing.classList.contains('ready')) lLow.style.opacity = clamp01(1 - p / 0.25).toFixed(3);
+      var o = pose(p);
+      lName.style.transform = o.name; lPic.style.transform = o.pic;
+      if (lRole) lRole.style.transform = o.role;
+      if (lBio) { lBio.style.opacity = o.bioO; lBio.style.transform = o.bio; }
+      if (lLow && landing.classList.contains('ready')) lLow.style.opacity = o.low;
     };
-    /* after the opening animation the disciplines follow the scroll directly (no transition delay) */
-    setTimeout(function () { landing.classList.add('ready'); lastP = -1; landReq(); }, 2600);
     var landReq = function () { if (!landBusy) { landBusy = true; requestAnimationFrame(landFrame); } };
-    window.addEventListener('scroll', landReq, { passive: true });
-    onResize(function () { L = null; landReq(); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { L = null; landReq(); });
-    landFrame();
+    if (sda) {
+      buildSda();
+      /* after the opening animation the disciplines follow the scroll */
+      setTimeout(function () { landing.classList.add('ready'); }, 2600);
+      onResize(buildSda);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildSda);
+    } else {
+      /* after the opening animation the disciplines follow the scroll directly (no transition delay) */
+      setTimeout(function () { landing.classList.add('ready'); lastP = -1; landReq(); }, 2600);
+      window.addEventListener('scroll', landReq, { passive: true });
+      onResize(function () { L = null; landReq(); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { L = null; landReq(); });
+      landFrame();
+    }
+  }
+  /* the landing photo is shown in black and white; when the photo file already is, drop the live filter, which Safari
+     would otherwise recalculate on every scroll step while the photo grows */
+  var bwImg = $('.landing .vf img');
+  if (bwImg) {
+    var bwCheck = function () {
+      try {
+        var c = document.createElement('canvas'); c.width = 24; c.height = 30;
+        var x = c.getContext('2d'); x.drawImage(bwImg, 0, 0, 24, 30);
+        var d = x.getImageData(0, 0, 24, 30).data;
+        for (var i = 0; i < d.length; i += 4) if (Math.abs(d[i] - d[i + 1]) > 6 || Math.abs(d[i + 1] - d[i + 2]) > 6) return;
+        bwImg.classList.add('bw');
+      } catch (e) {}
+    };
+    if (bwImg.complete && bwImg.naturalWidth) bwCheck(); else bwImg.addEventListener('load', bwCheck);
   }
   /* ...and in every other section the title wipes in and the content rises softly as it arrives */
   if (window.IntersectionObserver && !reduce && !touchUI) {   /* phones: sections are simply there */
