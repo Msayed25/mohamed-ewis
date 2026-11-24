@@ -2,7 +2,7 @@
 layout: default
 title: About
 permalink: /about/
-contact: false
+contact: list
 ---
 {% assign s = site.data.site %}
 <section class="sec g ab" id="about">
@@ -10,7 +10,7 @@ contact: false
   {% if s.about_photos.size > 0 %}<ul class="ab-ph" aria-hidden="true">{% for ph in s.about_photos %}<li><img src="{{ ph | relative_url }}" alt="" decoding="async"></li>{% endfor %}</ul>{% endif %}
   <div class="ab-body">
     {% if s.about_line and s.about_line != "" %}<p class="ab-line">{{ s.about_line }}</p>{% endif %}
-    <p class="ab-text">{{ s.about_text }}</p>
+    <div class="ab-text">{{ s.about_text | markdownify }}</div>
   </div>
 </section>
 

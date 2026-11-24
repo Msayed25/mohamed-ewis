@@ -27,7 +27,12 @@
 
 {{ content }}
 
-{% unless page.contact == false %}
+{% if page.contact == "list" %}
+<section class="talk talk-list g" id="talk"><div class="contacts mono">
+    {% for c in s.contacts %}<div><span>{{ c.label }}</span>{% if c.url != "" %}<a href="{{ c.url | relative_url }}"{% if c.url contains 'http' %} target="_blank" rel="noopener"{% endif %}>{{ c.value }}</a>{% else %}<span>{{ c.value }}</span>{% endif %}<button class="copy-b" type="button" data-v="{{ c.value }}">Copy</button></div>
+    {% endfor %}
+</div></section>
+{% elsif page.contact != false %}
 <section class="talk g" id="talk">
   <div class="mono soft">Got a brief?</div>
   {% assign wa = "" %}{% assign mail = "" %}{% for c in s.contacts %}{% if c.label == 'Phone' %}{% assign wa = c.value | remove: "+" | remove: " " | remove: "-" %}{% endif %}{% if c.label == 'Email' %}{% assign mail = c.value %}{% endif %}{% endfor %}
@@ -38,7 +43,7 @@
     {% endfor %}
   </div>
 </section>
-{% endunless %}
+{% endif %}
 <footer class="g mono soft"><span>© {{ site.time | date: "%Y" }} {{ s.name }}</span><span>{{ s.location }}</span><span>{{ s.location | split: "," | first }} <span class="clock" data-offset="{{ s.timezone_offset }}">--:--</span></span></footer>
 
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Film player">

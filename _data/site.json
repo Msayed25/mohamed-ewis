@@ -11,7 +11,7 @@
   "portrait_cutout": "/images/site/portrait-cutout.webp",
   "landing_bio": "Mohamed, an experienced Art Director and Visual Artist with a degree in Mass Communication, he has collaborated with top-tier Art and Creative Directors on diverse projects for clients such as Mini, Subaru, Pepsi, Etisalat and Google. Mohamed excels in crafting ideas, Art directions and Design , showcasing a blend of expressive and bold concepts through mixed multimedia techniques.",
   "about_line": "I turn ideas into visual worlds across campaigns, brands, films and experiences.",
-  "about_text": "Mohamed, an experienced Art Director and Visual Artist with a degree in Mass Communication, he has collaborated with top-tier Art and Creative Directors on diverse projects for clients such as Mini, Subaru, Pepsi, Etisalat and Google. Mohamed excels in crafting ideas, Art directions and Design , showcasing a blend of expressive and bold concepts through mixed multimedia techniques.",
+  "about_text": "I’m a Creative and Art Director with a curiosity for people, places, and the stories that connect them. My journey started with communication before finding its way into design, photography, and filmmaking. Somewhere along the way, I realized that creativity was never about sticking to one medium, but about finding different ways to tell a story and make people feel something.\n\nA big part of my inspiration comes from outside the creative industry. Traveling, discovering different cultures, meeting people, and observing the little details of everyday life have always shaped the way I see things. Photography taught me to notice, filmmaking taught me to tell stories, and design gave me a way to bring those observations into ideas.\n\nToday, I work across brands, campaigns, films, and experiences, sometimes independently and sometimes bringing together teams of talented creatives. What keeps me excited is the same curiosity that got me started: discovering new perspectives, exploring unfamiliar territories, and turning ideas into something people can connect with.",
   "about_photos": [
     "/images/site/portrait-landing.jpg",
     "/images/projects/sacha-jafri/cover.jpg",
@@ -111,76 +111,40 @@
     {
       "chapter": "Mass Communication",
       "period": "Degree",
-      "track": "Ideas",
       "color": "pitch",
-      "text": "Studied how messages move people. It is still the first question on every brief: what is the one thing they should remember?",
-      "tags": [
-        "Media",
-        "Advertising",
-        "Storytelling"
-      ],
+      "text": "I started with Mass Communication, studying how messages connect with people. Before learning how to make things look good, I was learning how to make them mean something.",
       "link_label": "",
       "link": ""
     },
     {
-      "chapter": "Branding",
+      "chapter": "Visual Communication",
       "period": "01",
-      "track": "Branding",
       "color": "branding",
-      "text": "",
-      "tags": [
-        "Art direction",
-        "Brand strategy",
-        "Tone & voice",
-        "Insights",
-        "Content strategy"
-      ],
+      "text": "In 2019, I moved into graphic design and visual communication. What started with design gradually became an exploration of identities, visual systems and how ideas take shape.",
       "link_label": "",
       "link": ""
     },
     {
-      "chapter": "Creative",
+      "chapter": "Art Direction",
       "period": "02",
-      "track": "Creative",
       "color": "digital",
-      "text": "",
-      "tags": [
-        "Storytelling",
-        "Copywriting",
-        "Social media guidelines",
-        "Photo + video direction",
-        "3D visualisation"
-      ],
+      "text": "Moved into concept development, advertising campaigns, and art direction, collaborating with regional and international agencies.",
       "link_label": "",
       "link": ""
     },
     {
-      "chapter": "Production",
+      "chapter": "Creative Production",
       "period": "03",
-      "track": "Production",
       "color": "print",
-      "text": "",
-      "tags": [
-        "Scouting",
-        "Production management",
-        "Content creation",
-        "Live action filming"
-      ],
+      "text": "Expanded my creative practice beyond design, becoming more technically involved in photography, filmmaking, and visual production. Developed a deeper understanding of each medium, from creative concepts to hands-on execution.",
       "link_label": "",
       "link": ""
     },
     {
-      "chapter": "Post-production",
+      "chapter": "Creative Leadership",
       "period": "04",
-      "track": "Post-production",
       "color": "film",
-      "text": "",
-      "tags": [
-        "Editing",
-        "2D/3D animation",
-        "Colour grading",
-        "Visual effects"
-      ],
+      "text": "Taking responsibility for the overall creative vision, leading projects from concept to delivery, and bringing together multidisciplinary teams to execute them.",
       "link_label": "",
       "link": ""
     }

@@ -86,7 +86,7 @@ collections:
           - { name: portrait_landing, label: Landing photo (upper body, facing into the page), widget: image, required: false }
           - { name: landing_bio, label: Landing line (fades in next to the photo as you scroll), widget: text, required: false }
           - { name: about_line, label: About heading line (large), widget: text, required: false }
-          - { name: about_text, label: About text, widget: text, required: false, hint: "Shown on the About page (mohamedewis.com/about/). The About menu item appears when this has text." }
+          - { name: about_text, label: About text, widget: text, required: false, hint: "Shown on the About page (mohamedewis.com/about/). Leave an empty line between paragraphs. The About menu item appears when this has text." }
           - { name: about_photos, label: About photos (round, shown in black and white), widget: list, required: false, field: { name: photo, label: Photo, widget: image } }
           - { name: expertise, label: Expertise (the big statement after the landing page), widget: text, required: false }
           - { name: hide_expertise, label: Hide the Expertise section, widget: boolean, default: false, required: false }
@@ -112,10 +112,8 @@ collections:
             fields:
               - { name: chapter, label: Title or role, widget: string }
               - { name: period, label: Dates, widget: string, hint: "e.g. 2019 to 2022, or Now" }
-              - { name: track, label: Track, widget: select, options: [Ideas, Design, Film, Direction, Branding, Creative, Production, Post-production] }
               - { name: color, label: Colour, widget: select, options: [digital, print, pitch, film, photography, branding, personal] }
               - { name: text, label: Description, widget: text, required: false }
-              - { name: tags, label: Tags, widget: list, required: false, field: { name: tag, label: Tag, widget: string } }
               - { name: link_label, label: Link text, widget: string, required: false }
               - { name: link, label: Link address, widget: string, required: false }
           - name: contacts

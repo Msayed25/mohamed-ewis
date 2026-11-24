@@ -69,7 +69,7 @@
 
     <nav class="pnext g" aria-label="Leave this project">
       <a href="{{ '/' | relative_url }}#top" data-close data-go><i>←</i> Back home</a>
-      <a href="{{ '/#work' | relative_url }}" data-close data-go>More work <i>→</i></a>
+      <a href="{{ next.url | relative_url }}" data-proj aria-label="More work: next project, {{ next.title }}">More work <i>→</i></a>
     </nav>
   </article>
 

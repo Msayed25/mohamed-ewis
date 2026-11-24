@@ -21,7 +21,7 @@ layout: default
 
 {% if featured.size > 0 %}
 <section class="dc g" id="selected" aria-label="Selected work">
-  <div class="head"><h2>Selected work</h2><a class="dc-all" href="#work">View all work <i aria-hidden="true">→</i></a></div>
+  <div class="head"><h2>Selected work</h2></div>
   <div class="dc-wrap" id="dc" aria-roledescription="carousel">
     <div class="dc-info">
       <div class="dc-txt" aria-live="polite"><p class="dc-u mono">{{ featured[0].subtitle }}</p><h3 class="dc-t">{{ featured[0].title }}</h3><p class="dc-s"></p></div>
@@ -96,7 +96,7 @@ layout: default
       </div>
     </aside>
     <div class="cvmain">
-      <p class="cv-intro">A career, cut like a film. Each chapter is a clip on the timeline. Click one to jump to it.</p>
+      <p class="cv-intro">A career, cut like a film.</p>
       <div class="tl">
         <div class="tbar mono"><span>~/{{ s.short_name | downcase }} / career.prproj</span><span>{{ s.cv.size }} clips</span></div>
         <div class="cmd mono" data-cmd="{{ s.short_name | downcase }}@{{ s.location | split: ',' | first | downcase }}:~$ render career --to &quot;{{ s.title }}&quot;"><span class="typed"></span><span class="caret"></span></div>
@@ -111,10 +111,10 @@ layout: default
       </div>
       {% for e in s.cv %}
       <article class="entry rv" id="cv{{ forloop.index }}" style="--c:var(--c-{{ e.color }})">
-        <div class="lab mono"><span class="tc">{{ e.period }}</span><span>{{ e.track }} track</span></div>
+        {% if e.period != "" %}<div class="lab mono"><span class="tc">{{ e.period }}</span></div>{% endif %}
         <div><h3>{{ e.chapter }}</h3></div>
         {% if e.text != "" %}<p>{{ e.text }}</p>{% endif %}
-        <div class="tags">{% for t in e.tags %}<span>{{ t }}</span>{% endfor %}{% if e.link != "" %}<a href="{{ e.link | relative_url }}">{{ e.link_label }} →</a>{% endif %}</div>
+        {% if e.link and e.link != "" %}<div class="tags"><a href="{{ e.link | relative_url }}">{{ e.link_label }} →</a></div>{% endif %}
       </article>
       {% endfor %}
     </div>
