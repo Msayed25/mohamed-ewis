@@ -251,6 +251,14 @@
         c.classList.add('rise-r'); c.style.transitionDelay = Math.min(k, 4) * 0.08 + 's'; rio.observe(c);
       });
     });
+    /* at the very end of the page, anything still waiting shows: a short block just above the footer (e.g. the contact
+       list on About, on wide screens) can never reach the trigger line because the page can't scroll any further */
+    var rioEnd = function () {
+      if (window.innerHeight + scrollPos() < document.documentElement.scrollHeight - 4) return;
+      $$('.rise-r:not(.in), h2.rise-h:not(.in)').forEach(function (e) { e.classList.add('in'); rio.unobserve(e); });
+    };
+    window.addEventListener('scroll', rioEnd, { passive: true });
+    window.addEventListener('load', rioEnd);
   }
 
   /* films reel: the Films section holds in place while the films slide sideways as you keep scrolling down */
